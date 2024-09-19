@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment Invitations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                Compare data from date: 
+                <select class="form-select" id="startDateSelect" aria-label="Default select example">
+                    <option selected>Open this select menu</option>
+                    <option value="2024-09-04">2024-09-04</option>
+                    <option value="2024-09-11">2024-09-11</option>
+                    <option value="2024-09-18">2024-09-18</option>
+                </select>
+            </div>
+            <div class="col">
+                to date: 
+                <select class="form-select" id="endDateSelect" aria-label="Default select example">
+                    <option selected>Open this select menu</option>
+                    <option value="2024-09-04">2024-09-04</option>
+                    <option value="2024-09-11">2024-09-11</option>
+                    <option value="2024-09-18">2024-09-18</option>
+                </select>
+            </div>
+            <div class="col">
+                <button type="button" onclick="getSummariesAndDisplay()" class="btn btn-primary">Show results</button>
+            </div>
+            <div class="col">
+                <button type="button" onclick="exportToExcel()" class="btn btn-warning">Download to excel</button>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <table class="table" id="recruitment-table">
+            <thead>
+                <tr>
+                    <th>Recruitment Invitations</th>
+                    <th>Cumulative</th>
+                    <th>%</th>
+                    <th>Weekly change</th>
+                    <th>UIC</th>
+                    <th>change</th>
+                    <th>STL</th>
+                    <th>change</th>
+                    <th>PIT</th>
+                    <th>change</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Invitations sent</td>
+                    <td id="cumulative-invitations-sent"></td>
+                    <td id="cumulative-invitations-sent-percent"></td>
+                    <td id="weekly-change-invitations-sent"></td>
+                    <td id="uic-invitations-sent"></td>
+                    <td id="uic-change-invitations-sent"></td>
+                    <td id="stl-invitations-sent"></td>
+                    <td id="stl-change-invitations-sent"></td>
+                    <td id="pit-invitations-sent"></td>
+                    <td id="pit-change-invitations-sent"></td>
+                </tr>
+                <tr>
+                    <td>Within 2-week wait</td>
+                    <td id="cumulative-2week-wait"></td>
+                    <td id="cumulative-2week-wait-percent"></td>
+                    <td id="weekly-change-2week-wait"></td>
+                    <td id="uic-2week-wait"></td>
+                    <td id="uic-change-2week-wait"></td>
+                    <td id="stl-2week-wait"></td>
+                    <td id="stl-change-2week-wait"></td>
+                    <td id="pit-2week-wait"></td>
+                    <td id="pit-change-2week-wait"></td>
+                </tr>
+                <tr>
+                    <td>Calling in-progress</td>
+                    <td id="cumulative-calling"></td>
+                    <td id="cumulative-calling-percent"></td>
+                    <td id="weekly-change-calling"></td>
+                    <td id="uic-calling"></td>
+                    <td id="uic-change-calling"></td>
+                    <td id="stl-calling"></td>
+                    <td id="stl-change-calling"></td>
+                    <td id="pit-calling"></td>
+                    <td id="pit-change-calling"></td>
+                </tr>
+                <tr>
+                    <td>Ceased outreach</td>
+                    <td id="cumulative-ceased"></td>
+                    <td id="cumulative-ceased-percent"></td>
+                    <td id="weekly-change-ceased"></td>
+                    <td id="uic-ceased"></td>
+                    <td id="uic-change-ceased"></td>
+                    <td id="stl-ceased"></td>
+                    <td id="stl-change-ceased"></td>
+                    <td id="pit-ceased"></td>
+                    <td id="pit-change-ceased"></td>
+                </tr>
+                <tr>
+                    <td>Requested call (via Website or Twilio)</td>
+                    <td id="cumulative-requested-call"></td>
+                    <td id="cumulative-requested-call-percent"></td>
+                    <td id="weekly-change-requested-call"></td>
+                    <td id="uic-requested-call"></td>
+                    <td id="uic-change-requested-call"></td>
+                    <td id="stl-requested-call"></td>
+                    <td id="stl-change-requested-call"></td>
+                    <td id="pit-requested-call"></td>
+                    <td id="pit-change-requested-call"></td>
+                </tr>
+                <tr>
+                    <td>Partial Screen</td>
+                    <td id="cumulative-partial-screen"></td>
+                    <td id="cumulative-partial-screen-percent"></td>
+                    <td id="weekly-change-partial-screen"></td>
+                    <td id="uic-partial-screen"></td>
+                    <td id="uic-change-partial-screen"></td>
+                    <td id="stl-partial-screen"></td>
+                    <td id="stl-change-partial-screen"></td>
+                    <td id="pit-partial-screen"></td>
+                    <td id="pit-change-partial-screen"></td>
+                </tr>
+                <tr>
+                    <td>Not Screened</td>
+                    <td id="cumulative-not-screened"></td>
+                    <td id="cumulative-not-screened-percent"></td>
+                    <td id="weekly-change-not-screened"></td>
+                    <td id="uic-not-screened"></td>
+                    <td id="uic-change-not-screened"></td>
+                    <td id="stl-not-screened"></td>
+                    <td id="stl-change-not-screened"></td>
+                    <td id="pit-not-screened"></td>
+                    <td id="pit-change-not-screened"></td>
+                </tr>
+                <tr>
+                    <td>Ineligible prior to screen</td>
+                    <td id="cumulative-ineligible"></td>
+                    <td id="cumulative-ineligible-percent"></td>
+                    <td id="weekly-change-ineligible"></td>
+                    <td id="uic-ineligible"></td>
+                    <td id="uic-change-ineligible"></td>
+                    <td id="stl-ineligible"></td>
+                    <td id="stl-change-ineligible"></td>
+                    <td id="pit-ineligible"></td>
+                    <td id="pit-change-ineligible"></td>
+                </tr>
+                <tr>
+                    <td>Declined to screen</td>
+                    <td id="cumulative-declined"></td>
+                    <td id="cumulative-declined-percent"></td>
+                    <td id="weekly-change-declined"></td>
+                    <td id="uic-declined"></td>
+                    <td id="uic-change-declined"></td>
+                    <td id="stl-declined"></td>
+                    <td id="stl-change-declined"></td>
+                    <td id="pit-declined"></td>
+                    <td id="pit-change-declined"></td>
+                </tr>
+            </tbody>
+        </table>    
+    </div>
+    <script src="./index.js"></script>
+</body>
+</html>
