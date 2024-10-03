@@ -223,5 +223,80 @@
             "3": 0,
             "": 856
         }
+    },
+    {
+        "date": "2024-09-19",
+        "sitesDict": {
+            "1": {
+                "invite_sent_count": 7976,
+                "wait_count": 750,
+                "two_week_wait_count": 1049,
+                "recruit_oc_var": 0,
+                "calling_in_progress_count": 0,
+                "recruit_oc_know_var": 0,
+                "request_cb_var": 0,
+                "partial_screen_count": 36,
+                "not_screened_count": 0,
+                "ineligible_prior_to_screen_count": 0,
+                "declined_to_screen_count": 0,
+                "valid_var": "",
+                "requested_call_count": 0,
+                "partial_ies_var": 0
+            },
+            "2": {
+                "invite_sent_count": 0,
+                "wait_count": 0,
+                "two_week_wait_count": 0,
+                "recruit_oc_var": 0,
+                "calling_in_progress_count": 0,
+                "recruit_oc_know_var": 0,
+                "request_cb_var": 0,
+                "partial_screen_count": 0,
+                "not_screened_count": 0,
+                "ineligible_prior_to_screen_count": 0,
+                "declined_to_screen_count": 0,
+                "valid_var": "",
+                "requested_call_count": 0,
+                "partial_ies_var": 0
+            },
+            "3": {
+                "invite_sent_count": 0,
+                "wait_count": 0,
+                "two_week_wait_count": 0,
+                "recruit_oc_var": 0,
+                "calling_in_progress_count": 0,
+                "recruit_oc_know_var": 0,
+                "request_cb_var": 0,
+                "partial_screen_count": 0,
+                "not_screened_count": 0,
+                "ineligible_prior_to_screen_count": 0,
+                "declined_to_screen_count": 0,
+                "valid_var": "",
+                "requested_call_count": 0,
+                "partial_ies_var": 0
+            }
+        },
+        "totals": {
+            "invite_sent_count": 7976,
+            "wait_count": 750,
+            "two_week_wait_count": 1049,
+            "recruit_oc_var": 0,
+            "calling_in_progress_count": 0,
+            "recruit_oc_know_var": 0,
+            "request_cb_var": 0,
+            "partial_screen_count": 36,
+            "not_screened_count": 0,
+            "ineligible_prior_to_screen_count": 0,
+            "declined_to_screen_count": 0,
+            "valid_var": "",
+            "requested_call_count": 0,
+            "partial_ies_var": 0
+        },
+        "sitesCollect": {
+            "1": 8730,
+            "2": 0,
+            "3": 0,
+            "": 856
+        }
     }
 ]

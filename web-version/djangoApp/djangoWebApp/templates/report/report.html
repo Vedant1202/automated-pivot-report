@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
+    <link rel="stylesheet" href="{% static 'css/report.css' %}">
 </head>
 <body>
     <nav class="navbar bg-body-tertiary fixed-top">
@@ -28,6 +31,12 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#">Project 2</a>
+                </li>
+                <li class="nav-item">
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button class="mt-5 btn btn-dark" type="submit">Log Out</button>
+                    </form>
                 </li>
               </ul>
             </div>
@@ -66,13 +75,10 @@
         <div class="row mt-3 mb-4">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Sheet 1</a>
+                  <a class="nav-link active" id="pivot-tab" onclick="switchTabToPivotReport()" aria-current="page" href="#">Pivot Report</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sheet 2</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Sheet 3</a>
+                <li class="nav-item" id="md-review-tab">
+                  <a class="nav-link" href="#" aria-current="page" onclick="switchTabToMdReview()">MD Review</a>
                 </li>
               </ul>
         </div>
@@ -201,8 +207,87 @@
                     <td id="pit-change-declined"></td>
                 </tr>
             </tbody>
+        </table>  
+        
+        <table class="table table-bordered" id="md-review-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Weekly Change</th>
+                    <th>%</th>
+                    <th>UIC</th>
+                    <th>STL</th>
+                    <th>PIT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TO Attended</td>
+                    <td id="to-attended"></td>
+                    <td id="to-attended-percent"></td>
+                    <td id="uic-to-attended"></td>
+                    <td id="stl-to-attended"></td>
+                    <td id="pit-to-attended"></td>
+                </tr>
+                <tr>
+                    <td>MD Clearance required total</td>
+                    <td id="md-clearance-total"></td>
+                    <td id="md-clearance-total-percent"></td>
+                    <td id="uic-md-clearance-total"></td>
+                    <td id="stl-md-clearance-total"></td>
+                    <td id="pit-md-clearance-total"></td>
+                </tr>
+                <tr>
+                    <td>MD Clearance required < 10.3.23 standard PARQ</td>
+                    <td id="standard-parq"></td>
+                    <td id="standard-parq-percent"></td>
+                    <td id="uic-standard-parq"></td>
+                    <td id="stl-standard-parq"></td>
+                    <td id="pit-standard-parq"></td>
+                </tr>
+                <tr>
+                    <td>MD Clearance required > 10.3.23 modified PARQ</td>
+                    <td id="modified-parq"></td>
+                    <td id="modified-parq-percent"></td>
+                    <td id="uic-modified-parq"></td>
+                    <td id="stl-modified-parq"></td>
+                    <td id="pit-modified-parq"></td>
+                </tr>
+                <tr>
+                    <td>PAR review pending</td>
+                    <td id="par-review-pending"></td>
+                    <td id="par-review-pending-percent"></td>
+                    <td id="uic-par-review-pending"></td>
+                    <td id="stl-par-review-pending"></td>
+                    <td id="pit-par-review-pending"></td>
+                </tr>
+                <tr>
+                    <td>PAR reviewed - Ineligible</td>
+                    <td id="par-reviewed-ineligible"></td>
+                    <td id="par-reviewed-ineligible-percent"></td>
+                    <td id="uic-par-reviewed-ineligible"></td>
+                    <td id="stl-par-reviewed-ineligible"></td>
+                    <td id="pit-par-reviewed-ineligible"></td>
+                </tr>
+                <tr>
+                    <td>PAR reviewed - Eligible</td>
+                    <td id="par-reviewed-eligible"></td>
+                    <td id="par-reviewed-eligible-percent"></td>
+                    <td id="uic-par-reviewed-eligible"></td>
+                    <td id="stl-par-reviewed-eligible"></td>
+                    <td id="pit-par-reviewed-eligible"></td>
+                </tr>
+                <tr>
+                    <td>MD Clearance required </td>
+                    <td id="md-clearance-required"></td>
+                    <td id="md-clearance-required-percent"></td>
+                    <td id="uic-md-clearance-required"></td>
+                    <td id="stl-md-clearance-required"></td>
+                    <td id="pit-md-clearance-required"></td>
+                </tr>
+            </tbody>
         </table>    
     </div>
-    <script src="./index.js"></script>
+    <script src="{% static 'js/report.js' %}"></script>
 </body>
 </html>

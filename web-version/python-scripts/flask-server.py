@@ -36,7 +36,6 @@ def fetch_summary():
     end_date_doc = collection.find_one({"date": end_date})
     
 
-    # If documents are found, return them, else return error message
 # If documents are found, return them, else return error message
     if start_date_doc and end_date_doc:
         # Use json_util to serialize the MongoDB documents properly
