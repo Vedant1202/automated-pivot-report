@@ -271,7 +271,12 @@ function getSummariesAndDisplay() {
 }
 
 function exportToExcel() {
-    var wb = XLSX.utils.table_to_book(document.getElementById('recruitment-table'), {sheet: "Sheet1"});
+    var wb = XLSX.utils.table_to_book(document.getElementById('recruitment-table'), {sheet: "PivotReport"});
+    
+    // Append the second table ('md-review-summaries') as Sheet2
+    var ws2 = XLSX.utils.table_to_sheet(document.getElementById('md-review-summaries'));
+    XLSX.utils.book_append_sheet(wb, ws2, "MDReview");
+
     XLSX.writeFile(wb, 'table.xlsx');
 }
 
