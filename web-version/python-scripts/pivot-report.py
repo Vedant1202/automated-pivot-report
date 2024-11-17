@@ -1,14 +1,26 @@
 #!/usr/bin/env python
-# import requests
+import requests
 import urllib.request, urllib.parse
 import json
 import pandas as pd
 from datetime import datetime
 import json
 import os
+from pymongo import MongoClient
 
-#!/usr/bin/env python
-import requests
+# Set up MongoDB connection
+client = MongoClient('mongodb://localhost:27017/')
+db = client['pivot-report-summaries']  # Replace 'database_name' with your actual database name
+collection = db['summaries']  # Replace 'log_collection' with your preferred collection name
+
+# Append logData to MongoDB collection
+def append_to_mongodb(data):
+    try:
+        collection.insert_one(data)
+        print("Data inserted into MongoDB successfully.")
+    except Exception as e:
+        print("An error occurred while inserting data into MongoDB:", e)
+
 data = {
     'token': '3A10735CD8F78FB6643C7410F1BC2910',
     'content': 'record',
@@ -26,11 +38,34 @@ data = {
     'fields[7]': 'screen_icf_oc',
     'fields[8]': 'eligibility_screener_complete',
     'fields[9]': 'invite_yn',
+    'fields[10]': 'es_date',
+    'fields[11]': 'es_oc_inelig',
+    'fields[12]': 'es_oc_maybe',
+    'fields[14]': 'es_oc_inelig_v2',
+    'fields[15]': 'to_appt_status',
+    'fields[16]': 'if_ies_maybe_2',
+    'fields[17]': 'to_elig_oc',
+    'fields[18]': 'par_oc',
+    'fields[19]': 'pivot_survey_bundle_complete',
+    'fields[20]': 'dist_status',
+    'fields[21]': 'zoom_appt_status_2',
+    'fields[22]': 'tech_oc',
+    'fields[23]': 'blind_r1_date',
+    'fields[24]': 'v1_d8_elig_oc_v2',
+    'fields[25]': 'v1_d15_elig_oc_v2',
+    'fields[26]': 'es_oc_elig',
+    'fields[27]': 'es_oc_maybe_v2',
+    'fields[28]': 'site',
+    'fields[29]': 'randomization_complete',
+    'fields[30]': 'participant_log_complete',
+    'fields[31]': 'decline_invite',
+
     'events[0]': 'enroll_arm_1',
     'events[1]': 'baseline_arm_1',
     'events[2]': '6_week_arm_1',
     'events[3]': '12_week_arm_1',
     'events[4]': '24_week_arm_1',
+
     'rawOrLabel': 'raw',
     'rawOrLabelHeaders': 'raw',
     'exportCheckboxLabel': 'false',
@@ -61,6 +96,45 @@ sitesDict = {
         'valid_var' : '',
         'requested_call_count' : 0,
         'partial_ies_var' : 0,
+        'screened_count': 0,
+        'ineligible_count': 0,
+        'eligible_but_declined_to_count': 0,
+        'eligible_undecided_count': 0,
+        'maybe_eligible_count': 0,
+        'ies_eligible_count': 0,
+        'appt_declined_count': 0,
+        'appt_needed_within_week_since_ies_count': 0,
+        'appt_needed_over_week_since_ies_count': 0,
+        'reschedule_no_show_count': 0,
+        'to_schedule_count': 0,
+        'to_attend_count': 0,
+        'ineligible_at_to_count': 0,
+        'declined_icf_count': 0,
+        'declined_to_proceed_count_1': 0,
+        'eligible_pending_clearance_count': 0,
+        'eligible_at_to_count': 0,
+        'needs_baseline_survey_count': 0,
+        'declined_to_proceed_count_2': 0,
+        'dist_plan_tbd_count': 0,
+        'dist_plan_in_place_count': 0,
+        'dist_delay_problem': 0,
+        'dist_delay_shipping': 0,
+        'dist_complete': 0,
+        'declined_to_proceed_with_device': 0,
+        'res_no_show_tech_appt_count': 0,
+        'tech_schedule_setup_count': 0,
+        'home_tech_needed_count': 0,
+        'declined_to_proceed_with_device_count': 0,
+        'ineligible_to_proceed_with_device_count': 0,
+        'tech_issue_with_device_count': 0,
+        'pending_day_8_count': 0,
+        'self_measure_ready_count': 0,
+        'pending_day_15_check': 0,
+        'ineligible_bmi_count': 0,
+        'insufficient_data_count': 0,
+        'elig_pending_randamization_count': 0,
+        'ceased_outreach_count': 0,
+        'randamization_count': 0
     },
     '2': {
         'invite_sent_count' : 0,
@@ -77,6 +151,45 @@ sitesDict = {
         'valid_var' : '',
         'requested_call_count' : 0,
         'partial_ies_var' : 0,
+        'screened_count': 0,
+        'ineligible_count': 0,
+        'eligible_but_declined_to_count': 0,
+        'eligible_undecided_count': 0,
+        'maybe_eligible_count': 0,
+        'ies_eligible_count': 0,
+        'appt_declined_count': 0,
+        'appt_needed_within_week_since_ies_count': 0,
+        'appt_needed_over_week_since_ies_count': 0,
+        'reschedule_no_show_count': 0,
+        'to_schedule_count': 0,
+        'to_attend_count': 0,
+        'ineligible_at_to_count': 0,
+        'declined_icf_count': 0,
+        'declined_to_proceed_count_1': 0,
+        'eligible_pending_clearance_count': 0,
+        'eligible_at_to_count': 0,
+        'needs_baseline_survey_count': 0,
+        'declined_to_proceed_count_2': 0,
+        'dist_plan_tbd_count': 0,
+        'dist_plan_in_place_count': 0,
+        'dist_delay_problem': 0,
+        'dist_delay_shipping': 0,
+        'dist_complete': 0,
+        'declined_to_proceed_with_device': 0,
+        'res_no_show_tech_appt_count': 0,
+        'tech_schedule_setup_count': 0,
+        'home_tech_needed_count': 0,
+        'declined_to_proceed_with_device_count': 0,
+        'ineligible_to_proceed_with_device_count': 0,
+        'tech_issue_with_device_count': 0,
+        'pending_day_8_count': 0,
+        'self_measure_ready_count': 0,
+        'pending_day_15_check': 0,
+        'ineligible_bmi_count': 0,
+        'insufficient_data_count': 0,
+        'elig_pending_randamization_count': 0,
+        'ceased_outreach_count': 0,
+        'randamization_count': 0
     },
     '3': {
         'invite_sent_count' : 0,
@@ -93,6 +206,45 @@ sitesDict = {
         'valid_var' : '',
         'requested_call_count' : 0,
         'partial_ies_var' : 0,
+        'screened_count': 0,
+        'ineligible_count': 0,
+        'eligible_but_declined_to_count': 0,
+        'eligible_undecided_count': 0,
+        'maybe_eligible_count': 0,
+        'ies_eligible_count': 0,
+        'appt_declined_count': 0,
+        'appt_needed_within_week_since_ies_count': 0,
+        'appt_needed_over_week_since_ies_count': 0,
+        'reschedule_no_show_count': 0,
+        'to_schedule_count': 0,
+        'to_attend_count': 0,
+        'ineligible_at_to_count': 0,
+        'declined_icf_count': 0,
+        'declined_to_proceed_count_1': 0,
+        'eligible_pending_clearance_count': 0,
+        'eligible_at_to_count': 0,
+        'needs_baseline_survey_count': 0,
+        'declined_to_proceed_count_2': 0,
+        'dist_plan_tbd_count': 0,
+        'dist_plan_in_place_count': 0,
+        'dist_delay_problem': 0,
+        'dist_delay_shipping': 0,
+        'dist_complete': 0,
+        'declined_to_proceed_with_device': 0,
+        'res_no_show_tech_appt_count': 0,
+        'tech_schedule_setup_count': 0,
+        'home_tech_needed_count': 0,
+        'declined_to_proceed_with_device_count': 0,
+        'ineligible_to_proceed_with_device_count': 0,
+        'tech_issue_with_device_count': 0,
+        'pending_day_8_count': 0,
+        'self_measure_ready_count': 0,
+        'pending_day_15_check': 0,
+        'ineligible_bmi_count': 0,
+        'insufficient_data_count': 0,
+        'elig_pending_randamization_count': 0,
+        'ceased_outreach_count': 0,
+        'randamization_count': 0
     }
 }
 today = datetime.today().date()
@@ -139,6 +291,7 @@ try:
         # print(record['record_id'] + "event name: " + record['redcap_event_name']+" cease: " + record['cease'] + " invite_date:  " + record['date_invite_1'] + " can_call:  " + record['can_call'] + " twilight_oc:  " + record['twilio_oc'] + " log completed:  " + record['participant_log_complete'] + " invite_yn: " + record['invite_yn'] + " invite decline:  " + record['decline_invite'] + " vol_excl: " + record['vol_excl'] + " screen_icf:  " + record['screen_icf_oc'] + " eleg_screener_complete: " + record['eligibility_screener_complete'])
         site = str(record['site'])
         sitesCollect[site] += 1
+        enroll_criteria_met = {}
         # print(site)
         # print(type(site))
         # valid_var = ''
@@ -199,6 +352,138 @@ try:
         else: 
             partial_ies_var = '0'
 
+        # ----------inlegible prior to screen-----------
+        if record['vol_excl'] == '1':
+            sitesDict[site]['ineligible_prior_to_screen_count'] += 1
+
+        # ----------declined to screen-----------
+        if record['redcap_event_name'] != '' and (record['invite_yn'] == '2' or record['screen_icf_oc'] == '2'):
+            sitesDict[site]['declined_to_screen_count'] += 1
+
+        if record['eligibility_screener_complete'] == '2' and record['screen_icf_oc'] == '1':
+            sitesDict[site]['screened_count'] += 1
+
+            #-------ineligible--------
+            if record['es_oc_inelig'] == '1' or record['es_oc_inelig'] == '2':
+                sitesDict[site]['ineligible_count'] += 1
+
+                #-----eligible but declined TO------
+            if record['es_oc_elig'] == '2' or record['es_oc_maybe'] == '2':
+                sitesDict[site]['eligible_but_declined_to_count'] += 1
+
+                #--------eligile_undecided---------
+            if record['es_oc_elig'] == '3' or record['es_oc_maybe'] == '3':
+                sitesDict[site]['eligible_undecided_count'] += 1
+
+                #-----maybe eligible------
+            if record['es_oc_maybe'] == '1' or record['es_oc_maybe_v2'] == '1':
+                sitesDict[site]['maybe_eligible_count'] += 1
+
+                # ------IES eligible -------
+            if record['es_oc_elig'] == '1' or record['es_oc_maybe_v2'] == '1':
+                sitesDict[site]['ies_eligible_count'] += 1
+
+        #------------------------------------------------------
+            #--------appointment_decline/ceased----------
+        if record['to_appt_status'] == '4':
+            sitesDict[site]['appt_declined_count'] += 1
+        
+        #----appt needed within week since ies----
+        if 'es_date' in record and record['es_date'].strip():
+            appt_date = datetime.strptime(record['es_date'], '%Y-%m-%d').date()
+            if (today - appt_date).days < 8 and record['to_appt_status'] == '2':
+                sitesDict[site]['appt_needed_within_week_since_ies_count'] += 1
+
+            if (today - appt_date).days >= 8 and record['to_appt_status'] =='2':
+                sitesDict[site]['appt_needed_over_week_since_ies_count'] += 1
+
+        #------ rescedule no show-----------
+        if record['to_appt_status'] == '3':
+            sitesDict[site]['reschedule_no_show_count'] += 1
+
+        #-------TO Schedule -----------
+        if record['to_appt_status'] == '1' and record['to_elig_oc'] < '1' and record['es_oc_inelig_v2'] == '1':
+            sitesDict[site]['to_schedule_count'] += 1
+
+            #-------to attend----------
+        if record['to_elig_oc'] > '0':
+            sitesDict[site]['to_attend_count'] += 1
+
+
+        if record['es_oc_inelig_v2'] != '1':
+                #-------ineligible at TO--------
+            if (record['to_elig_oc'] == '2' or record['par_oc'] == '3' or record['if_ies_maybe_2'] == '2'):
+                sitesDict[site]['ineligible_at_to_count'] += 1
+
+                #-----declined icf--------
+            if record['to_elig_oc'] == '4':
+                sitesDict[site]['declined_icf_count'] += 1
+            
+                #------declined to process-------
+            if record['to_elig_oc'] == '5':
+                sitesDict[site]['declined_to_proceed_count_1'] += 1
+
+                #-----eligible_undecided--------
+            if record['to_elig_oc'] == '6':
+                sitesDict[site]['eligible_undecided_count'] += 1
+
+                #-----eligible undecided--------
+            if record['to_elig_oc'] == '3' and record['par_oc'] == '2' and record['if_ies_maybe_2'] =='3':
+                sitesDict[site]['eligible_pending_clearance_count'] += 1
+            
+                #------eligible at TO--------
+            if record['to_elig_oc'] == '1' and ( record['par_oc'] == '1' or record['par_oc'] == '4' )and record['if_ies_maybe_2'] !='3':
+                sitesDict[site]['eligible_at_to_count'] += 1
+                
+        #------needs baseline survey----
+        if (record['to_elig_oc'] == '1' and record['if_ies_maybe_2'] !='3' and record['redcap_event_name'] == 'enroll_arm_1' and (record['par_oc'] == '1' or record['par_oc'] == '4') ): #----CP = 1 value 
+            # print("implemented for  " + record['record_id'])
+            enroll_criteria_met[record['record_id']] = {
+                'site': record['site'],
+                'dist_status': record['dist_status'],
+                'tech_oc': record['tech_oc'],
+                'zoom_appt_status_2': ' '
+            }
+
+        if 'zoom_appt_status_2' in record and record['redcap_event_name'] == 'enroll_arm_1' and record['zoom_appt_status_2'] in ['4','3','1']:
+            # print("Second imppmm for "  + record['record_id'])
+            enroll_criteria_met[record['record_id']] = {
+                'site': record['site'],
+                'dist_status': record['dist_status'],
+                'tech_oc': record['tech_oc'],
+                'zoom_appt_status_2': record['zoom_appt_status_2']
+            }
+            # enroll_criteria_met[record['record_id']]['zoom_appt_status_2'] = record['zoom_appt_status_2']
+
+                #------reschedule no show------------
+        if record['tech_oc'] < '1' and record['zoom_appt_status_2'] == '3':
+            sitesDict[site]['res_no_show_tech_appt_count'] += 1
+
+                #------tech schedule set up ----
+        if record['tech_oc'] < '1' and record['zoom_appt_status_2'] == '1':
+            sitesDict[site]['tech_schedule_setup_count'] += 1
+
+            #--------declined to procees with device-----
+        if record['tech_oc'] == '4':
+            sitesDict[site]['declined_to_proceed_with_device_count'] += 1
+
+            #--------ineligible--------
+        if record['tech_oc'] == '2':
+            sitesDict[site]['ineligible_to_proceed_with_device_count'] += 1
+
+            #-------tech issue pending resolution------
+        if record['tech_oc'] == '3':
+            sitesDict[site]['tech_issue_with_device_count'] += 1
+
+            #--------self measures ready-------------
+        if record['tech_oc'] == '1':
+            sitesDict[site]['self_measure_ready_count'] += 1
+
+            #------r1 randamization------
+        if record['randomization_complete'] == '2' and record['redcap_event_name'] !=' ' :
+            sitesDict[site]['randamization_count'] += 1
+
+
     totals = {
         'invite_sent_count' : 0,
         'wait_count' : 0,
@@ -214,11 +499,51 @@ try:
         'valid_var' : '',
         'requested_call_count' : 0,
         'partial_ies_var' : 0,
+        'screened_count': 0,
+        'ineligible_count': 0,
+        'eligible_but_declined_to_count': 0,
+        'eligible_undecided_count': 0,
+        'maybe_eligible_count': 0,
+        'ies_eligible_count': 0,
+        'appt_declined_count': 0,
+        'appt_needed_within_week_since_ies_count': 0,
+        'appt_needed_over_week_since_ies_count': 0,
+        'reschedule_no_show_count': 0,
+        'to_schedule_count': 0,
+        'to_attend_count': 0,
+        'ineligible_at_to_count': 0,
+        'declined_icf_count': 0,
+        'declined_to_proceed_count_1': 0,
+        'eligible_pending_clearance_count': 0,
+        'eligible_at_to_count': 0,
+        'needs_baseline_survey_count': 0,
+        'declined_to_proceed_count_2': 0,
+        'dist_plan_tbd_count': 0,
+        'dist_plan_in_place_count': 0,
+        'dist_delay_problem': 0,
+        'dist_delay_shipping': 0,
+        'dist_complete': 0,
+        'declined_to_proceed_with_device': 0,
+        'res_no_show_tech_appt_count': 0,
+        'tech_schedule_setup_count': 0,
+        'home_tech_needed_count': 0,
+        'declined_to_proceed_with_device_count': 0,
+        'ineligible_to_proceed_with_device_count': 0,
+        'tech_issue_with_device_count': 0,
+        'pending_day_8_count': 0,
+        'self_measure_ready_count': 0,
+        'pending_day_15_check': 0,
+        'ineligible_bmi_count': 0,
+        'insufficient_data_count': 0,
+        'elig_pending_randamization_count': 0,
+        'ceased_outreach_count': 0,
+        'randamization_count': 0
     }
 
     for site in sitesDict.values():
         for key in site.keys():
-            totals[key] += site[key]
+            if key in totals.keys():
+                totals[key] += site[key]
 
 
     site = '1'
@@ -249,11 +574,13 @@ try:
     print(sitesCollect)
     logData = {
         'date': datetime.today().strftime('%Y-%m-%d'),
-        # 'date': '2024-09-11',
+        # 'date': '2024-11-01',
         'sitesDict': sitesDict,
         'totals': totals,
         'sitesCollect': sitesCollect,
     }
+    append_to_mongodb(logData)
+    print("==================== Appended to MongoDB ======================")
 
     # df = pd.read_json(logData)
     # df_csv = df.to_csv()
