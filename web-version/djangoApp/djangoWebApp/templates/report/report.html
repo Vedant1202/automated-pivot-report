@@ -52,6 +52,8 @@
                     <option value="2024-09-04">2024-09-04</option>
                     <option value="2024-09-11">2024-09-11</option>
                     <option value="2024-09-18">2024-09-18</option>
+                    <option value="2024-11-17">2024-11-17</option>
+                    <option value="2024-11-18">2024-11-18</option>
                 </select>
             </div>
             <div class="col">
@@ -61,6 +63,8 @@
                     <option value="2024-09-04">2024-09-04</option>
                     <option value="2024-09-11">2024-09-11</option>
                     <option value="2024-09-18">2024-09-18</option>
+                    <option value="2024-11-17">2024-11-17</option>
+                    <option value="2024-11-18">2024-11-18</option>
                 </select>
             </div>
             <div class="col">
@@ -206,6 +210,559 @@
                     <td id="pit-declined"></td>
                     <td id="pit-change-declined"></td>
                 </tr>
+                <tr>
+                    <td>Screened</td>
+                    <td id="cumulative-screened"></td>
+                    <td id="cumulative-screened-percent"></td>
+                    <td id="weekly-change-screened"></td>
+                    <td id="uic-screened"></td>
+                    <td id="uic-change-screened"></td>
+                    <td id="stl-screened"></td>
+                    <td id="stl-change-screened"></td>
+                    <td id="pit-screened"></td>
+                    <td id="pit-change-screened"></td>
+                </tr>
+                <tr>
+                    <td>Ineligible</td>
+                    <td id="cumulative-ineligible-after-screened"></td>
+                    <td id="cumulative-ineligible-after-screened-percent"></td>
+                    <td id="weekly-change-ineligible-after-screened"></td>
+                    <td id="uic-ineligible-after-screened"></td>
+                    <td id="uic-change-ineligible-after-screened"></td>
+                    <td id="stl-ineligible-after-screened"></td>
+                    <td id="stl-change-ineligible-after-screened"></td>
+                    <td id="pit-ineligible-after-screened"></td>
+                    <td id="pit-change-ineligible-after-screened"></td>
+                </tr>
+                <tr>
+                    <td>Eligible - Declined TO</td>
+                    <td id="cumulative-eligible-declined-to"></td>
+                    <td id="cumulative-eligible-declined-to-percent"></td>
+                    <td id="weekly-change-eligible-declined-to"></td>
+                    <td id="uic-eligible-declined-to"></td>
+                    <td id="uic-change-eligible-declined-to"></td>
+                    <td id="stl-eligible-declined-to"></td>
+                    <td id="stl-change-eligible-declined-to"></td>
+                    <td id="pit-eligible-declined-to"></td>
+                    <td id="pit-change-eligible-declined-to"></td>
+                </tr>
+                <tr>
+                    <td>Eligible - Undecided</td>
+                    <td id="cumulative-eligible-undecided"></td>
+                    <td id="cumulative-eligible-undecided-percent"></td>
+                    <td id="weekly-change-eligible-undecided"></td>
+                    <td id="uic-eligible-undecided"></td>
+                    <td id="uic-change-eligible-undecided"></td>
+                    <td id="stl-eligible-undecided"></td>
+                    <td id="stl-change-eligible-undecided"></td>
+                    <td id="pit-eligible-undecided"></td>
+                    <td id="pit-change-eligible-undecided"></td>
+                </tr>
+                <tr>
+                    <td>Maybe Eligible</td>
+                    <td id="cumulative-eligible-maybe"></td>
+                    <td id="cumulative-eligible-maybe-percent"></td>
+                    <td id="weekly-change-eligible-maybe"></td>
+                    <td id="uic-eligible-maybe"></td>
+                    <td id="uic-change-eligible-maybe"></td>
+                    <td id="stl-eligible-maybe"></td>
+                    <td id="stl-change-eligible-maybe"></td>
+                    <td id="pit-eligible-maybe"></td>
+                    <td id="pit-change-eligible-maybe"></td>
+                </tr>
+                <tr>
+                    <td>IES Eligible</td>
+                    <td id="cumulative-eligible-ies"></td>
+                    <td id="cumulative-eligible-ies-percent"></td>
+                    <td id="weekly-change-eligible-ies"></td>
+                    <td id="uic-eligible-ies"></td>
+                    <td id="uic-change-eligible-ies"></td>
+                    <td id="stl-eligible-ies"></td>
+                    <td id="stl-change-eligible-ies"></td>
+                    <td id="pit-eligible-ies"></td>
+                    <td id="pit-change-eligible-ies"></td>
+                </tr>
+                <tr>
+                    <td>Tele-Orientation Appointment</td>
+                    <td id="cumulative-to-appoint"></td>
+                    <td id="cumulative-to-appoint-percent"></td>
+                    <td id="weekly-change-to-appoint"></td>
+                    <td id="uic-to-appoint"></td>
+                    <td id="uic-change-to-appoint"></td>
+                    <td id="stl-to-appoint"></td>
+                    <td id="stl-change-to-appoint"></td>
+                    <td id="pit-to-appoint"></td>
+                    <td id="pit-change-to-appoint"></td>
+                </tr>
+                <tr>
+                    <td>Appointment declined</td>
+                    <td id="cumulative-appoint-declined"></td>
+                    <td id="cumulative-appoint-declined-percent"></td>
+                    <td id="weekly-change-appoint-declined"></td>
+                    <td id="uic-appoint-declined"></td>
+                    <td id="uic-change-appoint-declined"></td>
+                    <td id="stl-appoint-declined"></td>
+                    <td id="stl-change-appoint-declined"></td>
+                    <td id="pit-appoint-declined"></td>
+                    <td id="pit-change-appoint-declined"></td>
+                </tr>
+                <tr>
+                    <td>Appointment needed within 1 wk since IES</td>
+                    <td id="cumulative-appoint-within-1-wk"></td>
+                    <td id="cumulative-appoint-within-1-wk-percent"></td>
+                    <td id="weekly-change-appoint-within-1-wk"></td>
+                    <td id="uic-appoint-within-1-wk"></td>
+                    <td id="uic-change-appoint-within-1-wk"></td>
+                    <td id="stl-appoint-within-1-wk"></td>
+                    <td id="stl-change-appoint-within-1-wk"></td>
+                    <td id="pit-appoint-within-1-wk"></td>
+                    <td id="pit-change-appoint-within-1-wk"></td>
+                </tr>
+                <tr>
+                    <td>Appointment needed over 1 wk since IES</td>
+                    <td id="cumulative-appoint-over-1-wk"></td>
+                    <td id="cumulative-appoint-over-1-wk-percent"></td>
+                    <td id="weekly-change-appoint-over-1-wk"></td>
+                    <td id="uic-appoint-over-1-wk"></td>
+                    <td id="uic-change-appoint-over-1-wk"></td>
+                    <td id="stl-appoint-over-1-wk"></td>
+                    <td id="stl-change-appoint-over-1-wk"></td>
+                    <td id="pit-appoint-over-1-wk"></td>
+                    <td id="pit-change-appoint-over-1-wk"></td>
+                </tr>
+                <tr>
+                    <td>Reschedule No-show</td>
+                    <td id="cumulative-re-no-show"></td>
+                    <td id="cumulative-re-no-show-percent"></td>
+                    <td id="weekly-change-re-no-show"></td>
+                    <td id="uic-re-no-show"></td>
+                    <td id="uic-change-re-no-show"></td>
+                    <td id="stl-re-no-show"></td>
+                    <td id="stl-change-re-no-show"></td>
+                    <td id="pit-re-no-show"></td>
+                    <td id="pit-change-re-no-show"></td>
+                </tr>
+                <tr>
+                    <td>TO Scheduled</td>
+                    <td id="cumulative-to-scheduled"></td>
+                    <td id="cumulative-to-scheduled-percent"></td>
+                    <td id="weekly-change-to-scheduled"></td>
+                    <td id="uic-to-scheduled"></td>
+                    <td id="uic-change-to-scheduled"></td>
+                    <td id="stl-to-scheduled"></td>
+                    <td id="stl-change-to-scheduled"></td>
+                    <td id="pit-to-scheduled"></td>
+                    <td id="pit-change-to-scheduled"></td>
+                </tr>
+                <tr>
+                    <td>TO Attended</td>
+                    <td id="cumulative-to-attended"></td>
+                    <td id="cumulative-to-attended-percent"></td>
+                    <td id="weekly-change-to-attended"></td>
+                    <td id="uic-to-attended"></td>
+                    <td id="uic-change-to-attended"></td>
+                    <td id="stl-to-attended"></td>
+                    <td id="stl-change-to-attended"></td>
+                    <td id="pit-to-attended"></td>
+                    <td id="pit-change-to-attended"></td>
+                </tr>
+                <tr>
+                    <td>Ineligible at TO</td>
+                    <td id="cumulative-inelig-to"></td>
+                    <td id="cumulative-inelig-to-percent"></td>
+                    <td id="weekly-change-inelig-to"></td>
+                    <td id="uic-inelig-to"></td>
+                    <td id="uic-change-inelig-to"></td>
+                    <td id="stl-inelig-to"></td>
+                    <td id="stl-change-inelig-to"></td>
+                    <td id="pit-inelig-to"></td>
+                    <td id="pit-change-inelig-to"></td>
+                </tr>
+                <tr>
+                    <td>Declined ICF</td>
+                    <td id="cumulative-declined-icf"></td>
+                    <td id="cumulative-declined-icf-percent"></td>
+                    <td id="weekly-change-declined-icf"></td>
+                    <td id="uic-declined-icf"></td>
+                    <td id="uic-change-declined-icf"></td>
+                    <td id="stl-declined-icf"></td>
+                    <td id="stl-change-declined-icf"></td>
+                    <td id="pit-declined-icf"></td>
+                    <td id="pit-change-declined-icf"></td>
+                </tr>
+                <tr>
+                    <td>Declined to proceed</td>
+                    <td id="cumulative-declined-proceed"></td>
+                    <td id="cumulative-declined-proceed-percent"></td>
+                    <td id="weekly-change-declined-proceed"></td>
+                    <td id="uic-declined-proceed"></td>
+                    <td id="uic-change-declined-proceed"></td>
+                    <td id="stl-declined-proceed"></td>
+                    <td id="stl-change-declined-proceed"></td>
+                    <td id="pit-declined-proceed"></td>
+                    <td id="pit-change-declined-proceed"></td>
+                </tr>
+                <tr>
+                    <td>Eligible - Undecided</td>
+                    <td id="cumulative-eligible-undecided-to-attend"></td>
+                    <td id="cumulative-eligible-undecided-to-attend-percent"></td>
+                    <td id="weekly-change-eligible-undecided-to-attend"></td>
+                    <td id="uic-eligible-undecided-to-attend"></td>
+                    <td id="uic-change-eligible-undecided-to-attend"></td>
+                    <td id="stl-eligible-undecided-to-attend"></td>
+                    <td id="stl-change-eligible-undecided-to-attend"></td>
+                    <td id="pit-eligible-undecided-to-attend"></td>
+                    <td id="pit-change-eligible-undecided-to-attend"></td>
+                </tr>
+                <tr>
+                    <td>Eligible - Pending MD Clearance</td>
+                    <td id="cumulative-eligible-pending-md-clear"></td>
+                    <td id="cumulative-eligible-pending-md-clear-percent"></td>
+                    <td id="weekly-change-eligible-pending-md-clear"></td>
+                    <td id="uic-eligible-pending-md-clear"></td>
+                    <td id="uic-change-eligible-pending-md-clear"></td>
+                    <td id="stl-eligible-pending-md-clear"></td>
+                    <td id="stl-change-eligible-pending-md-clear"></td>
+                    <td id="pit-eligible-pending-md-clear"></td>
+                    <td id="pit-change-eligible-pending-md-clear"></td>
+                </tr>
+                <tr>
+                    <td>Eligible at TO</td>
+                    <td id="cumulative-eligible-at-to"></td>
+                    <td id="cumulative-eligible-at-to-percent"></td>
+                    <td id="weekly-change-eligible-at-to"></td>
+                    <td id="uic-eligible-at-to"></td>
+                    <td id="uic-change-eligible-at-to"></td>
+                    <td id="stl-eligible-at-to"></td>
+                    <td id="stl-change-eligible-at-to"></td>
+                    <td id="pit-eligible-at-to"></td>
+                    <td id="pit-change-eligible-at-to"></td>
+                </tr>
+                <tr>
+                    <td>Device Distribution</td>
+                    <td id="cumulative-device-dist"></td>
+                    <td id="cumulative-device-dist-percent"></td>
+                    <td id="weekly-change-device-dist"></td>
+                    <td id="uic-device-dist"></td>
+                    <td id="uic-change-device-dist"></td>
+                    <td id="stl-device-dist"></td>
+                    <td id="stl-change-device-dist"></td>
+                    <td id="pit-device-dist"></td>
+                    <td id="pit-change-device-dist"></td>
+                </tr>
+                <tr>
+                    <td>Needs Baseline survey</td>
+                    <td id="cumulative-need-baseline"></td>
+                    <td id="cumulative-need-baseline-percent"></td>
+                    <td id="weekly-change-need-baseline"></td>
+                    <td id="uic-need-baseline"></td>
+                    <td id="uic-change-need-baseline"></td>
+                    <td id="stl-need-baseline"></td>
+                    <td id="stl-change-need-baseline"></td>
+                    <td id="pit-need-baseline"></td>
+                    <td id="pit-change-need-baseline"></td>
+                </tr>
+                <tr>
+                    <td>Declined to proceed</td>
+                    <td id="cumulative-dec-to-proceed-dev-dist"></td>
+                    <td id="cumulative-dec-to-proceed-dev-dist-percent"></td>
+                    <td id="weekly-change-dec-to-proceed-dev-dist"></td>
+                    <td id="uic-dec-to-proceed-dev-dist"></td>
+                    <td id="uic-change-dec-to-proceed-dev-dist"></td>
+                    <td id="stl-dec-to-proceed-dev-dist"></td>
+                    <td id="stl-change-dec-to-proceed-dev-dist"></td>
+                    <td id="pit-dec-to-proceed-dev-dist"></td>
+                    <td id="pit-change-dec-to-proceed-dev-dist"></td>
+                </tr>
+                <tr>
+                    <td>Distrib Plan TBD</td>
+                    <td id="cumulative-dist-plan-tbd"></td>
+                    <td id="cumulative-dist-plan-tbd-percent"></td>
+                    <td id="weekly-change-dist-plan-tbd"></td>
+                    <td id="uic-dist-plan-tbd"></td>
+                    <td id="uic-change-dist-plan-tbd"></td>
+                    <td id="stl-dist-plan-tbd"></td>
+                    <td id="stl-change-dist-plan-tbd"></td>
+                    <td id="pit-dist-plan-tbd"></td>
+                    <td id="pit-change-dist-plan-tbd"></td>
+                </tr>
+                <tr>
+                    <td>Distrib Plan in place</td>
+                    <td id="cumulative-dist-plan-in-place"></td>
+                    <td id="cumulative-dist-plan-in-place-percent"></td>
+                    <td id="weekly-change-dist-plan-in-place"></td>
+                    <td id="uic-dist-plan-in-place"></td>
+                    <td id="uic-change-dist-plan-in-place"></td>
+                    <td id="stl-dist-plan-in-place"></td>
+                    <td id="stl-change-dist-plan-in-place"></td>
+                    <td id="pit-dist-plan-in-place"></td>
+                    <td id="pit-change-dist-plan-in-place"></td>
+                </tr>
+                <tr>
+                    <td>Distrib delay/problem - pick-up</td>
+                    <td id="cumulative-distrib-delay-pickup"></td>
+                    <td id="cumulative-distrib-delay-pickup-percent"></td>
+                    <td id="weekly-change-distrib-delay-pickup"></td>
+                    <td id="uic-distrib-delay-pickup"></td>
+                    <td id="uic-change-distrib-delay-pickup"></td>
+                    <td id="stl-distrib-delay-pickup"></td>
+                    <td id="stl-change-distrib-delay-pickup"></td>
+                    <td id="pit-distrib-delay-pickup"></td>
+                    <td id="pit-change-distrib-delay-pickup"></td>
+                </tr>
+                <tr>
+                    <td>Distrib delay/problem - shipping</td>
+                    <td id="cumulative-distrib-delay-ship"></td>
+                    <td id="cumulative-distrib-delay-ship-percent"></td>
+                    <td id="weekly-change-distrib-delay-ship"></td>
+                    <td id="uic-distrib-delay-ship"></td>
+                    <td id="uic-change-distrib-delay-ship"></td>
+                    <td id="stl-distrib-delay-ship"></td>
+                    <td id="stl-change-distrib-delay-ship"></td>
+                    <td id="pit-distrib-delay-ship"></td>
+                    <td id="pit-change-distrib-delay-ship"></td>
+                </tr>
+                <tr>
+                    <td>Distrib Complete</td>
+                    <td id="cumulative-distrib-complete"></td>
+                    <td id="cumulative-distrib-complete-percent"></td>
+                    <td id="weekly-change-distrib-complete"></td>
+                    <td id="uic-distrib-complete"></td>
+                    <td id="uic-change-distrib-complete"></td>
+                    <td id="stl-distrib-complete"></td>
+                    <td id="stl-change-distrib-complete"></td>
+                    <td id="pit-distrib-complete"></td>
+                    <td id="pit-change-distrib-complete"></td>
+                </tr>
+                <tr>
+                    <td>Home-Tech Setup Appointment</td>
+                    <td id="cumulative-home-setup"></td>
+                    <td id="cumulative-home-setup-percent"></td>
+                    <td id="weekly-change-home-setup"></td>
+                    <td id="uic-home-setup"></td>
+                    <td id="uic-change-home-setup"></td>
+                    <td id="stl-home-setup"></td>
+                    <td id="stl-change-home-setup"></td>
+                    <td id="pit-home-setup"></td>
+                    <td id="pit-change-home-setup"></td>
+                </tr>
+                <tr>
+                    <td>Decline to proceed w/ Devices</td>
+                    <td id="cumulative-decline-devices"></td>
+                    <td id="cumulative-decline-devices-percent"></td>
+                    <td id="weekly-change-decline-devices"></td>
+                    <td id="uic-decline-devices"></td>
+                    <td id="uic-change-decline-devices"></td>
+                    <td id="stl-decline-devices"></td>
+                    <td id="stl-change-decline-devices"></td>
+                    <td id="pit-decline-devices"></td>
+                    <td id="pit-change-decline-devices"></td>
+                </tr>
+                <tr>
+                    <td>Appointment needed within wk since delivery</td>
+                    <td id="cumulative-appoint-need-within-1-wk-delivery"></td>
+                    <td id="cumulative-appoint-need-within-1-wk-delivery-percent"></td>
+                    <td id="weekly-change-appoint-need-within-1-wk-delivery"></td>
+                    <td id="uic-appoint-need-within-1-wk-delivery"></td>
+                    <td id="uic-change-appoint-need-within-1-wk-delivery"></td>
+                    <td id="stl-appoint-need-within-1-wk-delivery"></td>
+                    <td id="stl-change-appoint-need-within-1-wk-delivery"></td>
+                    <td id="pit-appoint-need-within-1-wk-delivery"></td>
+                    <td id="pit-change-appoint-need-within-1-wk-delivery"></td>
+                </tr>
+                <tr>
+                    <td>Appointment needed over 1 wk since delivery</td>
+                    <td id="cumulative-appoint-need-over-1-wk-delivery"></td>
+                    <td id="cumulative-appoint-need-over-1-wk-delivery-percent"></td>
+                    <td id="weekly-change-appoint-need-over-1-wk-delivery"></td>
+                    <td id="uic-appoint-need-over-1-wk-delivery"></td>
+                    <td id="uic-change-appoint-need-over-1-wk-delivery"></td>
+                    <td id="stl-appoint-need-over-1-wk-delivery"></td>
+                    <td id="stl-change-appoint-need-over-1-wk-delivery"></td>
+                    <td id="pit-appoint-need-over-1-wk-delivery"></td>
+                    <td id="pit-change-appoint-need-over-1-wk-delivery"></td>
+                </tr>
+                <tr>
+                    <td>Reschedule No-show</td>
+                    <td id="cumulative-resch-no-show-device"></td>
+                    <td id="cumulative-resch-no-show-device-percent"></td>
+                    <td id="weekly-change-resch-no-show-device"></td>
+                    <td id="uic-resch-no-show-device"></td>
+                    <td id="uic-change-resch-no-show-device"></td>
+                    <td id="stl-resch-no-show-device"></td>
+                    <td id="stl-change-resch-no-show-device"></td>
+                    <td id="pit-resch-no-show-device"></td>
+                    <td id="pit-change-resch-no-show-device"></td>
+                </tr>
+                <tr>
+                    <td>Tech Setup Scheduled</td>
+                    <td id="cumulative-tech-setup-sch"></td>
+                    <td id="cumulative-tech-setup-sch-percent"></td>
+                    <td id="weekly-change-tech-setup-sch"></td>
+                    <td id="uic-tech-setup-sch"></td>
+                    <td id="uic-change-tech-setup-sch"></td>
+                    <td id="stl-tech-setup-sch"></td>
+                    <td id="stl-change-tech-setup-sch"></td>
+                    <td id="pit-tech-setup-sch"></td>
+                    <td id="pit-change-tech-setup-sch"></td>
+                </tr>
+                <tr>
+                    <td>Home-Tech Attended</td>
+                    <td id="cumulative-home-tech-attend"></td>
+                    <td id="cumulative-home-tech-attend-percent"></td>
+                    <td id="weekly-change-home-tech-attend"></td>
+                    <td id="uic-home-tech-attend"></td>
+                    <td id="uic-change-home-tech-attend"></td>
+                    <td id="stl-home-tech-attend"></td>
+                    <td id="stl-change-home-tech-attend"></td>
+                    <td id="pit-home-tech-attend"></td>
+                    <td id="pit-change-home-tech-attend"></td>
+                </tr>
+                <tr>
+                    <td>Decline to proceed w/ Devices</td>
+                    <td id="cumulative-dec-proceed-devices-home"></td>
+                    <td id="cumulative-dec-proceed-devices-home-percent"></td>
+                    <td id="weekly-change-dec-proceed-devices-home"></td>
+                    <td id="uic-dec-proceed-devices-home"></td>
+                    <td id="uic-change-dec-proceed-devices-home"></td>
+                    <td id="stl-dec-proceed-devices-home"></td>
+                    <td id="stl-change-dec-proceed-devices-home"></td>
+                    <td id="pit-dec-proceed-devices-home"></td>
+                    <td id="pit-change-dec-proceed-devices-home"></td>
+                </tr>
+                <tr>
+                    <td>Ineligible</td>
+                    <td id="cumulative-ineligible-home-tech"></td>
+                    <td id="cumulative-ineligible-home-tech-percent"></td>
+                    <td id="weekly-change-ineligible-home-tech"></td>
+                    <td id="uic-ineligible-home-tech"></td>
+                    <td id="uic-change-ineligible-home-tech"></td>
+                    <td id="stl-ineligible-home-tech"></td>
+                    <td id="stl-change-ineligible-home-tech"></td>
+                    <td id="pit-ineligible-home-tech"></td>
+                    <td id="pit-change-ineligible-home-tech"></td>
+                </tr>
+                <tr>
+                    <td>Tech issue pending resolution</td>
+                    <td id="cumulative-tech-pending-resolution"></td>
+                    <td id="cumulative-tech-pending-resolution-percent"></td>
+                    <td id="weekly-change-tech-pending-resolution"></td>
+                    <td id="uic-tech-pending-resolution"></td>
+                    <td id="uic-change-tech-pending-resolution"></td>
+                    <td id="stl-tech-pending-resolution"></td>
+                    <td id="stl-change-tech-pending-resolution"></td>
+                    <td id="pit-tech-pending-resolution"></td>
+                    <td id="pit-change-tech-pending-resolution"></td>
+                </tr>
+                <tr>
+                    <td>Self-measures Ready</td>
+                    <td id="cumulative-self-measures-ready"></td>
+                    <td id="cumulative-self-measures-ready-percent"></td>
+                    <td id="weekly-change-self-measures-ready"></td>
+                    <td id="uic-self-measures-ready"></td>
+                    <td id="uic-change-self-measures-ready"></td>
+                    <td id="stl-self-measures-ready"></td>
+                    <td id="stl-change-self-measures-ready"></td>
+                    <td id="pit-self-measures-ready"></td>
+                    <td id="pit-change-self-measures-ready"></td>
+                </tr>
+                <tr>
+                    <td>Baseline Self-measures Progress</td>
+                    <td id="cumulative-baseline-self-measure-progress"></td>
+                    <td id="cumulative-baseline-self-measure-progress-percent"></td>
+                    <td id="weekly-change-baseline-self-measure-progress"></td>
+                    <td id="uic-baseline-self-measure-progress"></td>
+                    <td id="uic-change-baseline-self-measure-progress"></td>
+                    <td id="stl-baseline-self-measure-progress"></td>
+                    <td id="stl-change-baseline-self-measure-progress"></td>
+                    <td id="pit-baseline-self-measure-progress"></td>
+                    <td id="pit-change-baseline-self-measure-progress"></td>
+                </tr>
+                <tr>
+                    <td>Pending day 8 check</td>
+                    <td id="cumulative-pending-day-8-check"></td>
+                    <td id="cumulative-pending-day-8-check-percent"></td>
+                    <td id="weekly-change-pending-day-8-check"></td>
+                    <td id="uic-pending-day-8-check"></td>
+                    <td id="uic-change-pending-day-8-check"></td>
+                    <td id="stl-pending-day-8-check"></td>
+                    <td id="stl-change-pending-day-8-check"></td>
+                    <td id="pit-pending-day-8-check"></td>
+                    <td id="pit-change-pending-day-8-check"></td>
+                </tr>
+                <tr>
+                    <td>Pending day 15 check</td>
+                    <td id="cumulative-pending-day-15-check"></td>
+                    <td id="cumulative-pending-day-15-check-percent"></td>
+                    <td id="weekly-change-pending-day-15-check"></td>
+                    <td id="uic-pending-day-15-check"></td>
+                    <td id="uic-change-pending-day-15-check"></td>
+                    <td id="stl-pending-day-15-check"></td>
+                    <td id="stl-change-pending-day-15-check"></td>
+                    <td id="pit-pending-day-15-check"></td>
+                    <td id="pit-change-pending-day-15-check"></td>
+                </tr>
+                <tr>
+                    <td>Ineligible BMI</td>
+                    <td id="cumulative-inelig-bmi"></td>
+                    <td id="cumulative-inelig-bmi-percent"></td>
+                    <td id="weekly-change-inelig-bmi"></td>
+                    <td id="uic-inelig-bmi"></td>
+                    <td id="uic-change-inelig-bmi"></td>
+                    <td id="stl-inelig-bmi"></td>
+                    <td id="stl-change-inelig-bmi"></td>
+                    <td id="pit-inelig-bmi"></td>
+                    <td id="pit-change-inelig-bmi"></td>
+                </tr>
+                <tr>
+                    <td>Ineligible insufficient data @day15</td>
+                    <td id="cumulative-inelig-insuff-day-15"></td>
+                    <td id="cumulative-inelig-insuff-day-15-percent"></td>
+                    <td id="weekly-change-inelig-insuff-day-15"></td>
+                    <td id="uic-inelig-insuff-day-15"></td>
+                    <td id="uic-change-inelig-insuff-day-15"></td>
+                    <td id="stl-inelig-insuff-day-15"></td>
+                    <td id="stl-change-inelig-insuff-day-15"></td>
+                    <td id="pit-inelig-insuff-day-15"></td>
+                    <td id="pit-change-inelig-insuff-day-15"></td>
+                </tr>
+                <tr>
+                    <td>Eligible pending randomization</td>
+                    <td id="cumulative-elig-pending-random"></td>
+                    <td id="cumulative-elig-pending-random-percent"></td>
+                    <td id="weekly-change-elig-pending-random"></td>
+                    <td id="uic-elig-pending-random"></td>
+                    <td id="uic-change-elig-pending-random"></td>
+                    <td id="stl-elig-pending-random"></td>
+                    <td id="stl-change-elig-pending-random"></td>
+                    <td id="pit-elig-pending-random"></td>
+                    <td id="pit-change-elig-pending-random"></td>
+                </tr>
+                <tr>
+                    <td>R1 - Randomized</td>
+                    <td id="cumulative-r1-random"></td>
+                    <td id="cumulative-r1-random-percent"></td>
+                    <td id="weekly-change-r1-random"></td>
+                    <td id="uic-r1-random"></td>
+                    <td id="uic-change-r1-random"></td>
+                    <td id="stl-r1-random"></td>
+                    <td id="stl-change-r1-random"></td>
+                    <td id="pit-r1-random"></td>
+                    <td id="pit-change-r1-random"></td>
+                </tr>
+                <tr>
+                    <td>R1 percent of 1029 target</td>
+                    <td id="cumulative-r1-percent"></td>
+                    <td id="cumulative-r1-percent-percent"></td>
+                    <td id="weekly-change-r1-percent"></td>
+                    <td id="uic-r1-percent"></td>
+                    <td id="uic-change-r1-percent"></td>
+                    <td id="stl-r1-percent"></td>
+                    <td id="stl-change-r1-percent"></td>
+                    <td id="pit-r1-percent"></td>
+                    <td id="pit-change-r1-percent"></td>
+                </tr>
+                
             </tbody>
         </table>  
         
