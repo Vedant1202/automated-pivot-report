@@ -185,7 +185,11 @@ async function fetchMdReviewSummaries(startDate, endDate) {
 // }
 
 async function populateRecruitmentTable(startDateDoc, endDateDoc) {
+    console.log("new func 2")
     const calculatePercent = (current, previous) => current ? (((current - previous) / current) * 100).toFixed(2) : 0;
+
+    // Array to store any errors or missing fields
+    const errors = [];
 
     const metrics = [
         // Recruitment Invitations
@@ -199,6 +203,7 @@ async function populateRecruitmentTable(startDateDoc, endDateDoc) {
         { id: 'ineligible', key: 'ineligible_prior_to_screen_count' },
         { id: 'declined', key: 'declined_to_screen_count' },
         { id: 'screened', key: 'screened_count' },
+        { id: 'ineligible-after-screened', key: 'ineligible_count' },
 
         // Eligibility
         { id: 'eligible-declined-to', key: 'eligible_but_declined_to_count' },
@@ -212,16 +217,28 @@ async function populateRecruitmentTable(startDateDoc, endDateDoc) {
         { id: 'declined-icf', key: 'declined_icf_count' },
         { id: 'eligible-pending-md-clear', key: 'eligible_pending_clearance_count' },
         { id: 'eligible-at-to', key: 'eligible_at_to_count' },
-
+        { id: 'appoint-declined', key: 'appt_declined_count' },
+        { id: 'appoint-within-1-wk', key: 'appt_needed_within_week_since_ies_count' },
+        { id: 'appoint-over-1-wk', key: 'appt_needed_over_week_since_ies_count' },
+        { id: 're-no-show', key: 'reschedule_no_show_count' },
+        { id: 'to-scheduled', key: 'to_schedule_count' },
+        { id: 'inelig-to', key: 'ineligible_at_to_count' },
+        { id: 'eligible-undecided-to', key: 'eligible_undecided_count' },
+        // { id: '', key: '' },
+        // { id: '', key: '' },
+        
         // Device Distribution
         { id: 'device-dist', key: 'dist_complete' },
         { id: 'need-baseline', key: 'needs_baseline_survey_count' },
         { id: 'declined-proceed', key: 'declined_to_proceed_count_2' },
         { id: 'dist-plan-tbd', key: 'dist_plan_tbd_count' },
         { id: 'dist-plan-in-place', key: 'dist_plan_in_place_count' },
-        { id: 'dist-delay-pickup', key: 'dist_delay_problem' },
-        { id: 'dist-delay-ship', key: 'dist_delay_shipping' },
-
+        { id: 'distrib-delay-pickup', key: 'dist_delay_problem' },
+        { id: 'distrib-delay-ship', key: 'dist_delay_shipping' },
+        { id: 'dec-to-proceed-dev-dist', key: 'declined_to_proceed_count_2' },
+        { id: 'distrib-complete', key: 'dist_complete' },
+        { id: 'dec-proceed-devices-home', key: 'declined_to_proceed_with_device_count' },
+        
         // Home-Tech Setup Appointment
         { id: 'home-setup', key: 'home_tech_needed_count' },
         { id: 'decline-devices', key: 'declined_to_proceed_with_device_count' },
@@ -245,34 +262,46 @@ async function populateRecruitmentTable(startDateDoc, endDateDoc) {
         { id: 'inelig-insuff-day-15', key: 'insufficient_data_count' },
 
         // Randomization
-        { id: 'eligible-pending-random', key: 'elig_pending_randamization_count' },
+        { id: 'elig-pending-random', key: 'elig_pending_randamization_count' },
         { id: 'r1-random', key: 'randamization_count' }
     ];
 
     metrics.forEach(metric => {
-        const cumulative = endDateDoc.totals[metric.key] || 0;
-        const previous = startDateDoc.totals[metric.key] || 0;
-        const uicCurrent = endDateDoc.sitesDict["1"][metric.key] || 0;
-        const uicPrevious = startDateDoc.sitesDict["1"][metric.key] || 0;
-        const stlCurrent = endDateDoc.sitesDict["2"][metric.key] || 0;
-        const stlPrevious = startDateDoc.sitesDict["2"][metric.key] || 0;
-        const pitCurrent = endDateDoc.sitesDict["3"][metric.key] || 0;
-        const pitPrevious = startDateDoc.sitesDict["3"][metric.key] || 0;
+        try {
+            const cumulative = parseFloat(endDateDoc.totals[metric.key]) || 0;
+            const previous = parseFloat(startDateDoc.totals[metric.key]) || 0;
+            const uicCurrent = parseFloat(endDateDoc.sitesDict["1"][metric.key]) || 0;
+            const uicPrevious = parseFloat(startDateDoc.sitesDict["1"][metric.key]) || 0;
+            const stlCurrent = parseFloat(endDateDoc.sitesDict["2"][metric.key]) || 0;
+            const stlPrevious = parseFloat(startDateDoc.sitesDict["2"][metric.key]) || 0;
+            const pitCurrent = parseFloat(endDateDoc.sitesDict["3"][metric.key]) || 0;
+            const pitPrevious = parseFloat(startDateDoc.sitesDict["3"][metric.key]) || 0;
 
-        // Fill cumulative, percent, and weekly change
-        document.getElementById(`cumulative-${metric.id}`).innerText = cumulative;
-        document.getElementById(`cumulative-${metric.id}-percent`).innerText = calculatePercent(cumulative, previous) + '%';
-        document.getElementById(`weekly-change-${metric.id}`).innerText = cumulative - previous;
+            // Fill cumulative, percent, and weekly change
+            document.getElementById(`cumulative-${metric.id}`).innerText = cumulative;
+            document.getElementById(`cumulative-${metric.id}-percent`).innerText = calculatePercent(cumulative, previous) + '%';
+            document.getElementById(`weekly-change-${metric.id}`).innerText = cumulative - previous;
 
-        // Fill site-specific data
-        document.getElementById(`uic-${metric.id}`).innerText = uicCurrent;
-        document.getElementById(`uic-change-${metric.id}`).innerText = uicCurrent - uicPrevious;
-        document.getElementById(`stl-${metric.id}`).innerText = stlCurrent;
-        document.getElementById(`stl-change-${metric.id}`).innerText = stlCurrent - stlPrevious;
-        document.getElementById(`pit-${metric.id}`).innerText = pitCurrent;
-        document.getElementById(`pit-change-${metric.id}`).innerText = pitCurrent - pitPrevious;
+            // Fill site-specific data
+            document.getElementById(`uic-${metric.id}`).innerText = uicCurrent;
+            document.getElementById(`uic-change-${metric.id}`).innerText = uicCurrent - uicPrevious;
+            document.getElementById(`stl-${metric.id}`).innerText = stlCurrent;
+            document.getElementById(`stl-change-${metric.id}`).innerText = stlCurrent - stlPrevious;
+            document.getElementById(`pit-${metric.id}`).innerText = pitCurrent;
+            document.getElementById(`pit-change-${metric.id}`).innerText = pitCurrent - pitPrevious;
+        } catch (error) {
+            // Log missing fields or errors
+            errors.push(`Error processing metric: ${metric.key}. ${error.message}`);
+        }
     });
+
+    // Log any errors
+    if (errors.length > 0) {
+        console.error("The following errors occurred while populating the table:");
+        errors.forEach(err => console.error(err));
+    }
 }
+
 
 // const tableRows = [
 //     { id: "invitations-sent", label: "Invitations sent", metric: "invite_sent_count" },
