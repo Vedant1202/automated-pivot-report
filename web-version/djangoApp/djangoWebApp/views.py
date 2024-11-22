@@ -89,6 +89,16 @@ def get_mdreview_data_from_mongo(request):
     # else:
     #     return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@login_required
+@api_view(['GET'])
+def get_available_dates(request):
+
+    # Fetch distinct dates from the collection
+    dates = collectionRecruitment.distinct('date')
+
+    # Return the list of dates as JSON
+    return JsonResponse({'dates': dates})
+
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.http import Http404

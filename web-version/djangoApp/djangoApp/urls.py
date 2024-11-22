@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, get_mdreview_data_from_mongo
+from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, get_mdreview_data_from_mongo, get_available_dates
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +28,7 @@ urlpatterns = [
     path('api/data/recruitment/', get_recruitment_data_from_mongo, name='get_recruitment_data_from_mongo'),
     path('api/data/mdreview/', get_mdreview_data_from_mongo, name='get_mdreview_data_from_mongo'),
     path('', auth_views.LoginView.as_view(), name='login'),  # Set login as default landing URL
+    path('api/dates/', get_available_dates, name='get_available_dates'),
 ]
 
 from django.conf.urls import handler404

@@ -22,7 +22,7 @@ def append_to_mongodb(data):
         print("An error occurred while inserting data into MongoDB:", e)
 
 data = {
-    'token': '3A10735CD8F78FB6643C7410F1BC2910',
+    'token': '5D8E1721D73344CAA8B62EDE0ADE8ED9',
     'content': 'record',
     'action': 'export',
     'format': 'json',
@@ -79,6 +79,7 @@ print('HTTP Status: ' + str(r.status_code))
 
 jsondata = r.json()
 response_json = jsondata
+print(response_json)
 
 sitesDict = {
     '1': {
@@ -546,35 +547,35 @@ try:
                 totals[key] += site[key]
 
 
-    site = '1'
-    # # Print the final count of invites sent
-    print('Invites sent count:' + str({sitesDict[site]['invite_sent_count']}))
-    print('Wait count:' + str({sitesDict[site]['wait_count']}))
-    print('Within 2-week wait count:' + str({sitesDict[site]['two_week_wait_count']}))
-    print('Calling in progress count:' + str({sitesDict[site]['calling_in_progress_count']}))
-    print('Recruit OC Known:' + str({recruit_oc_know_var}))
-    print('Requested Call count:' + str({sitesDict[site]['requested_call_count']}))      
-    print('Partial Screen count:' + str({sitesDict[site]['partial_screen_count']}))
-    # print('Not screened count:' + str({not_screened_count}))
-    print('Ineligible prior to screen count:' + str({sitesDict[site]['ineligible_prior_to_screen_count']}))
-    print('Declined to screen count:' + str({sitesDict[site]['declined_to_screen_count']}))
+    # site = '1'
+    # # # Print the final count of invites sent
+    # print('Invites sent count:' + str({sitesDict[site]['invite_sent_count']}))
+    # print('Wait count:' + str({sitesDict[site]['wait_count']}))
+    # print('Within 2-week wait count:' + str({sitesDict[site]['two_week_wait_count']}))
+    # print('Calling in progress count:' + str({sitesDict[site]['calling_in_progress_count']}))
+    # print('Recruit OC Known:' + str({recruit_oc_know_var}))
+    # print('Requested Call count:' + str({sitesDict[site]['requested_call_count']}))      
+    # print('Partial Screen count:' + str({sitesDict[site]['partial_screen_count']}))
+    # # print('Not screened count:' + str({not_screened_count}))
+    # print('Ineligible prior to screen count:' + str({sitesDict[site]['ineligible_prior_to_screen_count']}))
+    # print('Declined to screen count:' + str({sitesDict[site]['declined_to_screen_count']}))
 
-    print('TOTALS')
-    print('Invites sent count:' + str({totals['invite_sent_count']}))
-    print('Wait count:' + str({totals['wait_count']}))
-    print('Within 2-week wait count:' + str({totals['two_week_wait_count']}))
-    print('Calling in progress count:' + str({totals['calling_in_progress_count']}))
-    print('Recruit OC Known:' + str({recruit_oc_know_var}))
-    print('Requested Call count:' + str({totals['requested_call_count']}))      
-    print('Partial Screen count:' + str({totals['partial_screen_count']}))
-    # print('Not screened count:' + str({not_screened_count}))
-    print('Ineligible prior to screen count:' + str({totals['ineligible_prior_to_screen_count']}))
-    print('Declined to screen count:' + str({totals['declined_to_screen_count']}))
+    # print('TOTALS')
+    # print('Invites sent count:' + str({totals['invite_sent_count']}))
+    # print('Wait count:' + str({totals['wait_count']}))
+    # print('Within 2-week wait count:' + str({totals['two_week_wait_count']}))
+    # print('Calling in progress count:' + str({totals['calling_in_progress_count']}))
+    # print('Recruit OC Known:' + str({recruit_oc_know_var}))
+    # print('Requested Call count:' + str({totals['requested_call_count']}))      
+    # print('Partial Screen count:' + str({totals['partial_screen_count']}))
+    # # print('Not screened count:' + str({not_screened_count}))
+    # print('Ineligible prior to screen count:' + str({totals['ineligible_prior_to_screen_count']}))
+    # print('Declined to screen count:' + str({totals['declined_to_screen_count']}))
 
     print(sitesCollect)
     logData = {
-        'date': datetime.today().strftime('%Y-%m-%d'),
-        # 'date': '2024-11-01',
+        # 'date': datetime.today().strftime('%Y-%m-%d'),
+        'date': '2024-11-14',
         'sitesDict': sitesDict,
         'totals': totals,
         'sitesCollect': sitesCollect,
