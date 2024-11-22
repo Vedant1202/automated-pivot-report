@@ -233,5 +233,99 @@
             "3": 0,
             "": 1058
         }
+    },
+    {
+        "date": "2024-11-21",
+        "sitesDict": {
+            "1": {
+                "to_attended": 279,
+                "md_clearance_required_total": 360,
+                "md_clearance_required_standard_parq": 78,
+                "md_clearance_required_modified_parq": 30,
+                "par_review_pending": 4,
+                "par_reviewed_ineligible": 0,
+                "par_reviewed_eligible": 0
+            },
+            "2": {
+                "to_attended": 275,
+                "md_clearance_required_total": 341,
+                "md_clearance_required_standard_parq": 72,
+                "md_clearance_required_modified_parq": 18,
+                "par_review_pending": 12,
+                "par_reviewed_ineligible": 0,
+                "par_reviewed_eligible": 0
+            },
+            "3": {
+                "to_attended": 143,
+                "md_clearance_required_total": 177,
+                "md_clearance_required_standard_parq": 39,
+                "md_clearance_required_modified_parq": 2,
+                "par_review_pending": 0,
+                "par_reviewed_ineligible": 0,
+                "par_reviewed_eligible": 0
+            }
+        },
+        "totals": {
+            "to_attended": 697,
+            "md_clearance_required_total": 878,
+            "md_clearance_required_standard_parq": 189,
+            "md_clearance_required_modified_parq": 50,
+            "par_review_pending": 16,
+            "par_reviewed_ineligible": 0,
+            "par_reviewed_eligible": 0
+        },
+        "sitesCollect": {
+            "1": 8730,
+            "2": 9282,
+            "3": 3828,
+            "": 2833
+        }
+    },
+    {
+        "date": "2024-11-18",
+        "sitesDict": {
+            "1": {
+                "to_attended": 279,
+                "md_clearance_required_total": 360,
+                "md_clearance_required_standard_parq": 78,
+                "md_clearance_required_modified_parq": 30,
+                "par_review_pending": 4,
+                "par_reviewed_ineligible": 0,
+                "par_reviewed_eligible": 0
+            },
+            "2": {
+                "to_attended": 275,
+                "md_clearance_required_total": 341,
+                "md_clearance_required_standard_parq": 72,
+                "md_clearance_required_modified_parq": 18,
+                "par_review_pending": 12,
+                "par_reviewed_ineligible": 0,
+                "par_reviewed_eligible": 0
+            },
+            "3": {
+                "to_attended": 143,
+                "md_clearance_required_total": 177,
+                "md_clearance_required_standard_parq": 39,
+                "md_clearance_required_modified_parq": 2,
+                "par_review_pending": 0,
+                "par_reviewed_ineligible": 0,
+                "par_reviewed_eligible": 0
+            }
+        },
+        "totals": {
+            "to_attended": 697,
+            "md_clearance_required_total": 878,
+            "md_clearance_required_standard_parq": 189,
+            "md_clearance_required_modified_parq": 50,
+            "par_review_pending": 16,
+            "par_reviewed_ineligible": 0,
+            "par_reviewed_eligible": 0
+        },
+        "sitesCollect": {
+            "1": 8730,
+            "2": 9282,
+            "3": 3828,
+            "": 2833
+        }
     }
 ]

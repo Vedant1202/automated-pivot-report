@@ -1,3 +1,51 @@
+$(document).ready(function() {
+    // Fetch available dates
+    fetchAvailableDates().then((availableDates) => {
+        console.log('Fetched Dates:', availableDates);
+
+        // Get today's date in yyyy-MM-dd format
+        const today = new Date().toISOString().split('T')[0];
+
+        // Initialize Flatpickr for startDateInput
+        flatpickr("#startDateInput", {
+            enable: availableDates, // Only allow these dates
+            dateFormat: "Y-m-d", // Set the format to yyyy-MM-dd
+            defaultDate: availableDates.includes(today) ? today : availableDates[0], // Default to today if available
+        });
+
+        // Initialize Flatpickr for endDateInput
+        flatpickr("#endDateInput", {
+            enable: availableDates, // Only allow these dates
+            dateFormat: "Y-m-d", // Set the format to yyyy-MM-dd
+            defaultDate: availableDates.includes(today) ? today : availableDates[0], // Default to today if available
+        });
+    });
+})
+
+async function fetchAvailableDates() {
+    const apiUrl = '/api/dates/'; // Replace with the full API URL if hosted on a different domain
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json(); // Parse JSON response
+
+        return data.dates; // Return the array of dates
+    } catch (error) {
+        console.error('Error fetching dates:', error);
+        return []; // Return an empty array on error
+    }
+}
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -439,8 +487,13 @@ async function populateMdReviewTable(startDateDoc, endDateDoc) {
 // Example usage of the function
 // Pass in the startDate and endDate in the 'YYYY-MM-DD' format
 function getSummariesAndDisplay() {
-    const startDate = document.getElementById('startDateSelect').value;
-    const endDate = document.getElementById('endDateSelect').value;
+    // const startDate = document.getElementById('startDateSelect').value;
+    // const endDate = document.getElementById('endDateSelect').value;
+    const startDateInput = document.getElementById('startDateInput');
+    const endDateInput = document.getElementById('endDateInput');
+
+    const startDate = startDateInput.value; // yyyy-mm-dd format
+    const endDate = endDateInput.value; // yyyy-mm-dd format
 
     console.log('vars', startDate, endDate);
     
@@ -454,6 +507,8 @@ function getSummariesAndDisplay() {
         populateMdReviewTable(data.startDateDoc, data.endDateDoc);
     })
 }
+
+
 
 function exportToExcel() {
     var wb = XLSX.utils.table_to_book(document.getElementById('recruitment-table'), {sheet: "PivotReport"});

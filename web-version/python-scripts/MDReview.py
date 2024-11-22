@@ -6,6 +6,7 @@ import pandas as pd
 from datetime import datetime
 import json
 import os
+from pymongo import MongoClient
 
 #!/usr/bin/env python
 import requests
@@ -31,8 +32,22 @@ def isDateLessThanThirdOctTwentyTwentyThree(date1: str, date2: str = '2023-10-03
     # Compare the dates
     return d1 <= d2
 
+# Set up MongoDB connection
+client = MongoClient('mongodb://localhost:27017/')
+db = client['pivot-report-summaries']  # Replace 'database_name' with your actual database name
+collection = db['md-review-summaries']  # Replace 'log_collection' with your preferred collection name
+
+# Append logData to MongoDB collection
+def append_to_mongodb(data):
+    try:
+        collection.insert_one(data)
+        print("Data inserted into MongoDB successfully.")
+    except Exception as e:
+        print("An error occurred while inserting data into MongoDB:", e)
+
 data = {
-    'token': '3A10735CD8F78FB6643C7410F1BC2910',
+    # 'token': '3A10735CD8F78FB6643C7410F1BC2910',
+    'token': '5D8E1721D73344CAA8B62EDE0ADE8ED9',
     'content': 'record',
     'action': 'export',
     'format': 'json',
@@ -211,8 +226,8 @@ try:
 
     print(sitesCollect)
     logData = {
-        # 'date': datetime.today().strftime('%Y-%m-%d'),
-        'date': '2024-09-04',
+        'date': datetime.today().strftime('%Y-%m-%d'),
+        # 'date': '2024-11-18',
         'sitesDict': sitesDict,
         'totals': totals,
         'sitesCollect': sitesCollect,
@@ -224,7 +239,8 @@ try:
     # f = open("log" + datetime.today().strftime('%Y-%m-%d') + ".json", "a")
     # f.write(logData)
     # f.close()
-    append_json_object('md-review-log.json', logData)
+    append_to_mongodb(logData)
+    # append_json_object('md-review-log.json', logData)
     # print(retrieve_objects_by_date('log.json', '2024-09-11'))
 
 except ValueError:
