@@ -71,7 +71,7 @@ function encodeFormData(data) {
 // Function to trigger API call to server
 async function fetchRecruitmentSummaries(startDate, endDate) {
     // Define the API URL
-    const url = 'http://127.0.0.1:8000/api/data/recruitment/';
+    const url = '/api/data/recruitment/';
 
     // Create the payload with startDate and endDate
     const payload = {
@@ -111,7 +111,7 @@ async function fetchRecruitmentSummaries(startDate, endDate) {
 // Function to trigger API call to server
 async function fetchMdReviewSummaries(startDate, endDate) {
     // Define the API URL
-    const url = 'http://127.0.0.1:8000/api/data/mdreview/';
+    const url = '/api/data/mdreview/';
 
     // Create the payload with startDate and endDate
     const payload = {
