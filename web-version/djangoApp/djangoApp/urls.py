@@ -33,7 +33,7 @@ urlpatterns = [
     path('', auth_views.LoginView.as_view(), name='login'),  # Set login as default landing URL
     path('api/dates/', get_available_dates, name='get_available_dates'),
     # 🔥 New Ignite Recruitment Routes 🔥
-    path('fetch/', fetch_and_store_data, name='fetch_data'),
+    path('/', fetch_and_store_data, name='fetch_data'),
     path('data/', get_saved_data, name='get_saved_data'),
 ]
 
