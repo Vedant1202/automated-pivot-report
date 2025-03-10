@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import requests
 import urllib.request, urllib.parse
 import json
@@ -7,6 +6,7 @@ from datetime import datetime
 import json
 import os
 from pymongo import MongoClient
+from bson import ObjectId
 
 # Set up MongoDB connection
 client = MongoClient('mongodb://localhost:27017/')
@@ -257,6 +257,9 @@ sitesCollect = {
 }
 
 def append_json_object(file_path, new_data):
+    # Convert all ObjectIds in the document to strings
+    if '_id' in new_data and isinstance(new_data['_id'], ObjectId):
+        new_data['_id'] = str(new_data['_id'])
     # Check if the file exists, if not create an empty list
     if not os.path.exists(file_path):
         with open(file_path, 'w') as file:
@@ -596,5 +599,3 @@ except ValueError:
     # If the response is not JSON or there's an error in conversion, handle it here
     print("Response is not in JSON format.")
     # print(respdata.text)  # Print raw text response if JSON conversion fails
-
-

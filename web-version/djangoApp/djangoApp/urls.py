@@ -17,23 +17,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, get_mdreview_data_from_mongo, get_available_dates
+from djangoWebApp.views import (
+    protected_page,
+    get_recruitment_data_from_mongo,
+    get_mdreview_data_from_mongo,
+    get_available_dates,
+)
+
+from django.conf import settings
+from django.conf.urls.static import static  # Import static and settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Other URLs
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('protected/', protected_page, name='protected_page'),
     path('api/data/recruitment/', get_recruitment_data_from_mongo, name='get_recruitment_data_from_mongo'),
     path('api/data/mdreview/', get_mdreview_data_from_mongo, name='get_mdreview_data_from_mongo'),
-    path('', auth_views.LoginView.as_view(), name='login'),  # Set login as default landing URL
+    path('', auth_views.LoginView.as_view(), name='login'),
     path('api/dates/', get_available_dates, name='get_available_dates'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 from django.conf.urls import handler404
-from djangoWebApp.views import custom_404_view  # Adjust import based on your structure
+from djangoWebApp.views import custom_404_view
 
 handler404 = custom_404_view
-
-

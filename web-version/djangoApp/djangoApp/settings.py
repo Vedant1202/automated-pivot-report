@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 # import djongo
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,7 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
-    "127.0.0.1"
+    "127.0.0.1",
+    "engage-2-script.ad.uic.edu"
 ]
 
 
@@ -75,9 +77,12 @@ TEMPLATES = [
 ]
 
 STATIC_URL = '/static/'  # URL to use when referring to static files
+
 STATICFILES_DIRS = [
-    BASE_DIR / 'djangoWebApp' / "static",  # Directory where static files are located
+    BASE_DIR / 'djangoWebApp' / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory where static files are collected
 
 WSGI_APPLICATION = 'djangoApp.wsgi.application'
 
@@ -140,4 +145,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/protected/'
 
-LOGOUT_REDIRECT_URL = "/" 
+LOGOUT_REDIRECT_URL = "/"
