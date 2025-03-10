@@ -17,15 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, get_mdreview_data_from_mongo, get_available_dates
 from djangoWebApp.views import (
-    protected_page,
-    get_recruitment_data_from_mongo,
-    get_mdreview_data_from_mongo,
-    get_available_dates,
+    fetch_and_store_data_for_ignite, get_saved_data_for_ignite, ignite_report_page
 )
-
-from django.conf import settings
-from django.conf.urls.static import static  # Import static and settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,7 +31,11 @@ urlpatterns = [
     path('api/data/mdreview/', get_mdreview_data_from_mongo, name='get_mdreview_data_from_mongo'),
     path('', auth_views.LoginView.as_view(), name='login'),
     path('api/dates/', get_available_dates, name='get_available_dates'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # 🔥 New Ignite Recruitment Routes 🔥
+    path('ignite/fetch/', fetch_and_store_data_for_ignite, name='fetch_data_for_ignite'),
+    path('ignite/data/', get_saved_data_for_ignite, name='get_saved_data_for_ignite'),
+    path('ignite/report/', ignite_report_page, name='ignite_report'),
+]
 
 from django.conf.urls import handler404
 from djangoWebApp.views import custom_404_view

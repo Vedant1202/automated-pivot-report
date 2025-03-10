@@ -577,8 +577,8 @@ try:
 
     print(sitesCollect)
     logData = {
-        # 'date': datetime.today().strftime('%Y-%m-%d'),
-        'date': '2024-11-14',
+        'date': datetime.today().strftime('%Y-%m-%d'),
+        # 'date': '2024-11-14',
         'sitesDict': sitesDict,
         'totals': totals,
         'sitesCollect': sitesCollect,

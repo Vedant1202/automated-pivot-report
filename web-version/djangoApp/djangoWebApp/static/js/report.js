@@ -508,8 +508,6 @@ function getSummariesAndDisplay() {
     })
 }
 
-
-
 function exportToExcel() {
     var wb = XLSX.utils.table_to_book(document.getElementById('recruitment-table'), {sheet: "PivotReport"});
     
@@ -517,7 +515,13 @@ function exportToExcel() {
     var ws2 = XLSX.utils.table_to_sheet(document.getElementById('md-review-table'));
     XLSX.utils.book_append_sheet(wb, ws2, "MDReview");
 
-    XLSX.writeFile(wb, 'pivot.xlsx');
+    const startDate = startDateInput.value; // yyyy-mm-dd format
+    const endDate = endDateInput.value; // yyyy-mm-dd format
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0];
+    
+    var filename = startDate + '_to_' + endDate + '-pivot-automated-report-as-of-' + formattedDate + '.xlsx';
+    XLSX.writeFile(wb, filename);
 }
 
 function switchTabToPivotReport() {

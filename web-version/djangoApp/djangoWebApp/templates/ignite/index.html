@@ -1,0 +1,123 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IGNITE Recruitment Report</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+        <style>
+            body { margin: 20px; }
+            .table th, .table td { text-align: center; }
+            .highlight { font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2 class="text-center my-3">IGNITE Recruitment Report</h2>
+            
+            <div class="row my-3">
+                <div class="col">
+                    <label for="startDateSelect">Compare data from:</label>
+                    <input type="date" class="form-control" id="startDateSelect">
+                </div>
+                <div class="col">
+                    <label for="endDateSelect">to:</label>
+                    <input type="date" class="form-control" id="endDateSelect">
+                </div>
+                <div class="col d-flex align-items-end">
+                    <button class="btn btn-primary" onclick="getSummariesAndDisplay()">Show Results</button>
+                    <button class="btn btn-warning ms-2" onclick="exportToExcel()">Download to Excel</button>
+                </div>
+            </div>        
+
+            <table class="table table-bordered" id="recruitment-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Recruitment Category</th>
+                        <th>Cumulative</th>
+                        <th>%</th>
+                        <th>Weekly Change</th>
+                    </tr>
+                </thead>
+                <tbody id="reportBody">
+                    <tr><td class="highlight">Invitations Sent</td><td id="invites-sent"></td><td id="invites-sent-percent"></td><td id="invites-sent-change"></td></tr>
+                    <tr><td>Within 2-week wait</td><td id="week-wait"></td><td id="week-wait-percent"></td><td id="week-wait-change"></td></tr>
+                    <tr><td>Calling in Progress</td><td id="calling-progress"></td><td id="calling-progress-percent"></td><td id="calling-progress-change"></td></tr>
+                    <tr><td>Ceased Outreach</td><td id="ceased-outreach"></td><td id="ceased-outreach-percent"></td><td id="ceased-outreach-change"></td></tr>
+                    <tr><td>Requested Call (via Website or Twilio)</td><td id="requested-call"></td><td id="requested-call-percent"></td><td id="requested-call-change"></td></tr>
+                    <tr><td>Partial Screen</td><td id="partial-screen"></td><td id="partial-screen-percent"></td><td id="partial-screen-change"></td></tr>
+                    <tr><td class="highlight">Not Screened</td><td id="not-screened"></td><td id="not-screened-percent"></td><td id="not-screened-change"></td></tr>
+                    <tr><td>Ineligible Prior to Screen</td><td id="ineligible-prior"></td><td id="ineligible-prior-percent"></td><td id="ineligible-prior-change"></td></tr>
+                    <tr><td>Declined to Screen</td><td id="declined-screen"></td><td id="declined-screen-percent"></td><td id="declined-screen-change"></td></tr>
+                    <tr><td class="highlight">Screened (Screen of Re-Screen)</td><td id="screened"></td><td id="screened-percent"></td><td id="screened-change"></td></tr>
+                    <tr><td>Ineligible</td><td id="screened-ineligible"></td><td id="screened-ineligible-percent"></td><td id="screened-ineligible-change"></td></tr>
+                    <tr><td>Eligible - Declined TO</td><td id="eligible-declined"></td><td id="eligible-declined-percent"></td><td id="eligible-declined-change"></td></tr>
+                    <tr><td>Eligible - Undecided</td><td id="eligible-undecided"></td><td id="eligible-undecided-percent"></td><td id="eligible-undecided-change"></td></tr>
+                    <tr><td>Maybe Eligible</td><td id="maybe-eligible"></td><td id="maybe-eligible-percent"></td><td id="maybe-eligible-change"></td></tr>
+                    <tr><td>IES Eligible</td><td id="ies-eligible"></td><td id="ies-eligible-percent"></td><td id="ies-eligible-change"></td></tr>
+                    <tr><td class="highlight">Tele-Orientation Appointment</td><td id="tele-orientation"></td><td id="tele-orientation-percent"></td><td id="tele-orientation-change"></td></tr>
+                    <tr><td>Appointment Declined/Ceased</td><td id="appointment-declined"></td><td id="appointment-declined-percent"></td><td id="appointment-declined-change"></td></tr>
+                    <tr><td>Appointment Needed Within Week Since IES</td><td id="appointment-needed-week"></td><td id="appointment-needed-week-percent"></td><td id="appointment-needed-week-change"></td></tr>
+                    <tr><td>Appointment Needed Over 1 Week Since IES</td><td id="appointment-needed-over-week"></td><td id="appointment-needed-over-week-percent"></td><td id="appointment-needed-over-week-change"></td></tr>
+                            
+
+                    <tr><td>Reschedule No-show</td><td id="reschedule-no-show"></td><td id="reschedule-no-show-percent"></td><td id="reschedule-no-show-change"></td></tr>
+                    <tr><td>TO Scheduled</td><td id="to-scheduled"></td><td id="to-scheduled-percent"></td><td id="to-scheduled-change"></td></tr>
+                    <tr><td class="highlight">TO Attended</td><td id="to-attended"></td><td id="to-attended-percent"></td><td id="to-attended-change"></td></tr>
+                    <tr><td>Ineligible at TO</td><td id="ineligible-at-to"></td><td id="ineligible-at-to-percent"></td><td id="ineligible-at-to-change"></td></tr>
+                    <tr><td>Declined ICF</td><td id="declined-icf"></td><td id="declined-icf-percent"></td><td id="declined-icf-change"></td></tr>
+                    <tr><td>Declined to proceed</td><td id="declined-proceed"></td><td id="declined-proceed-percent"></td><td id="declined-proceed-change"></td></tr>
+                    <tr><td>Eligible - Undecided</td><td id="eligible-undecided"></td><td id="eligible-undecided-percent"></td><td id="eligible-undecided-change"></td></tr>
+                    <tr><td>Eligible - Pending MD Clearance</td><td id="eligible-pending-md"></td><td id="eligible-pending-md-percent"></td><td id="eligible-pending-md-change"></td></tr>
+                    <tr><td class="highlight">Eligible at TO</td><td id="eligible-at-to"></td><td id="eligible-at-to-percent"></td><td id="eligible-at-to-change"></td></tr>
+                    <tr><td class="highlight">Device Readiness</td><td id="device-readiness"></td><td id="device-readiness-percent"></td><td id="device-readiness-change"></td></tr>
+                    <tr><td>Needs Baseline Survey</td><td id="baseline-survey"></td><td id="baseline-survey-percent"></td><td id="baseline-survey-change"></td></tr>
+                    <tr><td>SETUP Pending</td><td id="setup-pending"></td><td id="setup-pending-percent"></td><td id="setup-pending-change"></td></tr>
+                    <tr><td class="highlight">SETUP Complete</td><td id="setup-complete"></td><td id="setup-complete-percent"></td><td id="setup-complete-change"></td></tr>
+                    <tr><td class="highlight">Eligibility Visit Appointment</td><td id="eligibility-visit"></td><td id="eligibility-visit-percent"></td><td id="eligibility-visit-change"></td></tr>
+                    <tr><td>Appointment Declined/Ceased</td><td id="appointment-declined"></td><td id="appointment-declined-percent"></td><td id="appointment-declined-change"></td></tr>
+                    <tr><td>Unscheduled - Within Week Since Setup</td><td id="unscheduled-week"></td><td id="unscheduled-week-percent"></td><td id="unscheduled-week-change"></td></tr>
+                    <tr><td>Unscheduled - Over 1 Week Since Setup</td><td id="unscheduled-over-week"></td><td id="unscheduled-over-week-percent"></td><td id="unscheduled-over-week-change"></td></tr>
+                    <tr><td>Reschedule No-show</td><td id="reschedule-no-show"></td><td id="reschedule-no-show-percent"></td><td id="reschedule-no-show-change"></td></tr>
+                    <tr><td class="highlight">Visit Scheduled</td><td id="visit-scheduled"></td><td id="visit-scheduled-percent"></td><td id="visit-scheduled-change"></td></tr>
+                    <tr><td class="highlight">Visit Attended</td><td id="visit-attended"></td><td id="visit-attended-percent"></td><td id="visit-attended-change"></td></tr>
+                    <tr><td>Ineligible at TO</td><td id="visit-ineligible-at-to"></td><td id="visit-ineligible-at-to-percent"></td><td id="visit-ineligible-at-to-change"></td></tr>
+                    
+                    
+                    <tr><td>Declined to Proceed</td><td id="visit-declined-proceed"></td><td id="visit-declined-proceed-percent"></td><td id="visit-declined-proceed-change"></td></tr>
+                    <tr><td>Pending Outcome</td><td id="visit-pending-outcome"></td><td id="visit-pending-outcome-percent"></td><td id="visit-pending-outcome-change"></td></tr>
+                    <tr><td class="highlight">Eligible</td><td id="visit-eligible"></td><td id="visit-eligible-percent"></td><td id="visit-eligible-change"></td></tr>
+                    <tr><td class="highlight">Tech Setup Appointment</td><td id="tech-setup"></td><td id="tech-setup-percent"></td><td id="tech-setup-change"></td></tr>
+                    <tr><td>Decline to proceed w/ Devices</td><td id="decline-devices"></td><td id="decline-devices-percent"></td><td id="decline-devices-change"></td></tr>
+                    <tr><td>Unscheduled - Within Week Since Visit</td><td id="unscheduled-week"></td><td id="unscheduled-week-percent"></td><td id="unscheduled-week-change"></td></tr>
+                    <tr><td>Unscheduled - Over 1 Week Since Visit</td><td id="unscheduled-over-week"></td><td id="unscheduled-over-week-percent"></td><td id="unscheduled-over-week-change"></td></tr>
+                    <tr><td>Reschedule No-show</td><td id="reschedule-no-show"></td><td id="reschedule-no-show-percent"></td><td id="reschedule-no-show-change"></td></tr>
+                    <tr><td class="highlight">Tech Setup Scheduled</td><td id="tech-setup-scheduled"></td><td id="tech-setup-scheduled-percent"></td><td id="tech-setup-scheduled-change"></td></tr>
+                    <tr><td class="highlight">Tech Setup Attended</td><td id="tech-setup-attended"></td><td id="tech-setup-attended-percent"></td><td id="tech-setup-attended-change"></td></tr>
+                    <tr><td>Decline to proceed w/ Devices</td><td id="decline-devices-attended"></td><td id="decline-devices-attended-percent"></td><td id="decline-devices-attended-change"></td></tr>
+                    <tr><td>Ineligible</td><td id="ineligible-tech-setup"></td><td id="ineligible-tech-setup-percent"></td><td id="ineligible-tech-setup-change"></td></tr>
+                    <tr><td>Pending Resolution Tech Issue</td><td id="pending-tech-issue"></td><td id="pending-tech-issue-percent"></td><td id="pending-tech-issue-change"></td></tr>
+                    <tr><td class="highlight">Self-Measures Ready</td><td id="self-measures-ready"></td><td id="self-measures-ready-percent"></td><td id="self-measures-ready-change"></td></tr>
+                    <tr><td class="highlight">Baseline Self-Measures Progress</td><td id="baseline-self-measures"></td><td id="baseline-self-measures-percent"></td><td id="baseline-self-measures-change"></td></tr>
+                    <tr><td>Pending Day 8 Check</td><td id="pending-day8"></td><td id="pending-day8-percent"></td><td id="pending-day8-change"></td></tr>
+                    <tr><td>Pending Day 15 Check</td><td id="pending-day15"></td><td id="pending-day15-percent"></td><td id="pending-day15-change"></td></tr>
+                    <tr><td>Ineligible BMI</td><td id="ineligible-bmi"></td><td id="ineligible-bmi-percent"></td><td id="ineligible-bmi-change"></td></tr>
+                    <tr><td>Ineligible Insufficient Data @Day15</td><td id="ineligible-data"></td><td id="ineligible-data-percent"></td><td id="ineligible-data-change"></td></tr>
+                    <tr><td class="highlight">Eligible Pending Randomization</td><td id="eligible-pending-randomization"></td><td id="eligible-pending-randomization-percent"></td><td id="eligible-pending-randomization-change"></td></tr>
+                    <tr><td class="highlight">Randomized</td><td id="randomized"></td><td id="randomized-percent"></td><td id="randomized-change"></td></tr>
+                    <tr><td class="highlight">R Percent of 440 Target</td><td id="r-percent-target"></td><td colspan="2"></td></tr>
+
+                </tbody>
+            </table>
+            
+        </div>
+
+        <!-- ✅ Correctly load the static JavaScript file -->
+        <script src="{% static 'js/ignite/index.js' %}"></script>
+
+    </body>
+</html>
