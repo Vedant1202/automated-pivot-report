@@ -3,11 +3,12 @@ from django.urls import reverse
 from django.http import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from pymongo import MongoClient
 from bson.json_util import dumps
 import json
 import datetime
+import threading
+import time
 import ignite_recruitment_report  # Import your existing script
 from django.views.decorators.csrf import csrf_exempt
 
@@ -21,6 +22,11 @@ collectionIgniteRecruitment = db['ignite_recruitment_records']  # New collection
 @login_required
 def protected_page(request):
     return render(request, 'report/report.html')
+
+@login_required
+def ignite_report_page(request):
+    """Render the Ignite Report Page."""
+    return render(request, 'ignite/index.html')
 
 @login_required
 @api_view(['POST'])
@@ -78,31 +84,37 @@ def get_available_dates(request):
     dates = collectionRecruitment.distinct('date')
     return JsonResponse({'dates': dates})
 
-### 🔥 **Newly Integrated Flask Routes Below** 🔥 ###
+### 🔥 **Newly Integrated Automatic Fetching** 🔥 ###
+
+def fetch_and_store_data_for_ignite():
+    """Fetch recruitment data and store it in MongoDB every 2 minutes (Runs in the background)."""
+    while True:
+        try:
+            print("[INFO] Fetching IGNITE recruitment data...")
+            data = ignite_recruitment_report.process_redcap_data_for_ignite()
+
+            if not data:
+                print("[ERROR] No data received")
+            else:
+                data["timestamp"] = datetime.datetime.utcnow()
+                result = collectionIgniteRecruitment.insert_one(data)
+                print(f"[SUCCESS] Data stored successfully: {result.inserted_id}")
+
+        except Exception as e:
+            print(f"[ERROR] {str(e)}")
+
+        # Wait for 2 minutes before fetching data again
+        time.sleep(120)
+
+# Start the function in a separate thread
+def start_background_task():
+    thread = threading.Thread(target=fetch_and_store_data_for_ignite, daemon=True)
+    thread.start()
 
 @csrf_exempt
 @api_view(['GET'])
 @login_required
-def fetch_and_store_data(request):
-    """Fetch recruitment data from `ignite_recruitment_report.py` and store it in MongoDB."""
-    try:
-        data = ignite_recruitment_report.process_redcap_data_for_ignite()
-
-        if not data:
-            return JsonResponse({"error": "No data received"}, status=500)
-
-        data["timestamp"] = datetime.datetime.utcnow()
-        result = collectionIgniteRecruitment.insert_one(data)
-
-        return JsonResponse({"message": "Data stored successfully", "inserted_id": str(result.inserted_id)})
-
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
-
-@csrf_exempt
-@api_view(['GET'])
-@login_required
-def get_saved_data(request):
+def get_saved_data_for_ignite(request):
     """Retrieve stored Ignite recruitment data based on date range."""
     try:
         start_date_str = request.GET.get("start", "")
