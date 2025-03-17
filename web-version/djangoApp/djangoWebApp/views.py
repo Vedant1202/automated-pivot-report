@@ -12,6 +12,13 @@ import time
 import ignite_recruitment_report  # Import your existing script
 from django.views.decorators.csrf import csrf_exempt
 
+## For scheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+from django.utils.timezone import now
+import datetime
+import threading
+import pytz
+
 # Initialize MongoDB client (global)
 client = MongoClient('mongodb://localhost:27017/')
 db = client['pivot-report-summaries']  # Your database name
@@ -85,32 +92,52 @@ def get_available_dates(request):
     dates = collectionRecruitment.distinct('date')
     return JsonResponse({'dates': dates})
 
-### 🔥 **Newly Integrated Automatic Fetching** 🔥 ###
+#### =========== SCHEDULING =================
 
+# Initialize APScheduler
+scheduler = BackgroundScheduler()
+# Set the timezone to Central Time (CST/CDT)
+central_tz = pytz.timezone('America/Chicago')
+
+# Schedule fetching of data daily
 def fetch_and_store_data_for_ignite():
-    """Fetch recruitment data and store it in MongoDB every 2 minutes (Runs in the background)."""
-    while True:
-        try:
-            print("[INFO] Fetching IGNITE recruitment data...")
-            data = ignite_recruitment_report.process_redcap_data_for_ignite()
+    """Fetch recruitment data once per day and store it in MongoDB."""
+    try:
+        now_central = datetime.datetime.now(central_tz).isoformat()
+        print(f"[INFO] Fetching IGNITE recruitment data at {now_central} CST/CDT...")
+        data = ignite_recruitment_report.process_redcap_data_for_ignite()
 
-            if not data:
-                print("[ERROR] No data received")
-            else:
-                data["timestamp"] = datetime.datetime.utcnow()
-                result = collectionIgniteRecruitment.insert_one(data)
-                print(f"[SUCCESS] Data stored successfully: {result.inserted_id}")
+        if not data:
+            print("[ERROR] No data received")
+        else:
+            data["timestamp"] = now_central  # Store timestamp in CST/CDT
+            result = collectionIgniteRecruitment.insert_one(data)
+            print(f"[SUCCESS] Data stored successfully: {result.inserted_id}")
 
-        except Exception as e:
-            print(f"[ERROR] {str(e)}")
+    except Exception as e:
+        print(f"[ERROR] {str(e)}")
 
-        # Wait for 2 minutes before fetching data again
-        time.sleep(120)
+def schedule_daily_fetch(hour=3, minute=00):
+    """Schedule `fetch_and_store_data_for_ignite` to run daily at a specified time in CST/CDT."""
+    scheduler.add_job(
+        fetch_and_store_data_for_ignite, 
+        'cron', 
+        hour=hour, 
+        minute=minute,
+        timezone=central_tz  # Set timezone to America/Chicago (CST/CDT)
+    )
+    print(f"[Scheduler] Scheduled `fetch_and_store_data_for_ignite` at {hour}:{minute} CST/CDT daily")
 
-# Start the function in a separate thread
+# Start the scheduler when the server starts
+def start_scheduler():
+    scheduler.start()
+    schedule_daily_fetch(hour=3, minute=00)  # Change time as needed
+
+# Run scheduler in a separate thread
 def start_background_task():
-    thread = threading.Thread(target=fetch_and_store_data_for_ignite, daemon=True)
-    thread.start()
+    threading.Thread(target=start_scheduler, daemon=True).start()
+
+#### ==============================
 
 @csrf_exempt
 @api_view(['GET'])
@@ -152,3 +179,7 @@ def custom_404_view(request, exception):
     if request.user.is_authenticated:
         return redirect('protected')  # Redirect authenticated users
     return redirect(reverse('login'))  # Redirect unauthenticated users
+
+
+# Start the scheduled background task when the server starts
+start_background_task()
