@@ -21,6 +21,9 @@ from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, 
 from djangoWebApp.views import (
     fetch_and_store_data_for_ignite, get_saved_data_for_ignite, ignite_report_page
 )
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +39,9 @@ urlpatterns = [
     path('ignite/data/', get_saved_data_for_ignite, name='get_saved_data_for_ignite'),
     path('ignite/report/', ignite_report_page, name='ignite_report'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
 
 from django.conf.urls import handler404
 from djangoWebApp.views import custom_404_view

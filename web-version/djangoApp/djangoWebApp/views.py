@@ -15,9 +15,10 @@ from django.views.decorators.csrf import csrf_exempt
 # Initialize MongoDB client (global)
 client = MongoClient('mongodb://localhost:27017/')
 db = client['pivot-report-summaries']  # Your database name
+ignite_db = client['ignite_report_db']
 collectionRecruitment = db['summaries']  # Your collection name
 collectionMdReview = db['md-review-summaries']
-collectionIgniteRecruitment = db['ignite_recruitment_records']  # New collection for Ignite recruitment data
+collectionIgniteRecruitment = ignite_db['ignite_recruitment_records']  # New collection for Ignite recruitment data
 
 @login_required
 def protected_page(request):

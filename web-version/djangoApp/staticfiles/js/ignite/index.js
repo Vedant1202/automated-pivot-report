@@ -1,5 +1,3 @@
-const serverUrl = 'http://localhost:5010';
-
 // Fetch available dates from the Flask API
 async function fetchAvailableDates() {
     // try {
@@ -32,7 +30,7 @@ async function fetchSummaries(startDateUnix, endDateUnix) {
     const endFormatted = formatYYYYMMDD(endDateUnix);
 
     // Send request with formatted dates
-    const url = `${serverUrl}/ignite/data/?start=${startFormatted}&end=${endFormatted}`;
+    const url = `http://localhost:8000/ignite/data/?start=${startFormatted}&end=${endFormatted}`;
 
     try {
         const response = await fetch(url);

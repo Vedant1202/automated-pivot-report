@@ -80,9 +80,11 @@ STATIC_URL = '/static/'  # URL to use when referring to static files
 
 STATICFILES_DIRS = [
     BASE_DIR / 'djangoWebApp' / 'static',
+    os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory where static files are collected
+##STATIC_ROOT = BASE_DIR / 'staticfiles'  # Directory where static files are collected
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # For collectstatic
 
 WSGI_APPLICATION = 'djangoApp.wsgi.application'
 
