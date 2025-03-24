@@ -155,9 +155,39 @@ async function getSummariesAndDisplay() {
 
 // Export table data to Excel
 function exportToExcel() {
-    var wb = XLSX.utils.table_to_book(document.getElementById('recruitment-table'), { sheet: "IGNITE Report" });
-    XLSX.writeFile(wb, 'ignite_recruitment_report.xlsx');
-}
+    // Load the template file
+  console.log("Clicked export2");
+    alert("Hi2");
+    fetch("/static/excel/IGNITE Report Template in progress.xlsx")
+      .then((response) => response.arrayBuffer())
+      .then((data) => {
+        // Read the template into a workbook object
+        var workbook = XLSX.read(data, { type: "array" });
+  
+        // Assuming the template has a sheet named "IGNITE Report"
+        var wsTemplate = workbook.Sheets["IGNITE Report"];
+  
+        // Convert the HTML table into a worksheet
+        var wsNewData = XLSX.utils.table_to_sheet(
+          document.getElementById("recruitment-table")
+        );
+  
+        // Convert the new data worksheet into an array of arrays.
+        // (Alternatively, use XLSX.utils.sheet_to_json if you prefer JSON.)
+        var newData = XLSX.utils.sheet_to_json(wsNewData, { header: 1 });
+  
+        // Insert the table data into the template worksheet.
+        // Adjust the origin as needed; here we start at A2.
+        XLSX.utils.sheet_add_aoa(wsTemplate, newData, { origin: "A2" });
+  
+        // Write out the updated workbook for download
+        XLSX.writeFile(workbook, "ignite_recruitment_report.xlsx");
+      })
+      .catch((error) => {
+        console.error("Error loading the template:", error);
+      });
+  }
+  
 
 // Initialize the page by fetching available dates
 fetchAvailableDates();

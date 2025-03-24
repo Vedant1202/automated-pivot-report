@@ -6,6 +6,7 @@ from datetime import datetime
 
 def process_redcap_data_for_ignite():
     datacall = {
+        # 'token': '96EF07A3F74AE278A39C4F7C353937C2',
         'token': '6DDC2EADDD7968A4DAD1730FBB52AD63',
         'content': 'record',
         'action': 'export',
@@ -75,7 +76,7 @@ def process_redcap_data_for_ignite():
     jsondata = json.loads(respdata)
     response_json = jsondata
 
-    print("Received Data")
+    # print("Received Data")
 
     invite_sent_count= 0
     wait_count= 0
@@ -154,6 +155,7 @@ def process_redcap_data_for_ignite():
     # print(response_json)
     for record in response_json:
         # print(record)
+        # if record['record_id'] == '6': print(record)
         
         if 'date_invite_1' in record and record['date_invite_1'].strip():
             # Convert the string date to a date object
@@ -219,11 +221,14 @@ def process_redcap_data_for_ignite():
                 eligible_undecided_count += 1
 
             #-----maybe eligible count-------
-            if record['es_oc_maybe'] == '1' or record['es_oc_maybe_v2'] == '1':
+            if record['es_oc_maybe'] == '1':
+            # if record['es_oc_maybe'] == '1' or record['es_oc_maybe_v2'] == '1':
                 maybe_eligible_count += 1
 
             #------IES eligible--------
-            if record['es_oc_elig'] == '1' or record['es_oc_maybe'] == '1':
+            if record['es_oc_elig'] == '1':
+                # print(record['record_id'])
+            # if record['es_oc_elig'] == '1' or record['es_oc_maybe'] == '1':
                 ies_eligible_count += 1
 
         #--------appointment_decline/ceased---------- 
@@ -329,7 +334,9 @@ def process_redcap_data_for_ignite():
             visit_scheduled_count += 1
         
         #--------visit attended------ in person attended OC report 
-        if record['to_elig_oc'] == '1' and record.get('ip_date') not in [None, '', ' '] and record.get('ip_outcome') not in [None, '', ' ']:
+        if record['to_elig_oc'] == '1':
+        # if record['to_elig_oc'] == '1' and record.get('ip_date') not in [None, '', ' '] and record.get('ip_outcome') not in [None, '', ' ']:
+            # print(record['record_id'])
             visit_attended_count += 1
         
         #-----visit ineligible-------
@@ -346,6 +353,7 @@ def process_redcap_data_for_ignite():
         
         #--------Visit Eligible------
         if record['ip_outcome'] == '1':
+            # print(record['record_id'])
             visit_eligible_count += 1 
         
         #-----rescheudle no show count in tech appt -------
@@ -493,6 +501,7 @@ def process_redcap_data_for_ignite():
         "ineligible_at_to_count": ineligible_at_to_count,
         "declined_icf_count": declined_icf_count,
         "declined_to_proceed_count_1": declined_to_proceed_count_1,
+        "eligible_undecided_count": eligible_undecided_count,
         "eligible_pending_clearance_count": eligible_pending_clearance_count,
         "to_attend_eligible_at_TO_count": to_attend_eligible_at_to_count,
         "needs_baseline_survey_count": needs_baseline_survey_count,
@@ -527,3 +536,7 @@ def process_redcap_data_for_ignite():
     }
 
     return results
+
+if __name__ == "__main__":
+    # print("Hi")
+    print(process_redcap_data_for_ignite())
