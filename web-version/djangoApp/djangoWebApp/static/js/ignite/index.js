@@ -104,7 +104,7 @@ async function populateTable(startDateDoc, endDateDoc) {
     updateField("unscheduled-over-week", endDateDoc.appt_needed_over_week_since_setup_count, startDateDoc.appt_needed_over_week_since_setup_count);
     updateField("visit-scheduled", endDateDoc.visit_scheduled_count, startDateDoc.visit_scheduled_count);
     updateField("visit-attended", endDateDoc.visit_attended_count, startDateDoc.visit_attended_count);
-    updateField("visit-ineligible-at-to", endDateDoc.visit_ineligible_count, startDateDoc.visit_ineligible_count);
+    // updateField("visit-ineligible-at-to", endDateDoc.visit_ineligible_count, startDateDoc.visit_ineligible_count);
 
     updateField("visit-declined-proceed", endDateDoc.visit_declined_to_proceed_count, startDateDoc.visit_declined_to_proceed_count);
     updateField("visit-pending-outcome", endDateDoc.visit_pending_oc_count, startDateDoc.visit_pending_oc_count);

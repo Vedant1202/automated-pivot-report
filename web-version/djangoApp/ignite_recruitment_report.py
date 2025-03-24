@@ -75,7 +75,6 @@ def process_redcap_data_for_ignite():
     jsondata = json.loads(respdata)
     response_json = jsondata
 
-    print("Received Data")
 
     invite_sent_count= 0
     wait_count= 0
@@ -219,11 +218,11 @@ def process_redcap_data_for_ignite():
                 eligible_undecided_count += 1
 
             #-----maybe eligible count-------
-            if record['es_oc_maybe'] == '1' or record['es_oc_maybe_v2'] == '1':
+            if record['es_oc_maybe'] == '1':
                 maybe_eligible_count += 1
 
             #------IES eligible--------
-            if record['es_oc_elig'] == '1' or record['es_oc_maybe'] == '1':
+            if record['es_oc_elig'] == '1':
                 ies_eligible_count += 1
 
         #--------appointment_decline/ceased---------- 
@@ -329,7 +328,7 @@ def process_redcap_data_for_ignite():
             visit_scheduled_count += 1
         
         #--------visit attended------ in person attended OC report 
-        if record['to_elig_oc'] == '1' and record.get('ip_date') not in [None, '', ' '] and record.get('ip_outcome') not in [None, '', ' ']:
+        if record['to_elig_oc'] == '1':
             visit_attended_count += 1
         
         #-----visit ineligible-------
@@ -493,6 +492,7 @@ def process_redcap_data_for_ignite():
         "ineligible_at_to_count": ineligible_at_to_count,
         "declined_icf_count": declined_icf_count,
         "declined_to_proceed_count_1": declined_to_proceed_count_1,
+        "eligible_undecided_count": eligible_undecided_count,
         "eligible_pending_clearance_count": eligible_pending_clearance_count,
         "to_attend_eligible_at_TO_count": to_attend_eligible_at_to_count,
         "needs_baseline_survey_count": needs_baseline_survey_count,
@@ -527,3 +527,7 @@ def process_redcap_data_for_ignite():
     }
 
     return results
+
+if __name__ == "__main__":
+    # print("Hi")
+    print(process_redcap_data_for_ignite())
