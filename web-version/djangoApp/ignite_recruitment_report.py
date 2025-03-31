@@ -3,9 +3,13 @@ import urllib.request, urllib.parse
 import json
 # import pandas as pd
 from datetime import datetime
+from pymongo import MongoClient
+import pytz
+
 
 def process_redcap_data_for_ignite():
     datacall = {
+        # 'token': '96EF07A3F74AE278A39C4F7C353937C2',
         'token': '6DDC2EADDD7968A4DAD1730FBB52AD63',
         'content': 'record',
         'action': 'export',
@@ -75,6 +79,7 @@ def process_redcap_data_for_ignite():
     jsondata = json.loads(respdata)
     response_json = jsondata
 
+    # print("Received Data")
 
     invite_sent_count= 0
     wait_count= 0
@@ -153,6 +158,7 @@ def process_redcap_data_for_ignite():
     # print(response_json)
     for record in response_json:
         # print(record)
+        # if record['record_id'] == '6': print(record)
         
         if 'date_invite_1' in record and record['date_invite_1'].strip():
             # Convert the string date to a date object
@@ -219,10 +225,13 @@ def process_redcap_data_for_ignite():
 
             #-----maybe eligible count-------
             if record['es_oc_maybe'] == '1':
+            # if record['es_oc_maybe'] == '1' or record['es_oc_maybe_v2'] == '1':
                 maybe_eligible_count += 1
 
             #------IES eligible--------
             if record['es_oc_elig'] == '1':
+                # print(record['record_id'])
+            # if record['es_oc_elig'] == '1' or record['es_oc_maybe'] == '1':
                 ies_eligible_count += 1
 
         #--------appointment_decline/ceased---------- 
@@ -329,6 +338,8 @@ def process_redcap_data_for_ignite():
         
         #--------visit attended------ in person attended OC report 
         if record['to_elig_oc'] == '1':
+        # if record['to_elig_oc'] == '1' and record.get('ip_date') not in [None, '', ' '] and record.get('ip_outcome') not in [None, '', ' ']:
+            # print(record['record_id'])
             visit_attended_count += 1
         
         #-----visit ineligible-------
@@ -345,6 +356,7 @@ def process_redcap_data_for_ignite():
         
         #--------Visit Eligible------
         if record['ip_outcome'] == '1':
+            # print(record['record_id'])
             visit_eligible_count += 1 
         
         #-----rescheudle no show count in tech appt -------
@@ -529,5 +541,28 @@ def process_redcap_data_for_ignite():
     return results
 
 if __name__ == "__main__":
-    # print("Hi")
-    print(process_redcap_data_for_ignite())
+    try:
+        # Get current time in Central Time
+        central_tz = pytz.timezone("US/Central")
+        now_central = datetime.now(central_tz).isoformat()
+        print(f"[INFO] Fetching IGNITE recruitment data at {now_central} CST/CDT...")
+
+        # Get processed data
+        data = process_redcap_data_for_ignite()
+
+        if not data:
+            print("[ERROR] No data received.")
+        else:
+            # Add timestamp to the data dictionary
+            data["timestamp"] = now_central
+
+            # Connect to MongoDB
+            client = MongoClient("mongodb://localhost:27017/")  # update if needed
+            db = client["ignite_report_db"]
+            collection = db["ignite_recruitment_records"]
+
+            # Insert the data
+            collection.insert_one(data)
+            print("[SUCCESS] Data inserted into MongoDB.")
+    except Exception as e:
+        print(f"[ERROR] Something went wrong: {e}")

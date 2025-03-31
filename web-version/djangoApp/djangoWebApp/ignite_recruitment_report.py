@@ -3,6 +3,9 @@ import urllib.request, urllib.parse
 import json
 # import pandas as pd
 from datetime import datetime
+from pymongo import MongoClient
+import pytz
+
 
 def process_redcap_data_for_ignite():
     datacall = {
@@ -538,5 +541,28 @@ def process_redcap_data_for_ignite():
     return results
 
 if __name__ == "__main__":
-    # print("Hi")
-    print(process_redcap_data_for_ignite())
+    try:
+        # Get current time in Central Time
+        central_tz = pytz.timezone("US/Central")
+        now_central = datetime.now(central_tz).isoformat()
+        print(f"[INFO] Fetching IGNITE recruitment data at {now_central} CST/CDT...")
+
+        # Get processed data
+        data = process_redcap_data_for_ignite()
+
+        if not data:
+            print("[ERROR] No data received.")
+        else:
+            # Add timestamp to the data dictionary
+            data["timestamp"] = now_central
+
+            # Connect to MongoDB
+            client = MongoClient("mongodb://localhost:27017/")  # update if needed
+            db = client["ignite_report_db"]
+            collection = db["ignite_recruitment_records"]
+
+            # Insert the data
+            collection.insert_one(data)
+            print("[SUCCESS] Data inserted into MongoDB.")
+    except Exception as e:
+        print(f"[ERROR] Something went wrong: {e}")
