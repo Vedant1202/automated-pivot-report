@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, get_mdreview_data_from_mongo, get_available_dates
 from djangoWebApp.views import (
-    fetch_and_store_data_for_ignite, get_saved_data_for_ignite, ignite_report_page
+    fetch_and_store_data_for_ignite, get_saved_data_for_ignite, ignite_report_page, get_detailed_staff_report, get_selfharm_summary
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -38,6 +38,8 @@ urlpatterns = [
     path('ignite/fetch/', fetch_and_store_data_for_ignite, name='fetch_data_for_ignite'),
     path('ignite/data/', get_saved_data_for_ignite, name='get_saved_data_for_ignite'),
     path('ignite/report/', ignite_report_page, name='ignite_report'),
+    path('ignite/detailed-staff-report/', get_detailed_staff_report, name='get_detailed_staff_report'),
+    path('ignite/self-harm-report/', get_selfharm_summary, name='self-harm-report'),
 ]
 
 if settings.DEBUG:

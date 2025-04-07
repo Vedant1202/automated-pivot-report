@@ -11,6 +11,8 @@ import threading
 import time
 import ignite_recruitment_report  # Import your existing script
 from django.views.decorators.csrf import csrf_exempt
+from ignite_detailed_list import fetch_redcap_staff_report
+from ignite_self_harm import process_self_harm_data
 
 ## For scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -91,6 +93,32 @@ def get_mdreview_data_from_mongo(request):
 def get_available_dates(request):
     dates = collectionRecruitment.distinct('date')
     return JsonResponse({'dates': dates})
+
+@csrf_exempt
+@api_view(['GET'])
+@login_required
+def get_detailed_staff_report(request):
+    """
+    GET endpoint to return staff activity summary from REDCap.
+    """
+    try:
+        report_data = fetch_redcap_staff_report()
+        return JsonResponse(report_data, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@csrf_exempt
+@api_view(['GET'])
+@login_required
+def get_selfharm_summary(request):
+    """
+    GET endpoint to return the self-harm REDCap summary report.
+    """
+    try:
+        summary_data = process_self_harm_data()
+        return JsonResponse(summary_data, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 #### =========== SCHEDULING =================
 
