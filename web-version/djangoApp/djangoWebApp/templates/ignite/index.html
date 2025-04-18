@@ -12,6 +12,7 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/exceljs/dist/exceljs.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
     integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -110,7 +111,8 @@
               <button class="btn btn-primary" onclick="getSummariesAndDisplay()">
                 Show Results
               </button>
-              <button class="btn btn-warning ms-2" onclick="exportToExcel()">
+              <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
+              <button class="btn btn-warning ms-2" id="export-btn">
                 Download to Excel
               </button>
             </div>
@@ -1073,13 +1075,57 @@
   }
 
   function exportToExcel() {
+    alert("Exporting 1");
     const dateStr = getCurrentDateString();
-    const wb = XLSX.utils.table_to_book(
-      document.getElementById("recruitment-table"),
-      { sheet: "IGNITE Report" }
-    );
+
+    // 1. Create a new workbook and worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = {};
+
+    // 2. Define the mapping between HTML IDs and Excel cells
+    const cellMap = {
+        // Format: "html-id": "ExcelCell"
+        "invites-sent": "B2",
+        "invites-sent-percent": "C2",
+        "invites-sent-change": "D2",
+        "week-wait": "B3",
+        "week-wait-percent": "C3",
+        "week-wait-change": "D3",
+        "calling-progress": "B4",
+        "calling-progress-percent": "C4",
+        "calling-progress-change": "D4",
+        // ... Add the rest of your mappings here
+    };
+
+    // 3. Loop through the map and populate worksheet
+    for (const [htmlId, cellAddress] of Object.entries(cellMap)) {
+        const el = document.getElementById(htmlId);
+        if (!el) continue;
+
+        ws[cellAddress] = {
+            t: 's',
+            v: el.innerText.trim()
+        };
+    }
+
+    // 4. Define worksheet range
+    ws['!ref'] = 'A1:D100'; // Adjust based on how far down you're writing
+
+    // 5. Optional formatting (e.g., column widths)
+    ws['!cols'] = [
+        { wch: 40 }, { wch: 15 }, { wch: 10 }, { wch: 15 }
+    ];
+
+    // 6. Add worksheet to workbook and save
+    XLSX.utils.book_append_sheet(wb, ws, "IGNITE Report");
     XLSX.writeFile(wb, `ignite_recruitment_report_${dateStr}.xlsx`);
-  }
+}
+
+// Utility function to format current date
+function getCurrentDateString() {
+    const now = new Date();
+    return now.toISOString().split("T")[0];
+}
 
   function exportDetailedToExcel() {
     const container = document.getElementById("detailed-report-container");
@@ -1164,3 +1210,116 @@
   // Initialize the page by fetching available dates
   fetchAvailableDates();
 </script>
+
+<script>
+  // ── Helpers ─────────────────────────────────────────────────────────
+  function getOrdinal(n) {
+    const s = ["th","st","nd","rd"], v = n % 100;
+    return s[(v-20)%10] || s[v] || s[0];
+  }
+  function humanDate(iso) {
+    const d = new Date(iso);
+    const day   = d.getDate();
+    const month = d.toLocaleString("default",{ month:"long" });
+    const year  = d.getFullYear();
+    return `${day}${getOrdinal(day)} ${month} ${year}`;
+  }
+  function parseNum(txt, isPct=false) {
+    if (!txt) return undefined;
+    const c = txt.replace(/,/g,'').replace('%','').trim();
+    if (!c) return undefined;
+    const n = Number(c);
+    return isPct ? n/100 : n;
+  }
+
+  // ── Export Function ─────────────────────────────────────────────────
+  document.getElementById('export-btn')
+    .addEventListener('click', exportRecruitment);
+
+  async function exportRecruitment() {
+    // 1️⃣ Read and humanize dates
+    const start = document.getElementById('startDateSelect').value;
+    const end   = document.getElementById('endDateSelect').value;
+    if (!start||!end) return alert("Select both dates first.");
+    const humanStart = humanDate(start);
+    const humanEnd   = humanDate(end);
+
+    // 2️⃣ Build workbook & sheet
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('Recruitment Summary');
+
+    // 3️⃣ Top date row (row 1)
+    ws.mergeCells('A1:D1');
+    const dateCell = ws.getCell('A1');
+    dateCell.value     = `Date From: ${humanStart}    Date To: ${humanEnd}`;
+    dateCell.font      = { bold:true };
+    dateCell.alignment = { horizontal:'left' };
+
+    // 4️⃣ Define columns (widths + number‐formats; no auto‐header)
+    ws.columns = [
+      { width:40 },  // Recruitment Category
+      { width:12, style:{ numFmt:'#,##0', alignment:{ horizontal:'right' } } },
+      { width:10, style:{ numFmt:'0.00%', alignment:{ horizontal:'right' } } },
+      { width:15, style:{ numFmt:'#,##0;[Red]-#,##0', alignment:{ horizontal:'right' } } },
+    ];
+
+    // 5️⃣ Manual header row at row 2
+    const hdr = ws.getRow(2);
+    hdr.values = ['Recruitment Category','Cumulative','%','Weekly Change'];
+    hdr.eachCell(cell => {
+      cell.font      = { bold:true };
+      cell.fill      = { type:'pattern',pattern:'solid',fgColor:{argb:'FFD9D9D9'} };
+      cell.alignment = { horizontal:'center',vertical:'middle' };
+      cell.border    = { top:{ style:'thin', color:{ argb:'FF00B050' } } };
+    });
+
+    // 6️⃣ Data rows start at 3…
+    document.querySelectorAll('#recruitment-table tbody tr')
+      .forEach((tr, i) => {
+        const rIndex = 3 + i;
+        const tds = tr.cells;
+        const label = tds[0].textContent.trim();
+
+        // detect final colspan=2 row
+        let rawCum, rawPct, rawChg;
+        if (tds.length===3 && tds[2].colSpan===2) {
+          rawCum = tds[1].textContent; rawPct = rawChg = undefined;
+        } else {
+          rawCum = tds[1].textContent;
+          rawPct = tds[2].textContent;
+          rawChg = tds[3].textContent;
+        }
+
+        const cum = parseNum(rawCum),
+              pct = parseNum(rawPct, true),
+              chg = parseNum(rawChg);
+
+        const row = ws.getRow(rIndex);
+        row.values = [ label, cum, pct, chg ];
+
+        // highlight rows if <td class="highlight">
+        if (tr.querySelector('td.highlight')) {
+          row.eachCell({ includeEmpty:true }, cell => {
+            cell.font = { bold:true };
+            cell.fill = {
+              type:'pattern',pattern:'solid',
+              fgColor:{ argb:'FFBDD7EE' }
+            };
+          });
+        }
+
+        // merge C+D for that last row
+        if (pct===undefined && chg===undefined) {
+          ws.mergeCells(`C${rIndex}:D${rIndex}`);
+        }
+      });
+
+    // 7️⃣ Generate & save
+    const fileName = 
+      `IGNITE Recruitment Summary ${humanStart} to ${humanEnd}.xlsx`;
+    const buf = await wb.xlsx.writeBuffer();
+    saveAs(new Blob([buf]), fileName);
+  }
+</script>
+
+  
