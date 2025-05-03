@@ -1233,58 +1233,11 @@
     return today.toISOString().split("T")[0]; // YYYY-MM-DD
   }
 
-  function exportToExcel() {
-    alert("Exporting 1");
-    const dateStr = getCurrentDateString();
-
-    // 1. Create a new workbook and worksheet
-    const wb = XLSX.utils.book_new();
-    const ws = {};
-
-    // 2. Define the mapping between HTML IDs and Excel cells
-    const cellMap = {
-        // Format: "html-id": "ExcelCell"
-        "invites-sent": "B2",
-        "invites-sent-percent": "C2",
-        "invites-sent-change": "D2",
-        "week-wait": "B3",
-        "week-wait-percent": "C3",
-        "week-wait-change": "D3",
-        "calling-progress": "B4",
-        "calling-progress-percent": "C4",
-        "calling-progress-change": "D4",
-        // ... Add the rest of your mappings here
-    };
-
-    // 3. Loop through the map and populate worksheet
-    for (const [htmlId, cellAddress] of Object.entries(cellMap)) {
-        const el = document.getElementById(htmlId);
-        if (!el) continue;
-
-        ws[cellAddress] = {
-            t: 's',
-            v: el.innerText.trim()
-        };
-    }
-
-    // 4. Define worksheet range
-    ws['!ref'] = 'A1:D100'; // Adjust based on how far down you're writing
-
-    // 5. Optional formatting (e.g., column widths)
-    ws['!cols'] = [
-        { wch: 40 }, { wch: 15 }, { wch: 10 }, { wch: 15 }
-    ];
-
-    // 6. Add worksheet to workbook and save
-    XLSX.utils.book_append_sheet(wb, ws, "IGNITE Report");
-    XLSX.writeFile(wb, `ignite_recruitment_report_${dateStr}.xlsx`);
-  }
-
-  // Utility function to format current date
-  function getCurrentDateString() {
-      const now = new Date();
-      return now.toISOString().split("T")[0];
-  }
+// Utility function to format current date
+function getCurrentDateString() {
+    const now = new Date();
+    return now.toISOString().split("T")[0];
+}
 
   function exportDetailedToExcel() {
     const summaryTable = document.querySelector("#summary-report-container table");
