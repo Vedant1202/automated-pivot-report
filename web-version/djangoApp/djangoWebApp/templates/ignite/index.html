@@ -24,10 +24,13 @@
 
     .table th,
     .table td {
-      text-align: center;
+      text-align: right;
     }
 
     .highlight {
+      background-color: #baddf1 !important;
+      font-size: 18px;
+      text-align: left !important;
       font-weight: bold;
     }
   </style>
@@ -108,8 +111,11 @@
               <input type="date" class="form-control" id="endDateSelect" />
             </div>
             <div class="col d-flex align-items-end">
-              <button class="btn btn-primary" onclick="getSummariesAndDisplay()">
-                Show Results
+              <button id="show-results-btn" class="btn btn-primary" onclick="getSummariesAndDisplay()">
+                <span id="show-results-text">Show Results</span>
+                <span id="show-results-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
+                  <span class="visually-hidden">Loading...</span>
+                </span>
               </button>
               <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
               <button class="btn btn-warning ms-2" id="export-btn">
@@ -130,9 +136,9 @@
             <tbody id="reportBody">
               <tr>
                 <td class="highlight">Invitations Sent</td>
-                <td id="invites-sent"></td>
-                <td id="invites-sent-percent"></td>
-                <td id="invites-sent-change"></td>
+                <td class="highlight" id="invites-sent"></td>
+                <td class="highlight" id="invites-sent-percent"></td>
+                <td class="highlight" id="invites-sent-change"></td>
               </tr>
               <tr>
                 <td>Within 2-week wait</td>
@@ -166,9 +172,9 @@
               </tr>
               <tr>
                 <td class="highlight">Not Screened</td>
-                <td id="not-screened"></td>
-                <td id="not-screened-percent"></td>
-                <td id="not-screened-change"></td>
+                <td class="highlight" id="not-screened"></td>
+                <td class="highlight" id="not-screened-percent"></td>
+                <td class="highlight" id="not-screened-change"></td>
               </tr>
               <tr>
                 <td>Ineligible Prior to Screen</td>
@@ -183,10 +189,10 @@
                 <td id="declined-screen-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Screened (Screen of Re-Screen)</td>
-                <td id="screened"></td>
-                <td id="screened-percent"></td>
-                <td id="screened-change"></td>
+                <td class="highlight">Screened (Screen or Re-Screen)</td>
+                <td class="highlight" id="screened"></td>
+                <td class="highlight" id="screened-percent"></td>
+                <td class="highlight" id="screened-change"></td>
               </tr>
               <tr>
                 <td>Ineligible Screened</td>
@@ -219,10 +225,10 @@
                 <td id="ies-eligible-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Tele-Orientation Appointment</td>
-                <td id="tele-orientation"></td>
-                <td id="tele-orientation-percent"></td>
-                <td id="tele-orientation-change"></td>
+                <td class="highlight">Ready for TO</td>
+                <td class="highlight" id="tele-orientation"></td>
+                <td class="highlight" id="tele-orientation-percent"></td>
+                <td class="highlight" id="tele-orientation-change"></td>
               </tr>
               <tr>
                 <td>Appointment Declined/Ceased</td>
@@ -257,9 +263,9 @@
               </tr>
               <tr>
                 <td class="highlight">TO Attended</td>
-                <td id="to-attended"></td>
-                <td id="to-attended-percent"></td>
-                <td id="to-attended-change"></td>
+                <td class="highlight" id="to-attended"></td>
+                <td class="highlight" id="to-attended-percent"></td>
+                <td class="highlight" id="to-attended-change"></td>
               </tr>
               <tr>
                 <td>Ineligible at TO</td>
@@ -292,16 +298,16 @@
                 <td id="eligible-pending-md-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Eligible at TO</td>
+                <td>Eligible at TO</td>
                 <td id="eligible-at-to"></td>
                 <td id="eligible-at-to-percent"></td>
                 <td id="eligible-at-to-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Device Readiness</td>
-                <td id="device-readiness"></td>
-                <td id="device-readiness-percent"></td>
-                <td id="device-readiness-change"></td>
+                <td class="highlight">Ready for Device Setup</td>
+                <td class="highlight" id="device-readiness"></td>
+                <td class="highlight" id="device-readiness-percent"></td>
+                <td class="highlight" id="device-readiness-change"></td>
               </tr>
               <tr>
                 <td>Needs Baseline Survey</td>
@@ -316,16 +322,22 @@
                 <td id="setup-pending-change"></td>
               </tr>
               <tr>
-                <td class="highlight">SETUP Complete</td>
+                <td>SETUP Complete</td>
                 <td id="setup-complete"></td>
                 <td id="setup-complete-percent"></td>
                 <td id="setup-complete-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Eligibility Visit Appointment</td>
-                <td id="eligibility-visit"></td>
-                <td id="eligibility-visit-percent"></td>
-                <td id="eligibility-visit-change"></td>
+                <td class="highlight">Ready for In-person Visit</td>
+                <td class="highlight" id="eligibility-visit"></td>
+                <td class="highlight" id="eligibility-visit-percent"></td>
+                <td class="highlight" id="eligibility-visit-change"></td>
+              </tr>
+              <tr>
+                <td> Eligibility Visit Appointment Scheduled</td>
+                <td id="eligibility-visit-scheduled"></td>
+                <td id="eligibility-visit-scheduled-percent"></td>
+                <td id="eligibility-visit-scheduled-change"></td>
               </tr>
               <tr>
                 <td>Appointment Declined/Ceased</td>
@@ -352,16 +364,16 @@
                 <td id="reschedule-no-show-tech-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Visit Scheduled</td>
+                <td>Visit Scheduled</td>
                 <td id="visit-scheduled"></td>
                 <td id="visit-scheduled-percent"></td>
                 <td id="visit-scheduled-change"></td>
               </tr>
               <tr>
                 <td class="highlight">Visit Attended</td>
-                <td id="visit-attended"></td>
-                <td id="visit-attended-percent"></td>
-                <td id="visit-attended-change"></td>
+                <td class="highlight" id="visit-attended"></td>
+                <td class="highlight" id="visit-attended-percent"></td>
+                <td class="highlight" id="visit-attended-change"></td>
               </tr>
               <tr>
                 <td>Visit Ineligible</td>
@@ -383,16 +395,22 @@
                 <td id="visit-pending-outcome-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Eligible</td>
+                <td>Eligible</td>
                 <td id="visit-eligible"></td>
                 <td id="visit-eligible-percent"></td>
                 <td id="visit-eligible-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Tech Setup Appointment</td>
-                <td id="tech-setup"></td>
-                <td id="tech-setup-percent"></td>
-                <td id="tech-setup-change"></td>
+                <td class="highlight">Ready for Tech Setup Zoom Meeting</td>
+                <td class="highlight" id="tech-setup"></td>
+                <td class="highlight" id="tech-setup-percent"></td>
+                <td class="highlight" id="tech-setup-change"></td>
+              </tr>
+              <tr>
+                <td>Tech Setup Appointment Scheduled</td>
+                <td id="tech-setup-appt-scheduled"></td>
+                <td id="tech-setup-appt-scheduled-percent"></td>
+                <td id="tech-setup-appt-scheduled-change"></td>
               </tr>
               <tr>
                 <td>Decline to proceed w/ Devices</td>
@@ -425,16 +443,16 @@
                 <td id="reschedule-no-show-visit-tech-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Tech Setup Scheduled</td>
+                <td>Tech Setup Scheduled</td>
                 <td id="tech-setup-scheduled"></td>
                 <td id="tech-setup-scheduled-percent"></td>
                 <td id="tech-setup-scheduled-change"></td>
               </tr>
               <tr>
                 <td class="highlight">Tech Setup Attended</td>
-                <td id="tech-setup-attended"></td>
-                <td id="tech-setup-attended-percent"></td>
-                <td id="tech-setup-attended-change"></td>
+                <td class="highlight" id="tech-setup-attended"></td>
+                <td class="highlight" id="tech-setup-attended-percent"></td>
+                <td class="highlight" id="tech-setup-attended-change"></td>
               </tr>
               <tr>
                 <td>Decline to proceed w/ Devices</td>
@@ -455,16 +473,16 @@
                 <td id="pending-tech-issue-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Self-Measures Ready</td>
+                <td>Self-Measures Ready</td>
                 <td id="self-measures-ready"></td>
                 <td id="self-measures-ready-percent"></td>
                 <td id="self-measures-ready-change"></td>
               </tr>
               <tr>
                 <td class="highlight">Baseline Self-Measures Progress</td>
-                <td id="baseline-self-measures"></td>
-                <td id="baseline-self-measures-percent"></td>
-                <td id="baseline-self-measures-change"></td>
+                <td class="highlight" id="baseline-self-measures"></td>
+                <td class="highlight" id="baseline-self-measures-percent"></td>
+                <td class="highlight" id="baseline-self-measures-change"></td>
               </tr>
               <tr>
                 <td>Pending Day 8 Check</td>
@@ -491,19 +509,19 @@
                 <td id="ineligible-data-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Eligible Pending Randomization</td>
+                <td>Eligible Pending Randomization</td>
                 <td id="eligible-pending-randomization"></td>
                 <td id="eligible-pending-randomization-percent"></td>
                 <td id="eligible-pending-randomization-change"></td>
               </tr>
               <tr>
                 <td class="highlight">Randomized</td>
-                <td id="randomized"></td>
-                <td id="randomized-percent"></td>
-                <td id="randomized-change"></td>
+                <td class="highlight" id="randomized"></td>
+                <td class="highlight" id="randomized-percent"></td>
+                <td class="highlight" id="randomized-change"></td>
               </tr>
               <tr>
-                <td class="highlight">R Percent of 440 Target</td>
+                <td>R Percent of 440 Target</td>
                 <td id="r-percent-target"></td>
                 <td colspan="2"></td>
               </tr>
@@ -514,16 +532,36 @@
 
       <div class="tab-pane fade" id="detailed" role="tabpanel">
         <div class="container my-4">
-          <h3>Staff Summary by Task</h3>
-          <button class="btn btn-secondary mb-3" onclick="fetchDetailedStaffReport()">Refresh Staff Report</button>
+          <h3>Staff Task Summary</h3>
+          <button id="refresh-staff-btn" class="btn btn-secondary mb-3" onclick="fetchDetailedStaffReport()">
+            <span id="refresh-btn-text">Refresh Staff Report</span>
+            <span id="refresh-btn-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          </button>
+
           <button class="btn btn-success mb-3 ms-2" onclick="exportDetailedToExcel()">Download to Excel</button>
+      
+          <!-- Summary Table Container -->
+          <div id="summary-report-container" class="table-responsive mb-4"></div>
+      
+          <!-- Detailed Tables per Category -->
           <div id="detailed-report-container" class="table-responsive"></div>
         </div>
       </div>
+      
 
       <div class="tab-pane fade" id="selfharm" role="tabpanel">
         <div class="mt-4" id="selfharm-container">
           <h4>Self-Harm Alerts Summary</h4>
+
+          <button id="fetch-selfharm-btn" class="btn btn-info mb-3" onclick="fetchSelfHarmSummary()">
+            <span id="fetch-selfharm-text">Fetch Summary</span>
+            <span id="fetch-selfharm-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          </button>
+
           <button class="btn btn-warning mb-3" onclick="exportSelfHarmToExcel()">Download to Excel</button>
           <table class="table table-bordered" id="selfharm-table">
             <thead class="table-light">
@@ -559,7 +597,7 @@
 </style>
 
 <script>
-  const serverUrl = "http://localhost:5010";
+  const serverUrl = "http://localhost:8000";
 
   // Fetch available dates from the Flask API
   async function fetchAvailableDates() {
@@ -590,10 +628,19 @@
     const startFormatted = formatYYYYMMDD(startDateUnix);
     const endFormatted = formatYYYYMMDD(endDateUnix);
 
+    const btn = document.getElementById("show-results-btn");
+    const btnText = document.getElementById("show-results-text");
+    const spinner = document.getElementById("show-results-spinner");
+
     // Send request with formatted dates
     const url = `${serverUrl}/ignite/data/?start=${startFormatted}&end=${endFormatted}`;
 
     try {
+      // Show spinner and update text
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
       const response = await fetch(url);
       const data = await response.json();
 
@@ -604,383 +651,481 @@
 
       return { startDateDoc: data.startDateDoc, endDateDoc: data.endDateDoc };
     } catch (error) {
+      alert("Error fetching data - Try refreshing page and fetching again, or contact support engineer.");
       console.error("Error fetching summaries:", error);
+    } finally {
+      // Restore button state
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "Show Results";
     }
   }
 
   // Populate the table with fetched data
   async function populateTable(startDateDoc, endDateDoc) {
-    function calcChange(newVal, oldVal) {
-      if (!oldVal || oldVal === 0) {
-        return "0%"; // Avoid division by zero, return 0% instead of N/A
+    try {
+      function calcChange(newVal, oldVal) {
+        if (!oldVal || oldVal === 0) {
+          return "0%"; // Avoid division by zero, return 0% instead of N/A
+        }
+        return (((newVal - oldVal) / oldVal) * 100).toFixed(1) + "%";
       }
-      return (((newVal - oldVal) / oldVal) * 100).toFixed(1) + "%";
+
+      function updateField(id, endValue, changeValue, parentValue, showPercent = true) {
+        const field = document.getElementById(id);
+        const percentField = document.getElementById(id + "-percent");
+        const changeField = document.getElementById(id + "-change");
+
+        // Validate DOM elements
+        if (!field) {
+          console.warn(`Element with ID '${id}' not found.`);
+          return;
+        }
+        if (!percentField) {
+          console.warn(`Element with ID '${id}-percent' not found.`);
+          return;
+        }
+        if (!changeField) {
+          console.warn(`Element with ID '${id}-change' not found.`);
+          return;
+        }
+
+        // Validate numeric values
+        if (isNaN(endValue) || isNaN(changeValue) || isNaN(parentValue)) {
+          console.warn(
+            `Invalid numeric values: endValue=${endValue}, changeValue=${changeValue}, parentValue=${parentValue}`
+          );
+          return;
+        }
+
+        // Safe update
+        field.innerText = endValue;
+        if (showPercent) {
+          percentField.innerText = calcChange(endValue, parentValue);
+        }
+        changeField.innerText = endValue - changeValue;
+      }
+
+      // Updating fields based on the provided data
+      updateField(
+        "invites-sent",
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
+        startDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
+        false
+      );
+      updateField(
+        "week-wait",
+        endDateDoc.two_week_wait_count,
+        startDateDoc.two_week_wait_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "calling-progress",
+        endDateDoc.calling_in_progress_count,
+        startDateDoc.calling_in_progress_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "ceased-outreach",
+        endDateDoc.ceased_outreach_count,
+        startDateDoc.ceased_outreach_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "requested-call",
+        endDateDoc.requested_call_count,
+        startDateDoc.requested_call_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "partial-screen",
+        endDateDoc.partial_screen_count,
+        startDateDoc.partial_screen_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "not-screened",
+        endDateDoc.ineligible_prior_to_screen_count +
+        endDateDoc.declined_to_screen_count,
+        startDateDoc.ineligible_prior_to_screen_count +
+        startDateDoc.declined_to_screen_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "ineligible-prior",
+        endDateDoc.ineligible_prior_to_screen_count,
+        startDateDoc.ineligible_prior_to_screen_count,
+        endDateDoc.ineligible_prior_to_screen_count +
+        endDateDoc.declined_to_screen_count
+      );
+      updateField(
+        "declined-screen",
+        endDateDoc.declined_to_screen_count,
+        startDateDoc.declined_to_screen_count,
+        endDateDoc.ineligible_prior_to_screen_count +
+        endDateDoc.declined_to_screen_count
+      );
+      updateField(
+        "screened",
+        endDateDoc.screened_count,
+        startDateDoc.screened_count,
+        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
+      );
+      updateField(
+        "screened-ineligible",
+        endDateDoc.ineligible_count,
+        startDateDoc.ineligible_count,
+        endDateDoc.screened_count
+      );
+      updateField(
+        "eligible-declined",
+        endDateDoc.eligible_but_declined_to_count,
+        startDateDoc.eligible_but_declined_to_count,
+        endDateDoc.screened_count
+      );
+      updateField(
+        "eligible-undecided",
+        endDateDoc.eligible_undecided_count,
+        startDateDoc.eligible_undecided_count,
+        endDateDoc.screened_count
+      );
+      updateField(
+        "maybe-eligible",
+        endDateDoc.maybe_eligible_count,
+        startDateDoc.maybe_eligible_count,
+        endDateDoc.screened_count
+      );
+      updateField(
+        "ies-eligible",
+        endDateDoc.ies_eligible_count,
+        startDateDoc.ies_eligible_count,
+        endDateDoc.screened_count
+      );
+      updateField(
+        "tele-orientation",
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count,
+        startDateDoc.eligible_undecided_count +
+        startDateDoc.maybe_eligible_count +
+        startDateDoc.ies_eligible_count,
+        endDateDoc.screened_count
+      );
+      updateField(
+        "appointment-declined",
+        endDateDoc.appt_declined_count,
+        startDateDoc.appt_declined_count,
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count
+      );
+      updateField(
+        "appointment-needed-week",
+        endDateDoc.appt_needed_within_week_since_ies_count,
+        startDateDoc.appt_needed_within_week_since_ies_count,
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count
+      );
+      updateField(
+        "appointment-needed-over-week",
+        endDateDoc.appt_needed_over_week_since_ies_count,
+        startDateDoc.appt_needed_over_week_since_ies_count,
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count
+      );
+
+      updateField(
+        "reschedule-no-show",
+        endDateDoc.reschedule_no_show_count,
+        startDateDoc.reschedule_no_show_count,
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count
+      );
+      updateField(
+        "to-scheduled",
+        endDateDoc.to_schedule_count,
+        startDateDoc.to_schedule_count,
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count
+      );
+      updateField(
+        "to-attended",
+        endDateDoc.to_attended_count,
+        startDateDoc.to_attended_count,
+        endDateDoc.eligible_undecided_count +
+        endDateDoc.maybe_eligible_count +
+        endDateDoc.ies_eligible_count
+      );
+      updateField(
+        "ineligible-at-to",
+        endDateDoc.ineligible_at_to_count,
+        startDateDoc.ineligible_at_to_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "declined-icf",
+        endDateDoc.declined_icf_count,
+        startDateDoc.declined_icf_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "declined-proceed",
+        endDateDoc.declined_to_proceed_count_1,
+        startDateDoc.declined_to_proceed_count_1,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "eligible-undecided-to",
+        endDateDoc.eligible_undecided_count,
+        startDateDoc.eligible_undecided_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "eligible-pending-md",
+        endDateDoc.eligible_pending_clearance_count,
+        startDateDoc.eligible_pending_clearance_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "eligible-at-to",
+        endDateDoc.to_attend_eligible_at_TO_count,
+        startDateDoc.to_attend_eligible_at_TO_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "device-readiness",
+        endDateDoc.to_attend_eligible_at_TO_count,
+        startDateDoc.to_attend_eligible_at_TO_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "baseline-survey",
+        endDateDoc.needs_baseline_survey_count,
+        startDateDoc.needs_baseline_survey_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "setup-pending",
+        endDateDoc.setup_pending_count,
+        startDateDoc.setup_pending_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "setup-complete",
+        endDateDoc.setup_complete_count,
+        startDateDoc.setup_complete_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "eligibility-visit",
+        endDateDoc.to_attend_eligible_at_TO_count,
+        startDateDoc.to_attend_eligible_at_TO_count,
+        endDateDoc.to_attended_count
+      );
+      updateField(
+        "eligibility-visit-scheduled",
+        endDateDoc.visit_scheduled_count +
+        endDateDoc.visit_appt_declined_count +
+        endDateDoc.appt_needed_within_week_since_setup_count +
+        endDateDoc.appt_needed_over_week_since_setup_count,
+        startDateDoc.visit_scheduled_count +
+        startDateDoc.visit_appt_declined_count +
+        startDateDoc.appt_needed_within_week_since_setup_count +
+        startDateDoc.appt_needed_over_week_since_setup_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "visit-appointment-declined",
+        endDateDoc.visit_appt_declined_count,
+        startDateDoc.visit_appt_declined_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "unscheduled-week",
+        endDateDoc.appt_needed_within_week_since_setup_count,
+        startDateDoc.appt_needed_within_week_since_setup_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "unscheduled-over-week",
+        endDateDoc.appt_needed_over_week_since_setup_count,
+        startDateDoc.appt_needed_over_week_since_setup_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "reschedule-no-show-tech",
+        endDateDoc.visit_reschedule_noshow_count,
+        startDateDoc.visit_reschedule_noshow_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      )
+      updateField(
+        "visit-scheduled",
+        endDateDoc.visit_scheduled_count,
+        startDateDoc.visit_scheduled_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+
+      updateField(
+        "visit-attended",
+        endDateDoc.visit_attended_count,
+        startDateDoc.visit_attended_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+
+      updateField(
+        "visit-ineligible-at-to",
+        endDateDoc.visit_ineligible_count,
+        startDateDoc.visit_ineligible_count,
+        endDateDoc.visit_attended_count
+      );
+
+      updateField(
+        "visit-declined-proceed",
+        endDateDoc.visit_declined_to_proceed_count,
+        startDateDoc.visit_declined_to_proceed_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "visit-pending-outcome",
+        endDateDoc.visit_pending_oc_count,
+        startDateDoc.visit_pending_oc_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "visit-eligible",
+        endDateDoc.visit_eligible_count,
+        startDateDoc.visit_eligible_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "tech-setup",
+        endDateDoc.visit_attended_count,
+        startDateDoc.visit_attended_count,
+        endDateDoc.to_attend_eligible_at_TO_count
+      );
+      updateField(
+        "tech-setup-appt-scheduled",
+        endDateDoc.tech_setup_schedule_count,
+        startDateDoc.tech_setup_schedule_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "decline-devices",
+        endDateDoc.after_techsetup_appt_declined_to_proceed_with_device,
+        startDateDoc.after_techsetup_appt_declined_to_proceed_with_device,
+        endDateDoc.visit_attended_count
+      );
+      // updateField(
+      //     "unscheduled-week-visit",
+      //     endDateDoc.appt_needed_within_week_since_visit_count,
+      //     startDateDoc.appt_needed_within_week_since_visit_count
+      // );
+      // updateField(
+      //     "unscheduled-over-week-visit",
+      //     endDateDoc.appt_needed_over_week_since_visit_count,
+      //     startDateDoc.appt_needed_over_week_since_visit_count
+      // );
+      updateField(
+        "visit-unscheduled",
+        endDateDoc.visit_unschedule_count,
+        startDateDoc.visit_unschedule_count || 0,
+        endDateDoc.visit_attended_count
+      )
+      updateField(
+        "reschedule-no-show-visit-tech",
+        endDateDoc.res_no_show_tech_appt_count,
+        startDateDoc.res_no_show_tech_appt_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "tech-setup-scheduled",
+        endDateDoc.tech_setup_schedule_count,
+        startDateDoc.tech_setup_schedule_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "tech-setup-attended",
+        endDateDoc.tech_setup_attended_count,
+        startDateDoc.tech_setup_attended_count,
+        endDateDoc.visit_attended_count
+      );
+      updateField(
+        "decline-devices-attended",
+        endDateDoc.after_techsetup_appt_declined_to_proceed_with_device_count,
+        startDateDoc.after_techsetup_appt_declined_to_proceed_with_device_count,
+        endDateDoc.tech_setup_attended_count
+      );
+      updateField(
+        "ineligible-tech-setup",
+        endDateDoc.after_tech_setup_attended_ineligible_count,
+        startDateDoc.after_tech_setup_attended_ineligible_count,
+        endDateDoc.tech_setup_attended_count
+      );
+      updateField(
+        "pending-tech-issue",
+        endDateDoc.tech_issue_with_device_count,
+        startDateDoc.tech_issue_with_device_count,
+        endDateDoc.tech_setup_attended_count
+      );
+      updateField(
+        "self-measures-ready",
+        endDateDoc.self_measure_ready_count,
+        startDateDoc.self_measure_ready_count,
+        endDateDoc.tech_setup_attended_count
+      );
+      updateField(
+        "baseline-self-measures",
+        endDateDoc.self_measure_ready_count,
+        startDateDoc.self_measure_ready_count,
+        endDateDoc.tech_setup_attended_count
+      ); // Assuming same field for progress
+      updateField(
+        "pending-day8",
+        endDateDoc.pending_day_8_count,
+        startDateDoc.pending_day_8_count,
+        endDateDoc.self_measure_ready_count
+      );
+      updateField(
+        "pending-day15",
+        endDateDoc.pending_day_15_check,
+        startDateDoc.pending_day_15_check,
+        endDateDoc.self_measure_ready_count
+      );
+      updateField(
+        "ineligible-bmi",
+        endDateDoc.ineligible_bmi_count,
+        startDateDoc.ineligible_bmi_count,
+        endDateDoc.self_measure_ready_count
+      );
+      updateField(
+        "ineligible-data",
+        endDateDoc.insufficient_data_count,
+        startDateDoc.insufficient_data_count,
+        endDateDoc.self_measure_ready_count
+      );
+      updateField(
+        "eligible-pending-randomization",
+        endDateDoc.elig_pending_randamization_count,
+        startDateDoc.elig_pending_randamization_count,
+        endDateDoc.self_measure_ready_count
+      );
+      updateField(
+        "randomized",
+        endDateDoc.randamization_count,
+        startDateDoc.randamization_count,
+        endDateDoc.self_measure_ready_count
+      );
+
+      document.getElementById("r-percent-target").textContent =
+        ((endDateDoc.randamization_count / 440) * 100).toFixed(1) + "%";
+    } catch (error) {
+      console.error("Error displaying summaries:", err);
     }
-
-    function updateField(id, endValue, changeValue) {
-      const field = document.getElementById(id);
-      const percentField = document.getElementById(id + "-percent");
-      const changeField = document.getElementById(id + "-change");
-
-      // Validate DOM elements
-      if (!field) {
-        console.warn(`Element with ID '${id}' not found.`);
-        return;
-      }
-      if (!percentField) {
-        console.warn(`Element with ID '${id}-percent' not found.`);
-        return;
-      }
-      if (!changeField) {
-        console.warn(`Element with ID '${id}-change' not found.`);
-        return;
-      }
-
-      // Validate numeric values
-      if (isNaN(endValue) || isNaN(changeValue)) {
-        console.warn(
-          `Invalid numeric values: endValue=${endValue}, changeValue=${changeValue}`
-        );
-        return;
-      }
-
-      // Safe update
-      field.innerText = endValue;
-      percentField.innerText = calcChange(endValue, changeValue);
-      changeField.innerText = endValue - changeValue;
-    }
-
-    // Updating fields based on the provided data
-    updateField(
-      "invites-sent",
-      endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
-      startDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count
-    );
-    updateField(
-      "week-wait",
-      endDateDoc.two_week_wait_count,
-      startDateDoc.two_week_wait_count
-    );
-    updateField(
-      "calling-progress",
-      endDateDoc.calling_in_progress_count,
-      startDateDoc.calling_in_progress_count
-    );
-    updateField(
-      "ceased-outreach",
-      endDateDoc.ceased_outreach_count,
-      startDateDoc.ceased_outreach_count
-    );
-    updateField(
-      "requested-call",
-      endDateDoc.requested_call_count,
-      startDateDoc.requested_call_count
-    );
-    updateField(
-      "partial-screen",
-      endDateDoc.partial_screen_count,
-      startDateDoc.partial_screen_count
-    );
-    updateField(
-      "not-screened",
-      endDateDoc.ineligible_prior_to_screen_count +
-      endDateDoc.declined_to_screen_count,
-      startDateDoc.ineligible_prior_to_screen_count +
-      startDateDoc.declined_to_screen_count
-    );
-    updateField(
-      "ineligible-prior",
-      endDateDoc.ineligible_prior_to_screen_count,
-      startDateDoc.ineligible_prior_to_screen_count
-    );
-    updateField(
-      "declined-screen",
-      endDateDoc.declined_to_screen_count,
-      startDateDoc.declined_to_screen_count
-    );
-    updateField(
-      "screened",
-      endDateDoc.screened_count,
-      startDateDoc.screened_count
-    );
-    updateField(
-      "screened-ineligible",
-      endDateDoc.ineligible_count,
-      startDateDoc.ineligible_count
-    );
-    updateField(
-      "eligible-declined",
-      endDateDoc.eligible_but_declined_to_count,
-      startDateDoc.eligible_but_declined_to_count
-    );
-    updateField(
-      "eligible-undecided",
-      endDateDoc.eligible_undecided_count,
-      startDateDoc.eligible_undecided_count
-    );
-    updateField(
-      "maybe-eligible",
-      endDateDoc.maybe_eligible_count,
-      startDateDoc.maybe_eligible_count
-    );
-    updateField(
-      "ies-eligible",
-      endDateDoc.ies_eligible_count,
-      startDateDoc.ies_eligible_count
-    );
-    updateField(
-      "tele-orientation",
-      endDateDoc.eligible_undecided_count +
-      endDateDoc.maybe_eligible_count +
-      endDateDoc.ies_eligible_count,
-      startDateDoc.eligible_undecided_count +
-      startDateDoc.maybe_eligible_count +
-      startDateDoc.ies_eligible_count
-    );
-    updateField(
-      "appointment-declined",
-      endDateDoc.appt_declined_count,
-      startDateDoc.appt_declined_count
-    );
-    updateField(
-      "appointment-needed-week",
-      endDateDoc.appt_needed_within_week_since_ies_count,
-      startDateDoc.appt_needed_within_week_since_ies_count
-    );
-    updateField(
-      "appointment-needed-over-week",
-      endDateDoc.appt_needed_over_week_since_ies_count,
-      startDateDoc.appt_needed_over_week_since_ies_count
-    );
-
-    updateField(
-      "reschedule-no-show",
-      endDateDoc.reschedule_no_show_count,
-      startDateDoc.reschedule_no_show_count
-    );
-    updateField(
-      "to-scheduled",
-      endDateDoc.to_schedule_count,
-      startDateDoc.to_schedule_count
-    );
-    updateField(
-      "to-attended",
-      endDateDoc.to_attended_count,
-      startDateDoc.to_attended_count
-    );
-    updateField(
-      "ineligible-at-to",
-      endDateDoc.ineligible_at_to_count,
-      startDateDoc.ineligible_at_to_count
-    );
-    updateField(
-      "declined-icf",
-      endDateDoc.declined_icf_count,
-      startDateDoc.declined_icf_count
-    );
-    updateField(
-      "declined-proceed",
-      endDateDoc.declined_to_proceed_count_1,
-      startDateDoc.declined_to_proceed_count_1
-    );
-    updateField(
-      "eligible-undecided-to",
-      endDateDoc.eligible_undecided_count,
-      startDateDoc.eligible_undecided_count
-    );
-    updateField(
-      "eligible-pending-md",
-      endDateDoc.eligible_pending_clearance_count,
-      startDateDoc.eligible_pending_clearance_count
-    );
-    updateField(
-      "eligible-at-to",
-      endDateDoc.to_attend_eligible_at_TO_count,
-      startDateDoc.to_attend_eligible_at_TO_count
-    );
-    updateField(
-      "device-readiness",
-      endDateDoc.to_attend_eligible_at_TO_count,
-      startDateDoc.to_attend_eligible_at_TO_count
-    );
-    updateField(
-      "baseline-survey",
-      endDateDoc.needs_baseline_survey_count,
-      startDateDoc.needs_baseline_survey_count
-    );
-    updateField(
-      "setup-pending",
-      endDateDoc.setup_pending_count,
-      startDateDoc.setup_pending_count
-    );
-    updateField(
-      "setup-complete",
-      endDateDoc.setup_complete_count,
-      startDateDoc.setup_complete_count
-    );
-    updateField(
-      "eligibility-visit",
-      endDateDoc.visit_scheduled_count +
-      endDateDoc.visit_appt_declined_count +
-      endDateDoc.appt_needed_within_week_since_setup_count +
-      endDateDoc.appt_needed_over_week_since_setup_count,
-      startDateDoc.visit_scheduled_count +
-      startDateDoc.visit_appt_declined_count +
-      startDateDoc.appt_needed_within_week_since_setup_count +
-      startDateDoc.appt_needed_over_week_since_setup_count
-    );
-
-    updateField(
-      "visit-appointment-declined",
-      endDateDoc.visit_appt_declined_count,
-      startDateDoc.visit_appt_declined_count
-    );
-    updateField(
-      "unscheduled-week",
-      endDateDoc.appt_needed_within_week_since_setup_count,
-      startDateDoc.appt_needed_within_week_since_setup_count
-    );
-    updateField(
-      "unscheduled-over-week",
-      endDateDoc.appt_needed_over_week_since_setup_count,
-      startDateDoc.appt_needed_over_week_since_setup_count
-    );
-    updateField(
-      "reschedule-no-show-tech",
-      endDateDoc.visit_reschedule_noshow_count,
-      startDateDoc.visit_reschedule_noshow_count
-    )
-    updateField(
-      "visit-scheduled",
-      endDateDoc.visit_scheduled_count,
-      startDateDoc.visit_scheduled_count
-    );
-
-    updateField(
-      "visit-attended",
-      endDateDoc.visit_attended_count,
-      startDateDoc.visit_attended_count
-    );
-
-    updateField(
-      "visit-ineligible-at-to",
-      endDateDoc.visit_ineligible_count,
-      startDateDoc.visit_ineligible_count
-    );
-
-    updateField(
-      "visit-declined-proceed",
-      endDateDoc.visit_declined_to_proceed_count,
-      startDateDoc.visit_declined_to_proceed_count
-    );
-    updateField(
-      "visit-pending-outcome",
-      endDateDoc.visit_pending_oc_count,
-      startDateDoc.visit_pending_oc_count
-    );
-    updateField(
-      "visit-eligible",
-      endDateDoc.visit_eligible_count,
-      startDateDoc.visit_eligible_count
-    );
-    updateField(
-      "tech-setup",
-      endDateDoc.tech_setup_schedule_count,
-      startDateDoc.tech_setup_schedule_count
-    );
-    updateField(
-      "decline-devices",
-      endDateDoc.after_techsetup_appt_declined_to_proceed_with_device,
-      startDateDoc.after_techsetup_appt_declined_to_proceed_with_device
-    );
-    // updateField(
-    //     "unscheduled-week-visit",
-    //     endDateDoc.appt_needed_within_week_since_visit_count,
-    //     startDateDoc.appt_needed_within_week_since_visit_count
-    // );
-    // updateField(
-    //     "unscheduled-over-week-visit",
-    //     endDateDoc.appt_needed_over_week_since_visit_count,
-    //     startDateDoc.appt_needed_over_week_since_visit_count
-    // );
-    updateField(
-      "visit-unscheduled",
-      endDateDoc.visit_unschedule_count,
-      startDateDoc.visit_unschedule_count || 0
-    )
-    updateField(
-      "reschedule-no-show-visit-tech",
-      endDateDoc.res_no_show_tech_appt_count,
-      startDateDoc.res_no_show_tech_appt_count
-    );
-    updateField(
-      "tech-setup-scheduled",
-      endDateDoc.tech_setup_schedule_count,
-      startDateDoc.tech_setup_schedule_count
-    );
-    updateField(
-      "tech-setup-attended",
-      endDateDoc.tech_setup_attended_count,
-      startDateDoc.tech_setup_attended_count
-    );
-    updateField(
-      "decline-devices-attended",
-      endDateDoc.after_techsetup_appt_declined_to_proceed_with_device_count,
-      startDateDoc.after_techsetup_appt_declined_to_proceed_with_device_count
-    );
-    updateField(
-      "ineligible-tech-setup",
-      endDateDoc.after_tech_setup_attended_ineligible_count,
-      startDateDoc.after_tech_setup_attended_ineligible_count
-    );
-    updateField(
-      "pending-tech-issue",
-      endDateDoc.tech_issue_with_device_count,
-      startDateDoc.tech_issue_with_device_count
-    );
-    updateField(
-      "self-measures-ready",
-      endDateDoc.self_measure_ready_count,
-      startDateDoc.self_measure_ready_count
-    );
-    updateField(
-      "baseline-self-measures",
-      endDateDoc.self_measure_ready_count,
-      startDateDoc.self_measure_ready_count
-    ); // Assuming same field for progress
-    updateField(
-      "pending-day8",
-      endDateDoc.pending_day_8_count,
-      startDateDoc.pending_day_8_count
-    );
-    updateField(
-      "pending-day15",
-      endDateDoc.pending_day_15_check,
-      startDateDoc.pending_day_15_check
-    );
-    updateField(
-      "ineligible-bmi",
-      endDateDoc.ineligible_bmi_count,
-      startDateDoc.ineligible_bmi_count
-    );
-    updateField(
-      "ineligible-data",
-      endDateDoc.insufficient_data_count,
-      startDateDoc.insufficient_data_count
-    );
-    updateField(
-      "eligible-pending-randomization",
-      endDateDoc.elig_pending_randamization_count,
-      startDateDoc.elig_pending_randamization_count
-    );
-    updateField(
-      "randomized",
-      endDateDoc.randamization_count,
-      startDateDoc.randamization_count
-    );
-
-    document.getElementById("r-percent-target").textContent =
-      ((endDateDoc.randamization_count / 440) * 100).toFixed(1) + "%";
   }
 
   // Trigger data fetch and display in the table
@@ -1005,17 +1150,31 @@
   }
 
   async function fetchSelfHarmSummary() {
+    const btn = document.getElementById("fetch-selfharm-btn");
+    const btnText = document.getElementById("fetch-selfharm-text");
+    const spinner = document.getElementById("fetch-selfharm-spinner");
+
     try {
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
       const response = await fetch(`${serverUrl}/ignite/self-harm-report`);
       const data = await response.json();
       if (!data || data.error) {
+        alert("Error parsing data");
         console.error("Error fetching self-harm data:", data.error);
         return;
       }
 
       populateSelfHarmTable(data);
     } catch (err) {
+      alert("Error fetching data - Try refreshing page and fetching again, or contact support engineer.");
       console.error("Fetch error:", err);
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "Fetch Summary";
     }
   }
 
@@ -1119,19 +1278,20 @@
     // 6. Add worksheet to workbook and save
     XLSX.utils.book_append_sheet(wb, ws, "IGNITE Report");
     XLSX.writeFile(wb, `ignite_recruitment_report_${dateStr}.xlsx`);
-}
+  }
 
-// Utility function to format current date
-function getCurrentDateString() {
-    const now = new Date();
-    return now.toISOString().split("T")[0];
-}
+  // Utility function to format current date
+  function getCurrentDateString() {
+      const now = new Date();
+      return now.toISOString().split("T")[0];
+  }
 
   function exportDetailedToExcel() {
-    const container = document.getElementById("detailed-report-container");
-    const tables = container.querySelectorAll("table");
+    const summaryTable = document.querySelector("#summary-report-container table");
+    const detailedContainer = document.getElementById("detailed-report-container");
+    const detailedTables = detailedContainer.querySelectorAll("table");
 
-    if (tables.length === 0) {
+    if (!summaryTable && detailedTables.length === 0) {
       alert("No data available to export.");
       return;
     }
@@ -1139,10 +1299,33 @@ function getCurrentDateString() {
     const dateStr = getCurrentDateString();
     const wb = XLSX.utils.book_new();
 
-    tables.forEach((table, index) => {
-      const sheetName = table.querySelector("th").textContent || `Sheet${index + 1}`;
+    // Add Summary sheet with bold header
+    if (summaryTable) {
+      const summarySheet = XLSX.utils.table_to_sheet(summaryTable);
+
+      // Apply bold font to the first row (header)
+      const range = XLSX.utils.decode_range(summarySheet['!ref']);
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: col });
+        const cell = summarySheet[cellAddress];
+        if (cell && !cell.s) cell.s = {};
+        if (cell) {
+          cell.s = {
+            font: { bold: true }
+          };
+        }
+      }
+
+      summarySheet['!cols'] = []; // optional: auto width
+      XLSX.utils.book_append_sheet(wb, summarySheet, "Summary");
+    }
+
+    // Add detailed sheets
+    detailedTables.forEach((table, index) => {
+      const titleCell = table.querySelector("th");
+      const sheetName = titleCell ? titleCell.textContent.trim() : `Sheet${index + 1}`;
       const ws = XLSX.utils.table_to_sheet(table);
-      XLSX.utils.book_append_sheet(wb, ws, sheetName.substring(0, 31)); // Excel max sheet name length = 31
+      XLSX.utils.book_append_sheet(wb, ws, sheetName.substring(0, 31));
     });
 
     XLSX.writeFile(wb, `ignite_detailed_staff_report_${dateStr}.xlsx`);
@@ -1151,43 +1334,83 @@ function getCurrentDateString() {
   async function fetchDetailedStaffReport() {
     const url = `${serverUrl}/ignite/detailed-staff-report/`;
 
+    const refreshBtn = document.getElementById("refresh-staff-btn");
+    const spinner = document.getElementById("refresh-btn-spinner");
+    const btnText = document.getElementById("refresh-btn-text");
+
     try {
+      // Show spinner inside button
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
       const response = await fetch(url);
       const data = await response.json();
 
-      const container = document.getElementById("detailed-report-container");
-      container.innerHTML = ""; // Clear previous results
+      const summaryContainer = document.getElementById("summary-report-container");
+      const detailedContainer = document.getElementById("detailed-report-container");
+      summaryContainer.innerHTML = "";
+      detailedContainer.innerHTML = "";
 
-      for (const category in data) {
+      const categories = Object.keys(data).filter((cat) => cat !== "Summary");
+
+      // Build Summary Matrix Table
+      const headerRow = `
+        <thead class="table-primary">
+          <tr><th>Staff</th>${categories.map((cat) => `<th>${cat}</th>`).join("")}</tr>
+        </thead>
+      `;
+
+      const allStaff = new Set();
+      for (const cat of categories) {
+        Object.keys(data[cat]).forEach((staff) => allStaff.add(staff));
+      }
+      const sortedStaff = Array.from(allStaff).sort();
+
+      let bodyRows = "";
+      for (const staff of sortedStaff) {
+        const rowCells = categories.map((cat) => data[cat][staff] || 0);
+        bodyRows += `<tr><td>${staff}</td>${rowCells.map((c) => `<td>${c}</td>`).join("")}</tr>`;
+      }
+
+      const summaryTable = document.createElement("table");
+      summaryTable.classList.add("table", "table-bordered", "mb-4");
+      summaryTable.innerHTML = headerRow + `<tbody>${bodyRows}</tbody>`;
+      summaryContainer.appendChild(summaryTable);
+
+      // Build Detailed Tables
+      for (const category of categories) {
         const table = document.createElement("table");
         table.classList.add("table", "table-bordered", "mb-4");
 
         const thead = `
-        <thead class="table-dark">
-          <tr>
-            <th colspan="2">${category}</th>
-          </tr>
-          <tr>
-            <th>Staff</th>
-            <th>Count</th>
-          </tr>
-        </thead>
-      `;
-        let tbody = "<tbody>";
-        for (const [name, count] of Object.entries(data[category])) {
-          tbody += `<tr><td>${name}</td><td>${count}</td></tr>`;
-        }
-        tbody += "</tbody>";
+          <thead class="table-dark">
+            <tr><th colspan="2">${category}</th></tr>
+            <tr><th>Staff</th><th>Count</th></tr>
+          </thead>
+        `;
+
+        const tbody = `
+          <tbody>
+            ${Object.entries(data[category])
+              .map(([staff, count]) => `<tr><td>${staff}</td><td>${count}</td></tr>`)
+              .join("")}
+          </tbody>
+        `;
 
         table.innerHTML = thead + tbody;
-        container.appendChild(table);
+        detailedContainer.appendChild(table);
       }
     } catch (error) {
       console.error("Error fetching detailed staff report:", error);
-      document.getElementById("detailed-report-container").innerText =
-        "Failed to load staff report.";
+      document.getElementById("detailed-report-container").innerText = "Failed to load staff report.";
+      alert("Error fetching data - Try refreshing page and fetching again, or contact support engineer.");
+    } finally {
+      // Restore button to normal state
+      spinner.style.display = "none";
+      btnText.textContent = "Refresh Staff Report";
     }
   }
+
 
   function exportSelfHarmToExcel() {
     const wb = XLSX.utils.table_to_book(
