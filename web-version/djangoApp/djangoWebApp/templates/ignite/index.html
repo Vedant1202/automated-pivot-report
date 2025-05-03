@@ -597,7 +597,7 @@
 </style>
 
 <script>
-  const serverUrl = "http://localhost:5010";
+  const serverUrl = "http://localhost:8000";
 
   // Fetch available dates from the Flask API
   async function fetchAvailableDates() {
@@ -664,11 +664,11 @@
   // Populate the table with fetched data
   async function populateTable(startDateDoc, endDateDoc) {
     try {
-      function calcChange(newVal, oldVal) {
-        if (!oldVal || oldVal === 0) {
+      function calcChange(parentVal, currentVal) {
+        if (!parentVal || parentVal === 0) {
           return "0%"; // Avoid division by zero, return 0% instead of N/A
         }
-        return (((newVal - oldVal) / oldVal) * 100).toFixed(1) + "%";
+        return (((currentVal) / parentVal) * 100).toFixed(1) + "%";
       }
 
       function updateField(id, endValue, changeValue, parentValue, showPercent = true) {
@@ -701,7 +701,7 @@
         // Safe update
         field.innerText = endValue;
         if (showPercent) {
-          percentField.innerText = calcChange(endValue, parentValue);
+          percentField.innerText = calcChange(parentValue, endValue);
         }
         changeField.innerText = endValue - changeValue;
       }
@@ -929,14 +929,8 @@
       );
       updateField(
         "eligibility-visit-scheduled",
-        endDateDoc.visit_scheduled_count +
-        endDateDoc.visit_appt_declined_count +
-        endDateDoc.appt_needed_within_week_since_setup_count +
-        endDateDoc.appt_needed_over_week_since_setup_count,
-        startDateDoc.visit_scheduled_count +
-        startDateDoc.visit_appt_declined_count +
-        startDateDoc.appt_needed_within_week_since_setup_count +
-        startDateDoc.appt_needed_over_week_since_setup_count,
+        endDateDoc.visit_scheduled_count,
+        startDateDoc.visit_scheduled_count,
         endDateDoc.to_attend_eligible_at_TO_count
       );
       updateField(
