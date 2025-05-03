@@ -164,8 +164,8 @@ def process_redcap_data_for_ignite():
 
             # ------------------invitation sent---------------
             # Check if the invite_date is less than or equal to today's date
-            if invite_date <= today :
-                invite_sent_count += 1
+            # if invite_date <= today :
+            #     invite_sent_count += 1
 
             if 'can_call' in record and record['can_call'].strip():
                 can_call_date = datetime.strptime(record['can_call'], '%Y-%m-%d').date()
@@ -223,13 +223,10 @@ def process_redcap_data_for_ignite():
 
             #-----maybe eligible count-------
             if record['es_oc_maybe'] == '1':
-            # if record['es_oc_maybe'] == '1' or record['es_oc_maybe_v2'] == '1':
                 maybe_eligible_count += 1
 
             #------IES eligible--------
             if record['es_oc_elig'] == '1':
-                # print(record['record_id'])
-            # if record['es_oc_elig'] == '1' or record['es_oc_maybe'] == '1':
                 ies_eligible_count += 1
 
         #--------appointment_decline/ceased---------- 
@@ -260,6 +257,7 @@ def process_redcap_data_for_ignite():
             
         #-------to attend----------
         if record['to_elig_oc'] > '0':
+            # print("REcord ID: " + record['record_id'] + " to attend")
             to_attend_count += 1
             
         if record['es_oc_inelig_v2'] != '1':
@@ -289,7 +287,6 @@ def process_redcap_data_for_ignite():
 
         #------------------------------------------------
         #------needs baseline survey----
-        # if (record['to_elig_oc'] == '1' and record['if_ies_maybe_2'] !='3' and record['redcap_event_name'] == 'enroll_arm_1' and (record['par_oc'] == '1' or record['par_oc'] == '4') ): #----CP = 1 value 
         if (record['to_elig_oc'] == '1' and record['redcap_event_name'] == 'enroll_arm_1' and (record['par_oc'] == '1' or record['par_oc'] == '4') ): #----CP = 1 value 
             # print("implemented for  " + record['record_id'])
             flag == '1'
@@ -299,18 +296,15 @@ def process_redcap_data_for_ignite():
                 'devicesetup_complete': record['devicesetup_complete'],
                 'zoom_appt_status_2': ' ',
                 'receipt_date': record['receipt_date'],
-                # 'ship_delivered': record['ship_delivered']
             }
         
         if 'zoom_appt_status_2' in record and record['redcap_event_name'] == 'enroll_arm_1' and record['zoom_appt_status_2'] in ['4','3','1']:
             # print("Second imppmm for "  + record['record_id'])
             enroll_criteria_met[record['record_id']] = {
-                # 'dist_status': record['dist_status'],
                 'tech_oc': record['tech_oc'],
                 'devicesetup_complete': record['devicesetup_complete'],
                 'zoom_appt_status_2': record['zoom_appt_status_2'],
                 'receipt_date': record['receipt_date'],
-                # 'ship_delivered': record['ship_delivered']
             }
         
         #---------visit declined/ deceased------ 
@@ -334,12 +328,10 @@ def process_redcap_data_for_ignite():
             visit_reschedule_noshow_count += 1
 
         #-------visit Scheduled------- In person Visit scheduled Report
-        # if (record['par_oc'] == '1' or record['par_oc'] == '4' ) and (record['to_elig_oc'] == '1' or record['to_elig_oc'] == '3') and record['ip_appt_status'] != '4' and record['ip_outcome'] in [None]:
         if record['ip_appt_status'] == '1' and record['ip_date'] not in [None] and record['ip_outcome'] in [None, '', ' ']:
             visit_scheduled_count += 1
         
         #--------visit attended------ in person attended OC report 
-        # if record['to_elig_oc'] == '1':
         if record['to_elig_oc'] == '1' and record.get('ip_date') not in [None, '', ' '] and record.get('ip_outcome') not in [None, '', ' ']:
             # print(record['record_id'])
             visit_attended_count += 1
@@ -366,9 +358,9 @@ def process_redcap_data_for_ignite():
             print(record['record_id'])
             res_no_show_tech_appt_count += 1
 
-        #------tech setup scheduled count  ----  from pivot ( in pivot this value is in the first half tech_schedule_setup_count)
-        # if record['tech_oc'] < '1' and record['zoom_appt_status_2'] == '1':
-        if record['zoom_appt_status_2'] == '1':
+        #------tech setup scheduled count  ----  
+        if record['zoom_appt_status_2'] == '1' and record['tech_oc'] in ['1','2', '3','4']:
+            print(record['record_id'])
             tech_setup_attended_count += 1
 
         #--------declined to procees with device after tech setup attended----- from pivot 
@@ -407,7 +399,6 @@ def process_redcap_data_for_ignite():
             if record['redcap_event_name'] == 'baseline_arm_1':
                 
                 #---------needs baseline survey------- from needs baseline survey report 
-                # Check for 'ignite_assessment_survey_complete' < '2'
                 if record['ignite_assessment_survey_complete'] < '2':
                     # print(record['record_id'] + ' here is a split value ' + record['ignite_assessment_survey_complete'])
                     needs_baseline_survey_count += 1
@@ -421,7 +412,6 @@ def process_redcap_data_for_ignite():
                 if device_setup_complete == '1' and record['ignite_assessment_survey_complete'] == '2':
                     devicesetup_complete += 1
             
-                #----calcs!$BX4:$BX30000,1,calcs!$CY4:$CY30000,0,calcs!$CT4:$CT30000,"<>1",calcs!$BY4:$BY30000,"<>1"
                 #-----dist plan is pending---------
                 if record['ignite_assessment_survey_complete'] == '2' and device_setup_complete == '1': # and dist_status_from_enroll in ['2', '3']:
                     cy_var = '1'
@@ -433,26 +423,8 @@ def process_redcap_data_for_ignite():
                 else:  
                     by_var = '0'
                 
-                # #-------appt needed with/over week count for tech setup appt 
-                # if receipt_date.strip():
-                # # #----DD var----=IF(ISNUMBER(DB7),DB7,IF(ISNUMBER(DC7),DC7,""))
-                #     receipt_date_count = today - datetime.strptime(receipt_date, '%Y-%m-%d').date()
-                #     if isinstance(receipt_date_count.days, int):
-                #         dd_var = '1'
-                #     else:
-                #         dd_var = '0'
-
-                    # # print('record_id: ' + record['record_id'] + ' receipt_date_count: ' + str(receipt_date_count.days) + ' dd_var: ' + dd_var + ' cy_var: ' + cy_var + ' zoom_appt_status_2_enroll: ' + zoom_appt_status_2_enroll + ' device_setup_complete: ' + device_setup_complete + ' dist_status_from_enroll: ' + dist_status_from_enroll)
-                    # if (zoom_appt_status_2_enroll == '2' or zoom_appt_status_2_enroll == '0') and cy_var == '1' and tech_oc_from_enroll < '1' and dd_var == '1' and str(receipt_date_count.days) < '7':
-                        
-                    #     # print('record_id: ' + record['record_id'] + ' site: ' + site + ' receipt_date: ' + receipt_date + ' receipt_date_count: ' + str(receipt_date_count.days))
-                    #     appt_needed_within_week_since_visit_count += 1
-                
-                    # if (zoom_appt_status_2_enroll == '2' or zoom_appt_status_2_enroll == '0') and cy_var == '1' and dd_var == '1' and tech_oc_from_enroll < '1' and str(receipt_date_count.days) > '7':
-                    #     appt_needed_over_week_since_visit_count += 1
-
                 #------tech setup appointment-------
-                if record['ignite_assessment_survey_complete'] == '2': # and(dist_status_from_enroll == '2' or dist_status_from_enroll == '3'):   #-----CX=1 value
+                if record['ignite_assessment_survey_complete'] == '2':    #-----CX=1 value
 
                     #-------------decline to proceed with device---- Tech Zoom Scheduling report - from pivot but needs to be updated acc to ignite report. 
                     if zoom_appt_status_2_enroll == '4':
@@ -483,6 +455,89 @@ def process_redcap_data_for_ignite():
                 #------elig pending randomization---------
                     if record['v1_d8_elig_oc_v2'] == '1' or record['v1_d15_elig_oc_v2'] == '1':
                         elig_pending_randamization_count += 1
+
+    invite_sent_count = two_week_wait_count + calling_in_progress_count + ceased_outreach_count + requested_call_count + partial_screen_count + not_screened_count + screened_count
+
+    results_json = {
+        "Invite Sent": {
+            "Invites sent count": invite_sent_count,
+            "Two week wait count": two_week_wait_count,
+            "calling_in_progress_count": calling_in_progress_count,
+            "requested_call_count": requested_call_count,
+            "ceased_outreach_count": ceased_outreach_count,
+            "partial_screen_count": partial_screen_count
+        },
+        "Not Screened": {
+            "ineligible_prior_to_screen_count": ineligible_prior_to_screen_count,
+            "declined_to_screen_count": declined_to_screen_count
+        },
+        "Screened or Rescreen": {
+            "screened_count": screened_count,
+            "ineligible_count": ineligible_count,
+            "eligible_but_declined_to_count": eligible_but_declined_to_count,
+            "eligible_undecided_count": eligible_undecided_count,
+            "maybe_eligible_count": maybe_eligible_count,
+            "IES eligible has": ies_eligible_count
+        },
+        "Ready for TO": {
+            "appt_declined_count": appt_declined_count,
+            "appt_needed_within_week_since_ies_count": appt_needed_within_week_since_ies_count,
+            "appt_needed_over_week_since_ies_count": appt_needed_over_week_since_ies_count,
+            "reschedule_no_show_count": reschedule_no_show_count,
+            "to_schedule_count": to_schedule_count,
+        },
+        "TO Attended":{
+            "to_attended_count": "to_attend_count",
+            "ineligible_at_to_count": ineligible_at_to_count,
+            "declined_icf_count": declined_icf_count,
+            "declined_to_proceed_count_1": declined_to_proceed_count_1,
+            "eligible_pending_clearance_count": eligible_pending_clearance_count,
+            "to_attend_eligible_at_TO_count": to_attend_eligible_at_to_count
+        },
+        "Ready for Device Setup": {
+            "needs_baseline_survey_count": needs_baseline_survey_count,
+            "setup_pending_count": devicesetup_pending,
+            "setup_complete_count": devicesetup_complete
+        },
+        "Ready for Inperson visit": {
+            "visit_scheduled_count": visit_scheduled_count,
+            "visit_appt_declined_count": visit_appt_declined_count,
+            "appt_needed_within_week_since_setup_count": appt_needed_within_week_since_setup_count,
+            "appt_needed_over_week_since_setup_count": appt_needed_over_week_since_setup_count,
+            "visit_reschedule_noshow_count": visit_reschedule_noshow_count,
+        },
+        "Visit Attended": {
+            "visit_attended_count": visit_attended_count,
+            "visit_ineligible_count": visit_ineligible_count,
+            "visit_declined_to_proceed_count": visit_declined_to_proceed_count,
+            "visit_pending_oc_count": visit_pending_oc_count,
+            "visit_eligible_count": visit_eligible_count,
+            
+        },
+        "Ready for TEch Setup Zoom Meeting": {
+            "tech_setup_schedule_count": tech_setup_scheduled_count,
+            "declined_to_proceed_with_device_count": after_techsetup_appt_declined_to_proceed_with_device_count,
+            "visit_unschedule_count": visit_unschedule_count,
+            "res_no_show_tech_appt_count": res_no_show_tech_appt_count,
+            
+        },
+        "Tech Setup Attended": {
+            "tech_setup_attended_count": tech_setup_attended_count,
+            "ineligible_count": after_tech_setup_attended_ineligible_count,
+            "tech_issue_with_device_count": tech_issue_with_device_count,
+            "self_measure_ready_count": self_measure_ready_count,
+        },
+        "Baseline Selfmeasure progress": {
+            "pending_day_8_count": pending_day_8_count,
+            "pending_day_15_check": pending_day_15_check,
+            "ineligible_bmi_count": ineligible_bmi_count,
+            "insufficient_data_count": insufficient_data_count,
+            "elig_pending_randamization_count": elig_pending_randamization_count,
+        },
+        "Randomization": {
+            "randamization_count": randamization_count,
+        }
+    }
 
     results = {
         "invite_sent_count": invite_sent_count,
@@ -525,8 +580,6 @@ def process_redcap_data_for_ignite():
         "visit_pending_oc_count": visit_pending_oc_count,
         "visit_eligible_count": visit_eligible_count,
         "after_techsetup_appt_declined_to_proceed_with_device": after_techsetup_appt_declined_to_proceed_with_device,
-        # "appt_needed_within_week_since_visit_count": appt_needed_within_week_since_visit_count,
-        # "appt_needed_over_week_since_visit_count": appt_needed_over_week_since_visit_count,
         "visit_unschedule_count": visit_unschedule_count,
         "res_no_show_tech_appt_count": res_no_show_tech_appt_count,
         "tech_setup_schedule_count": tech_setup_scheduled_count,
@@ -544,6 +597,7 @@ def process_redcap_data_for_ignite():
     }
 
     return results
+
 
 if __name__ == "__main__":
     try:
