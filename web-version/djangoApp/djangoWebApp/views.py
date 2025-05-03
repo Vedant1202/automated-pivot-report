@@ -205,7 +205,7 @@ def get_saved_data_for_ignite(request):
 
 def custom_404_view(request, exception):
     if request.user.is_authenticated:
-        return redirect('protected')  # Redirect authenticated users
+        return redirect('ignite/report')  # Redirect authenticated users
     return redirect(reverse('login'))  # Redirect unauthenticated users
 
 
