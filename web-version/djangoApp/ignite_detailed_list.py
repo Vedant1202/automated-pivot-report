@@ -51,7 +51,7 @@ def fetch_redcap_staff_report():
     staff_names = {
         '1': "Amruta B", '2': "Leslie S", '3': "Claudia G", '4': "Shannon G",
         '5': "Nancy W", '6': "Corina R", '7': "Nan L", '8': "Jenny J",
-        '9': "Gbenga A", '10': "Abby M", '11': "Richa S", '12': "Rahul V"
+        '9': "Gbenga A", '10': "Abby M", '11': "Richa S", '12': "Rahul V", '13': "Kashvi M", '14': "Brooke B"
     }
 
     # Categories and REDCap fields

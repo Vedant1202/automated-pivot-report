@@ -363,12 +363,12 @@
                 <td id="reschedule-no-show-tech-percent"></td>
                 <td id="reschedule-no-show-tech-change"></td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Visit Scheduled</td>
                 <td id="visit-scheduled"></td>
                 <td id="visit-scheduled-percent"></td>
                 <td id="visit-scheduled-change"></td>
-              </tr>
+              </tr> -->
               <tr>
                 <td class="highlight">Visit Attended</td>
                 <td class="highlight" id="visit-attended"></td>
@@ -709,9 +709,9 @@
       // Updating fields based on the provided data
       updateField(
         "invites-sent",
-        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
-        startDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
-        endDateDoc.invite_sent_count + endDateDoc.ineligible_prior_to_screen_count,
+        endDateDoc.invite_sent_count,
+        startDateDoc.invite_sent_count,
+        endDateDoc.invite_sent_count,
         false
       );
       updateField(
@@ -957,12 +957,12 @@
         startDateDoc.visit_reschedule_noshow_count,
         endDateDoc.to_attend_eligible_at_TO_count
       )
-      updateField(
-        "visit-scheduled",
-        endDateDoc.visit_scheduled_count,
-        startDateDoc.visit_scheduled_count,
-        endDateDoc.to_attend_eligible_at_TO_count
-      );
+      // updateField(
+      //   "visit-scheduled",
+      //   endDateDoc.visit_scheduled_count,
+      //   startDateDoc.visit_scheduled_count,
+      //   endDateDoc.to_attend_eligible_at_TO_count
+      // );
 
       updateField(
         "visit-attended",
@@ -998,8 +998,8 @@
       );
       updateField(
         "tech-setup",
-        endDateDoc.visit_attended_count,
-        startDateDoc.visit_attended_count,
+        endDateDoc.visit_eligible_count,
+        startDateDoc.visit_eligible_count,
         endDateDoc.to_attend_eligible_at_TO_count
       );
       updateField(
@@ -1286,7 +1286,6 @@ function getCurrentDateString() {
     const btnText = document.getElementById("refresh-btn-text");
 
     try {
-      // Show spinner inside button
       spinner.style.display = "inline-block";
       btnText.textContent = "Loading...";
 
@@ -1299,32 +1298,64 @@ function getCurrentDateString() {
       detailedContainer.innerHTML = "";
 
       const categories = Object.keys(data).filter((cat) => cat !== "Summary");
+      const summary = data["Summary"] || {};
 
-      // Build Summary Matrix Table
+      const allStaff = new Set(["Kashvi", "Brooke"]); // Always include these
+      for (const cat of categories) {
+        Object.keys(data[cat]).forEach((staff) => allStaff.add(staff));
+      }
+      const sortedStaff = Array.from(allStaff).sort();
+
+      // Build header
       const headerRow = `
         <thead class="table-primary">
           <tr><th>Staff</th>${categories.map((cat) => `<th>${cat}</th>`).join("")}</tr>
         </thead>
       `;
 
-      const allStaff = new Set();
-      for (const cat of categories) {
-        Object.keys(data[cat]).forEach((staff) => allStaff.add(staff));
-      }
-      const sortedStaff = Array.from(allStaff).sort();
-
+      // Build body rows for each staff
       let bodyRows = "";
       for (const staff of sortedStaff) {
         const rowCells = categories.map((cat) => data[cat][staff] || 0);
         bodyRows += `<tr><td>${staff}</td>${rowCells.map((c) => `<td>${c}</td>`).join("")}</tr>`;
       }
 
+      // Self screening row setup
+      const selfScreenerCompleted = summary["Self Screener Completed"] || 0;
+      const iesEligibleSelf = summary["IES Eligible (Self)"] || 0;
+
+      const selfScreeningMap = {};
+      for (const cat of categories) {
+        if (cat.toLowerCase().includes("eligibility")) {
+          selfScreeningMap[cat] = selfScreenerCompleted;
+        } else if (cat.toLowerCase().includes("ies")) {
+          selfScreeningMap[cat] = iesEligibleSelf;
+        } else {
+          selfScreeningMap[cat] = "";
+        }
+      }
+
+      const selfScreeningRow = `<tr><td><strong>Self screening</strong></td>${
+        categories.map(cat => `<td>${selfScreeningMap[cat]}</td>`).join("")
+      }</tr>`;
+
+      // TOTAL row (including self-screening)
+      const totalRowCells = categories.map((cat) => {
+        const staffSum = Object.values(data[cat]).reduce((acc, val) => acc + (parseInt(val) || 0), 0);
+        const selfAddition = parseInt(selfScreeningMap[cat]) || 0;
+        const total = staffSum + selfAddition;
+        return `<td><strong>${total}</strong></td>`;
+      }).join("");
+
+      const totalRow = `<tr><td><strong>TOTAL</strong></td>${totalRowCells}</tr>`;
+
+      // Build final summary table
       const summaryTable = document.createElement("table");
       summaryTable.classList.add("table", "table-bordered", "mb-4");
-      summaryTable.innerHTML = headerRow + `<tbody>${bodyRows}</tbody>`;
+      summaryTable.innerHTML = headerRow + `<tbody>${bodyRows}${selfScreeningRow}${totalRow}</tbody>`;
       summaryContainer.appendChild(summaryTable);
 
-      // Build Detailed Tables
+      // Build detailed tables per category
       for (const category of categories) {
         const table = document.createElement("table");
         table.classList.add("table", "table-bordered", "mb-4");
@@ -1336,11 +1367,10 @@ function getCurrentDateString() {
           </thead>
         `;
 
+        const staffEntries = Object.entries(data[category]);
         const tbody = `
           <tbody>
-            ${Object.entries(data[category])
-              .map(([staff, count]) => `<tr><td>${staff}</td><td>${count}</td></tr>`)
-              .join("")}
+            ${staffEntries.map(([staff, count]) => `<tr><td>${staff}</td><td>${count}</td></tr>`).join("")}
           </tbody>
         `;
 
@@ -1352,12 +1382,10 @@ function getCurrentDateString() {
       document.getElementById("detailed-report-container").innerText = "Failed to load staff report.";
       alert("Error fetching data - Try refreshing page and fetching again, or contact support engineer.");
     } finally {
-      // Restore button to normal state
       spinner.style.display = "none";
       btnText.textContent = "Refresh Staff Report";
     }
   }
-
 
   function exportSelfHarmToExcel() {
     const wb = XLSX.utils.table_to_book(
