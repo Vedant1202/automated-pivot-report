@@ -449,7 +449,7 @@
                 <td id="tech-setup-scheduled-change"></td>
               </tr>
               <tr>
-                <td class="highlight">Tech Setup Attended</td>
+                <td class="highlight">Tech Setup Scheduled</td>
                 <td class="highlight" id="tech-setup-attended"></td>
                 <td class="highlight" id="tech-setup-attended-percent"></td>
                 <td class="highlight" id="tech-setup-attended-change"></td>
@@ -707,11 +707,14 @@
       }
 
       // Updating fields based on the provided data
+      endInvitesSentCount = endDateDoc.two_week_wait_count + endDateDoc.calling_in_progress_count + endDateDoc.ceased_outreach_count + endDateDoc.requested_call_count + endDateDoc.partial_screen_count + endDateDoc.ineligible_prior_to_screen_count + endDateDoc.declined_to_screen_count + endDateDoc.screened_count
+      startInvitesSentCount = startDateDoc.two_week_wait_count + startDateDoc.calling_in_progress_count + startDateDoc.ceased_outreach_count + startDateDoc.requested_call_count + startDateDoc.partial_screen_count + startDateDoc.ineligible_prior_to_screen_count + startDateDoc.declined_to_screen_count + startDateDoc.screened_count
+      
       updateField(
         "invites-sent",
-        endDateDoc.invite_sent_count,
-        startDateDoc.invite_sent_count,
-        endDateDoc.invite_sent_count,
+        endInvitesSentCount,
+        startInvitesSentCount,
+        endInvitesSentCount,
         false
       );
       updateField(
