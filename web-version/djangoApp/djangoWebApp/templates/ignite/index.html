@@ -536,7 +536,7 @@
       <div class="tab-pane fade" id="detailed" role="tabpanel">
         <div class="container my-4">
           <h3>Staff Task Summary</h3>
-          <button id="refresh-staff-btn" class="btn btn-secondary mb-3" onclick="fetchDetailedStaffReport()">
+          <button id="refresh-staff-btn" class="btn btn-primary mb-3" onclick="fetchDetailedStaffReport()">
             <span id="refresh-btn-text">Refresh Staff Report</span>
             <span id="refresh-btn-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
               <span class="visually-hidden">Loading...</span>
@@ -558,7 +558,7 @@
         <div class="mt-4" id="selfharm-container">
           <h4>Self-Harm Alerts Summary</h4>
 
-          <button id="fetch-selfharm-btn" class="btn btn-info mb-3" onclick="fetchSelfHarmSummary()">
+          <button id="fetch-selfharm-btn" class="btn btn-primary mb-3" onclick="fetchSelfHarmSummary()">
             <span id="fetch-selfharm-text">Fetch Summary</span>
             <span id="fetch-selfharm-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
               <span class="visually-hidden">Loading...</span>
@@ -585,11 +585,17 @@
         <div class="mt-4" id="intervention-container">
           <h4>Intervention Summary</h4>
 
-          <button class="btn btn-secondary mb-3" onclick="fillInterventionWithRandom()">Fill Random Data</button>
-          <button class="btn btn-secondary-outline mb-3" onclick="fillInterventionWithStaticFetch()">Fill Static Fetch Data</button>
+          <button class="btn btn-primary mb-3" onclick="fillInterventionWithFetch()">
+            <span id="fetch-intervention-text">Fetch Latest Table</span>
+            <span id="fetch-intervention-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+          </button>
+          <!-- <button class="btn btn-secondary mb-3" onclick="fillInterventionWithRandom()">Fill Random Data</button>
+          <button class="btn btn-secondary-outline mb-3" onclick="fillInterventionWithStaticFetch()">Fill Static Fetch Data</button> -->
           <button class="btn btn-warning mb-3 ms-2" onclick="exportInterventionToExcel()">Download to Excel</button>
 
-          <h5 class="mt-4">Participant Summary – Early & Later vCare</h5>
+          <h5 class="mt-4">Intervention Summary – Early & Later vCare</h5>
           <table class="table table-bordered">
             <thead class="table-dark">
               <tr>
@@ -600,19 +606,29 @@
             </thead>
             <tbody>
               <tr>
-                <td>Total Participants</td>
+                <td>Total (%)</td>
                 <td id="early-total"></td>
                 <td id="later-total"></td>
               </tr>
               <tr>
-                <td>RAND-1 Notified by Phone</td>
+                <td>RAND-1 Notified By Phone</td>
                 <td id="early-rand1-phone"></td>
                 <td id="later-rand1-phone"></td>
+              </tr>
+              <tr>
+                <td>RAND-2 Notified By Phone</td>
+                <td id="early-rand2-phone"></td>
+                <td id="later-rand2-phone"></td>
               </tr>
               <tr>
                 <td>Intervention Withdrawals</td>
                 <td id="early-withdrawals"></td>
                 <td id="later-withdrawals"></td>
+              </tr>
+              <tr>
+                <td>Study Withdrawals</td>
+                <td id="early-study-withdrawal"></td>
+                <td id="later-study-withdrawal"></td>
               </tr>
               <tr>
                 <td>Post-Randomization Exclusion</td>
@@ -627,7 +643,7 @@
             <thead class="table-dark">
               <tr>
                 <th>Metric</th>
-                <th>Message 1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
                 <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th>
               </tr>
             </thead>
@@ -659,12 +675,12 @@
             </tbody>
           </table>
 
-          <h5 class="mt-4">Early vCare – Maintenance Phase Message Completion</h5>
+          <h5 class="mt-5">Early vCare – Maintenance Phase Message Completion</h5>
           <table class="table table-bordered">
             <thead class="table-dark">
               <tr>
                 <th>Metric</th>
-                <th>Message 1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
                 <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
               </tr>
             </thead>
@@ -706,11 +722,6 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>Expected</td>
-                <td id="early-counsel-1-expected"></td><td id="early-counsel-2-expected"></td><td id="early-counsel-3-expected"></td>
-                <td id="early-counsel-4-expected"></td><td id="early-counsel-5-expected"></td><td id="early-counsel-6-expected"></td>
-                <td id="early-counsel-7-expected"></td><td id="early-counsel-8-expected"></td><td id="early-counsel-9-expected"></td>
-              </tr>
               <tr><td>Completed</td>
                 <td id="early-counsel-1-complete"></td><td id="early-counsel-2-complete"></td><td id="early-counsel-3-complete"></td>
                 <td id="early-counsel-4-complete"></td><td id="early-counsel-5-complete"></td><td id="early-counsel-6-complete"></td>
@@ -744,20 +755,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>PHQ-9 Yes</td>
+              <tr><td>PHQ-9 Completed</td>
                 <td id="early-phq9-1-yes"></td><td id="early-phq9-2-yes"></td><td id="early-phq9-3-yes"></td>
                 <td id="early-phq9-4-yes"></td><td id="early-phq9-5-yes"></td><td id="early-phq9-6-yes"></td>
                 <td id="early-phq9-7-yes"></td><td id="early-phq9-8-yes"></td><td id="early-phq9-9-yes"></td>
               </tr>
-              <tr><td>PHQ-9 No</td>
-                <td id="early-phq9-1-no"></td><td id="early-phq9-2-no"></td><td id="early-phq9-3-no"></td>
-                <td id="early-phq9-4-no"></td><td id="early-phq9-5-no"></td><td id="early-phq9-6-no"></td>
-                <td id="early-phq9-7-no"></td><td id="early-phq9-8-no"></td><td id="early-phq9-9-no"></td>
-              </tr>
-              <tr><td>PHQ-9 Incomplete</td>
+              <tr><td>PHQ-9 Expected</td>
                 <td id="early-phq9-1-incomplete"></td><td id="early-phq9-2-incomplete"></td><td id="early-phq9-3-incomplete"></td>
                 <td id="early-phq9-4-incomplete"></td><td id="early-phq9-5-incomplete"></td><td id="early-phq9-6-incomplete"></td>
                 <td id="early-phq9-7-incomplete"></td><td id="early-phq9-8-incomplete"></td><td id="early-phq9-9-incomplete"></td>
+              </tr>
+              <tr><td>PHQ-9 Overdue</td>
+                <td id="early-phq9-1-overdue"></td><td id="early-phq9-2-overdue"></td><td id="early-phq9-3-overdue"></td>
+                <td id="early-phq9-4-overdue"></td><td id="early-phq9-5-overdue"></td><td id="early-phq9-6-overdue"></td>
+                <td id="early-phq9-7-overdue"></td><td id="early-phq9-8-overdue"></td><td id="early-phq9-9-overdue"></td>
               </tr>
             </tbody>
           </table>
@@ -767,7 +778,7 @@
             <thead class="table-dark">
               <tr>
                 <th>Metric</th>
-                <th>Message 1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
                 <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th>
               </tr>
             </thead>
@@ -799,6 +810,39 @@
             </tbody>
           </table>
 
+          <h5 class="mt-5">Later vCare – Counseling Sessions</h5>
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>Metric</th>
+                <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th>
+                <th>S6</th><th>S7</th><th>S8</th><th>S9</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Completed</td>
+                <td id="later-counsel-1-complete"></td><td id="later-counsel-2-complete"></td><td id="later-counsel-3-complete"></td>
+                <td id="later-counsel-4-complete"></td><td id="later-counsel-5-complete"></td><td id="later-counsel-6-complete"></td>
+                <td id="later-counsel-7-complete"></td><td id="later-counsel-8-complete"></td><td id="later-counsel-9-complete"></td>
+              </tr>
+              <tr><td>Pending</td>
+                <td id="later-counsel-1-pending"></td><td id="later-counsel-2-pending"></td><td id="later-counsel-3-pending"></td>
+                <td id="later-counsel-4-pending"></td><td id="later-counsel-5-pending"></td><td id="later-counsel-6-pending"></td>
+                <td id="later-counsel-7-pending"></td><td id="later-counsel-8-pending"></td><td id="later-counsel-9-pending"></td>
+              </tr>
+              <tr><td>Missed</td>
+                <td id="later-counsel-1-missed"></td><td id="later-counsel-2-missed"></td><td id="later-counsel-3-missed"></td>
+                <td id="later-counsel-4-missed"></td><td id="later-counsel-5-missed"></td><td id="later-counsel-6-missed"></td>
+                <td id="later-counsel-7-missed"></td><td id="later-counsel-8-missed"></td><td id="later-counsel-9-missed"></td>
+              </tr>
+              <tr><td>Withdrew</td>
+                <td id="later-counsel-1-withdraw"></td><td id="later-counsel-2-withdraw"></td><td id="later-counsel-3-withdraw"></td>
+                <td id="later-counsel-4-withdraw"></td><td id="later-counsel-5-withdraw"></td><td id="later-counsel-6-withdraw"></td>
+                <td id="later-counsel-7-withdraw"></td><td id="later-counsel-8-withdraw"></td><td id="later-counsel-9-withdraw"></td>
+              </tr>
+            </tbody>
+          </table>
+
           <h5 class="mt-5">Later vCare – PHQ-9 Sessions</h5>
           <table class="table table-bordered">
             <thead class="table-dark">
@@ -809,20 +853,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr><td>PHQ-9 Yes</td>
+              <tr><td>PHQ-9 Completed</td>
                 <td id="later-phq9-1-yes"></td><td id="later-phq9-2-yes"></td><td id="later-phq9-3-yes"></td>
                 <td id="later-phq9-4-yes"></td><td id="later-phq9-5-yes"></td><td id="later-phq9-6-yes"></td>
                 <td id="later-phq9-7-yes"></td><td id="later-phq9-8-yes"></td><td id="later-phq9-9-yes"></td>
               </tr>
-              <tr><td>PHQ-9 No</td>
-                <td id="later-phq9-1-no"></td><td id="later-phq9-2-no"></td><td id="later-phq9-3-no"></td>
-                <td id="later-phq9-4-no"></td><td id="later-phq9-5-no"></td><td id="later-phq9-6-no"></td>
-                <td id="later-phq9-7-no"></td><td id="later-phq9-8-no"></td><td id="later-phq9-9-no"></td>
-              </tr>
-              <tr><td>PHQ-9 Incomplete</td>
+              <tr><td>PHQ-9 Expected</td>
                 <td id="later-phq9-1-incomplete"></td><td id="later-phq9-2-incomplete"></td><td id="later-phq9-3-incomplete"></td>
                 <td id="later-phq9-4-incomplete"></td><td id="later-phq9-5-incomplete"></td><td id="later-phq9-6-incomplete"></td>
                 <td id="later-phq9-7-incomplete"></td><td id="later-phq9-8-incomplete"></td><td id="later-phq9-9-incomplete"></td>
+              </tr>
+              <tr><td>PHQ-9 Overdue</td>
+                <td id="later-phq9-1-overdue"></td><td id="later-phq9-2-overdue"></td><td id="later-phq9-3-overdue"></td>
+                <td id="later-phq9-4-overdue"></td><td id="later-phq9-5-overdue"></td><td id="later-phq9-6-overdue"></td>
+                <td id="later-phq9-7-overdue"></td><td id="later-phq9-8-overdue"></td><td id="later-phq9-9-overdue"></td>
               </tr>
             </tbody>
           </table>
@@ -832,36 +876,40 @@
             <thead class="table-dark">
               <tr>
                 <th>Survey Type</th>
-                <th>Scheduled</th>
-                <th>Completed</th>
-                <th>Not Yet Due</th>
-                <th>Overdue</th>
-                <th>Withdrawals</th>
+                <th>Tech Check Survey</th>
+                <th>Evaluation Survey</th>
+                <th>On-Demand Lumen Sessions</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Tech Check Survey</td>
+                <td>Scheduled</td>
                 <td id="survey-tech-scheduled"></td>
-                <td id="survey-tech-completed"></td>
-                <td id="survey-tech-notyetdue"></td>
-                <td id="survey-tech-overdue"></td>
-                <td id="survey-tech-withdrawals"></td>
-              </tr>
-              <tr>
-                <td>Evaluation Survey</td>
                 <td id="survey-eval-scheduled"></td>
-                <td id="survey-eval-completed"></td>
-                <td id="survey-eval-notyetdue"></td>
-                <td id="survey-eval-overdue"></td>
-                <td id="survey-eval-withdrawals"></td>
+                <td id="survey-lumen-scheduled"></td>
               </tr>
               <tr>
-                <td>On-Demand Lumen Sessions</td>
-                <td id="survey-lumen-scheduled"></td>
+                <td>Completed</td>
+                <td id="survey-tech-completed"></td>
+                <td id="survey-eval-completed"></td>
                 <td id="survey-lumen-completed"></td>
+              </tr>
+              <tr>
+                <td>Not Yet Due</td>
+                <td id="survey-tech-notyetdue"></td>
+                <td id="survey-eval-notyetdue"></td>
                 <td id="survey-lumen-notyetdue"></td>
+              </tr>
+              <tr>
+                <td>Overdue</td>
+                <td id="survey-tech-overdue"></td>
+                <td id="survey-eval-overdue"></td>
                 <td id="survey-lumen-overdue"></td>
+              </tr>
+              <tr>
+                <td>Withdrawals</td>
+                <td id="survey-tech-withdrawals"></td>
+                <td id="survey-eval-withdrawals"></td>
                 <td id="survey-lumen-withdrawals"></td>
               </tr>
             </tbody>
@@ -1701,6 +1749,7 @@ function getCurrentDateString() {
 
 <!-- INTERVENTIONS -->
 <script>
+  //RANDOM FUNCTION DATA FILLERS IGNORE
   function getRandomInt(min = 0, max = 100) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -1727,108 +1776,402 @@ function getCurrentDateString() {
 
 <script>
 
-const interventionData = {'Table_1': {'Early': {'Total': 11, 'Early Rand-1 Notified by phone': 11, 'Early Rand-2 Notified by phone': 0, 'Early Intervention Withdrawal': 0, 'Early Study Withdrawal': 0, 'Early Post Rand Exclusion': 0}, 'Later': {'Total': 10, 'Later Rand-1 Notified by phone': 10, 'Later Rand-2 Notified by phone': 0, 'Later Intervention Withdrawal': 0, 'Later Study Withdrawal': 0, 'Later Post Rand Exclusion': 0}}, 'Early v_care message completion': {'Active Phase Message Completion': {'Scheduled': {'Message - 1': 3, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'Yes': {'Message - 1': 1, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 1, 'Message - 5': 1, 'Message - 6': 1, 'Message - 7': 1, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'In Progress': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'No': {'Message - 1': 5, 'Message - 2': 1, 'Message - 3': 1, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 1, 'Message - 9': 1, 'Message - 10': 1, 'Message - 11': 1}, 'Withdrawn': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}}}, 'Later v_care message completion': {'Active Phase Message Completion': {'Scheduled': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'Yes': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'In Progress': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'No': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'Withdrawn': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}}}, 'Early v_care maintenance completion': {'Maintenance Phase Message Completion': {'Scheduled': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}, 'Yes': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}, 'In Progress': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}, 'No': {'Message - 1': 1, 'Message - 2': 1, 'Message - 3': 1, 'Message - 4': 1, 'Message - 5': 1, 'Message - 6': 1, 'Message - 7': 1, 'Message - 8': 1, 'Message - 9': 1, 'Message - 10': 0}, 'Withdrawn': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}}}, 'Counseling Session Status': {'Early': {'Session 1': {'Scheduled': 2, 'Completed': 0, 'Missed': 9, 'Pending': 0, 'Withdrawn': 0}, 'Session 2': {'Scheduled': 1, 'Completed': 6, 'Missed': 1, 'Pending': 0, 'Withdrawn': 0}, 'Session 3': {'Scheduled': 2, 'Completed': 2, 'Missed': 5, 'Pending': 0, 'Withdrawn': 0}, 'Session 4': {'Scheduled': 2, 'Completed': 2, 'Missed': 5, 'Pending': 0, 'Withdrawn': 0}, 'Session 5': {'Scheduled': 3, 'Completed': 2, 'Missed': 4, 'Pending': 0, 'Withdrawn': 0}, 'Session 6': {'Scheduled': 4, 'Completed': 2, 'Missed': 3, 'Pending': 0, 'Withdrawn': 0}, 'Session 7': {'Scheduled': 6, 'Completed': 1, 'Missed': 2, 'Pending': 0, 'Withdrawn': 0}, 'Session 8': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 9': {'Scheduled': 8, 'Completed': 1, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}}, 'Later': {'Session 1': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 2': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 3': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 4': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 5': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 6': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 7': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 8': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 9': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}}}, 'PHQ-9 Status by Session': {'Early': {'Session 1': {'Completed': 0, 'Expected': 2, 'Overdue': 9}, 'Session 2': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 3': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 4': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 5': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 6': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 7': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 8': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 9': {'Completed': 0, 'Expected': 0, 'Overdue': 0}}, 'Later': {'Session 1': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 2': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 3': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 4': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 5': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 6': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 7': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 8': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 9': {'Completed': 0, 'Expected': 0, 'Overdue': 0}}}, 'Additional Surveys': {'Tech Check': {'Scheduled': 4, 'Withdrawals': 0, 'Completed': 2, 'Not yet due': 0, 'Overdue': 0}, 'Evaluation': {'Scheduled': 0, 'Withdrawals': 0, 'Completed': 0, 'Not yet due': 0, 'Overdue': 0}, 'On demand Session': {'Withdrawals': 0, 'Completed': 0}}}
+const interventionData = {'Table_1': {'Early': {'Total': 12, 'Early Rand-1 Notified by phone': 12, 'Early Rand-2 Notified by phone': 0, 'Early Intervention Withdrawal': 0, 'Early Study Withdrawal': 0, 'Early Post Rand Exclusion': 0}, 'Later': {'Total': 10, 'Later Rand-1 Notified by phone': 10, 'Later Rand-2 Notified by phone': 0, 'Later Intervention Withdrawal': 0, 'Later Study Withdrawal': 0, 'Later Post Rand Exclusion': 0}}, 'Early v_care message completion': {'Active Phase Message Completion': {'Scheduled': {'Message - 1': 6, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'Yes': {'Message - 1': 1, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 1, 'Message - 5': 1, 'Message - 6': 1, 'Message - 7': 1, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'In Progress': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'No': {'Message - 1': 5, 'Message - 2': 1, 'Message - 3': 1, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 1, 'Message - 9': 1, 'Message - 10': 1, 'Message - 11': 1}, 'Withdrawn': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}}}, 'Later v_care message completion': {'Active Phase Message Completion': {'Scheduled': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'Yes': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'In Progress': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'No': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}, 'Withdrawn': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0, 'Message - 11': 0}}}, 'Early v_care maintenance completion': {'Maintenance Phase Message Completion': {'Scheduled': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}, 'Yes': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}, 'In Progress': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}, 'No': {'Message - 1': 1, 'Message - 2': 1, 'Message - 3': 1, 'Message - 4': 1, 'Message - 5': 1, 'Message - 6': 1, 'Message - 7': 1, 'Message - 8': 1, 'Message - 9': 1, 'Message - 10': 0}, 'Withdrawn': {'Message - 1': 0, 'Message - 2': 0, 'Message - 3': 0, 'Message - 4': 0, 'Message - 5': 0, 'Message - 6': 0, 'Message - 7': 0, 'Message - 8': 0, 'Message - 9': 0, 'Message - 10': 0}}}, 'Counseling Session Status': {'Early': {'Session 1': {'Scheduled': 1, 'Completed': 0, 'Missed': 10, 'Pending': 0, 'Withdrawn': 0}, 'Session 2': {'Scheduled': 3, 'Completed': 6, 'Missed': 3, 'Pending': 0, 'Withdrawn': 0}, 'Session 3': {'Scheduled': 5, 'Completed': 2, 'Missed': 5, 'Pending': 0, 'Withdrawn': 0}, 'Session 4': {'Scheduled': 5, 'Completed': 2, 'Missed': 5, 'Pending': 0, 'Withdrawn': 0}, 'Session 5': {'Scheduled': 6, 'Completed': 2, 'Missed': 4, 'Pending': 0, 'Withdrawn': 0}, 'Session 6': {'Scheduled': 7, 'Completed': 2, 'Missed': 3, 'Pending': 0, 'Withdrawn': 0}, 'Session 7': {'Scheduled': 9, 'Completed': 1, 'Missed': 2, 'Pending': 0, 'Withdrawn': 0}, 'Session 8': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 9': {'Scheduled': 11, 'Completed': 1, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}}, 'Later': {'Session 1': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 2': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 3': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 4': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 5': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 6': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 7': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 8': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}, 'Session 9': {'Scheduled': 0, 'Completed': 0, 'Missed': 0, 'Pending': 0, 'Withdrawn': 0}}}, 'PHQ-9 Status by Session': {'Early': {'Session 1': {'Completed': 0, 'Expected': 1, 'Overdue': 11}, 'Session 2': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 3': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 4': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 5': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 6': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 7': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 8': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 9': {'Completed': 0, 'Expected': 0, 'Overdue': 0}}, 'Later': {'Session 1': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 2': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 3': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 4': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 5': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 6': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 7': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 8': {'Completed': 0, 'Expected': 0, 'Overdue': 0}, 'Session 9': {'Completed': 0, 'Expected': 0, 'Overdue': 0}}}, 'Additional Surveys': {'Tech Check': {'Scheduled': 4, 'Withdrawals': 0, 'Completed': 2, 'Not yet due': 0, 'Overdue': 0}, 'Evaluation': {'Scheduled': 0, 'Withdrawals': 0, 'Completed': 0, 'Not yet due': 0, 'Overdue': 0}, 'On demand Session': {'Withdrawals': 0, 'Completed': 0}}}
 
-function fillInterventionFromData(data) {
-  // 1. Table 1 - Summary Stats
-  const early = data['Table_1']['Early'];
-  const later = data['Table_1']['Later'];
-  document.getElementById('early-total').innerText = early['Total'];
-  document.getElementById('early-rand1-phone').innerText = early['Early Rand-1 Notified by phone'];
-  document.getElementById('early-rand2-phone').innerText = early['Early Rand-2 Notified by phone'];
-  document.getElementById('early-withdrawals').innerText = early['Early Intervention Withdrawal'];
-  document.getElementById('early-study-withdrawals').innerText = early['Early Study Withdrawal'];
-  document.getElementById('early-postrand').innerText = early['Early Post Rand Exclusion'];
+const mappingJson = {
+  "early-total": "Table_1.Early.Total",
+  "later-total": "Table_1.Later.Total",
+  "early-rand1-phone": "Table_1.Early.Early Rand-1 Notified by phone",
+  "later-rand1-phone": "Table_1.Later.Later Rand-1 Notified by phone",
+  "early-rand2-phone": "Table_1.Early.Early Rand-2 Notified by phone",
+  "later-rand2-phone": "Table_1.Later.Later Rand-2 Notified by phone",
+  "early-withdrawals": "Table_1.Early.Early Intervention Withdrawal",
+  "later-withdrawals": "Table_1.Later.Later Intervention Withdrawal",
+  "early-study-withdrawal": "Table_1.Early.Early Study Withdrawal",
+  "later-study-withdrawal": "Table_1.Later.Later Study Withdrawal",
+  "early-postrand": "Table_1.Early.Early Post Rand Exclusion",
+  "later-postrand": "Table_1.Later.Later Post Rand Exclusion",
 
-  document.getElementById('later-total').innerText = later['Total'];
-  document.getElementById('later-rand1-phone').innerText = later['Later Rand-1 Notified by phone'];
-  document.getElementById('later-rand2-phone').innerText = later['Later Rand-2 Notified by phone'];
-  document.getElementById('later-withdrawals').innerText = later['Later Intervention Withdrawal'];
-  document.getElementById('later-study-withdrawals').innerText = later['Later Study Withdrawal'];
-  document.getElementById('later-postrand').innerText = later['Later Post Rand Exclusion'];
 
-  // 2. Early vCare Messages - Active Phase
-  const emc = data['Early v_care message completion']['Active Phase Message Completion'];
-  for (let status in emc) {
-    for (let msg in emc[status]) {
-      const id = `early-msg-${msg.split(' ')[2]}-${status.toLowerCase().replaceAll(' ', '')}`;
-      if (document.getElementById(id)) {
-        document.getElementById(id).innerText = emc[status][msg];
-      }
-    }
-  }
+  "early-msg-1-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 1",
+  "early-msg-2-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 2",
+  "early-msg-3-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 3",
+  "early-msg-4-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 4",
+  "early-msg-5-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 5",
+  "early-msg-6-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 6",
+  "early-msg-7-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 7",
+  "early-msg-8-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 8",
+  "early-msg-9-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 9",
+  "early-msg-10-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 10",
+  "early-msg-11-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 11",
 
-  // 3. Early vCare Messages - Maintenance Phase
-  const emc_maint = data['Early v_care maintenance completion']['Maintenance Phase Message Completion'];
-  for (let status in emc_maint) {
-    for (let msg in emc_maint[status]) {
-      const id = `early-maint-msg-${msg.split(' ')[2]}-${status.toLowerCase().replaceAll(' ', '')}`;
-      if (document.getElementById(id)) {
-        document.getElementById(id).innerText = emc_maint[status][msg];
-      }
-    }
-  }
+  "early-msg-1-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 1",
+  "early-msg-2-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 2",
+  "early-msg-3-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 3",
+  "early-msg-4-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 4",
+  "early-msg-5-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 5",
+  "early-msg-6-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 6",
+  "early-msg-7-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 7",
+  "early-msg-8-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 8",
+  "early-msg-9-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 9",
+  "early-msg-10-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 10",
+  "early-msg-11-no": "Early v_care message completion.Active Phase Message Completion.No.Message - 11",
 
-  // 4. Later vCare Messages - Active Phase
-  const lmc = data['Later v_care message completion']['Active Phase Message Completion'];
-  for (let status in lmc) {
-    for (let msg in lmc[status]) {
-      const id = `later-msg-${msg.split(' ')[2]}-${status.toLowerCase().replaceAll(' ', '')}`;
-      if (document.getElementById(id)) {
-        document.getElementById(id).innerText = lmc[status][msg];
-      }
-    }
-  }
+  "early-msg-1-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 1",
+  "early-msg-2-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 2",
+  "early-msg-3-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 3",
+  "early-msg-4-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 4",
+  "early-msg-5-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 5",
+  "early-msg-6-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 6",
+  "early-msg-7-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 7",
+  "early-msg-8-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 8",
+  "early-msg-9-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 9",
+  "early-msg-10-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 10",
+  "early-msg-11-inprog": "Early v_care message completion.Active Phase Message Completion.In Progress.Message - 11",
 
-  // 5. Counseling Sessions
-  const sessions = ['Early', 'Later'];
-  sessions.forEach(group => {
-    const sessData = data['Counseling Session Status'][group];
-    for (let s in sessData) {
-      for (let status in sessData[s]) {
-        const id = `${group.toLowerCase()}-counsel-${s.split(' ')[1]}-${status.toLowerCase()}`;
-        if (document.getElementById(id)) {
-          document.getElementById(id).innerText = sessData[s][status];
-        }
-      }
-    }
-  });
+  "early-msg-1-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 1",
+  "early-msg-2-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 2",
+  "early-msg-3-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 3",
+  "early-msg-4-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 4",
+  "early-msg-5-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 5",
+  "early-msg-6-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 6",
+  "early-msg-7-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 7",
+  "early-msg-8-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 8",
+  "early-msg-9-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 9",
+  "early-msg-10-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 10",
+  "early-msg-11-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 11",
 
-  // 6. PHQ-9 by Session
-  const phq = data['PHQ-9 Status by Session'];
-  sessions.forEach(group => {
-    const sess = phq[group];
-    for (let s in sess) {
-      for (let status in sess[s]) {
-        const id = `${group.toLowerCase()}-phq9-${s.split(' ')[1]}-${status.toLowerCase()}`;
-        if (document.getElementById(id)) {
-          document.getElementById(id).innerText = sess[s][status];
-        }
-      }
-    }
-  });
 
-  // 7. Additional Surveys
-  const surveyMap = {
-    'Tech Check': 'tech',
-    'Evaluation': 'eval',
-    'On demand Session': 'lumen'
-  };
-  const surveys = data['Additional Surveys'];
-  for (let label in surveys) {
-    const idPrefix = surveyMap[label];
-    const values = surveys[label];
-    for (let status in values) {
-      const id = `survey-${idPrefix}-${status.toLowerCase().replaceAll(' ', '')}`;
-      if (document.getElementById(id)) {
-        document.getElementById(id).innerText = values[status];
-      }
-    }
-  }
+  "early-maint-msg-1-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 1",
+  "early-maint-msg-2-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 2",
+  "early-maint-msg-3-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 3",
+  "early-maint-msg-4-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 4",
+  "early-maint-msg-5-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 5",
+  "early-maint-msg-6-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 6",
+  "early-maint-msg-7-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 7",
+  "early-maint-msg-8-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 8",
+  "early-maint-msg-9-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 9",
+  "early-maint-msg-10-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 10",
+
+  "early-maint-msg-1-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 1",
+  "early-maint-msg-2-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 2",
+  "early-maint-msg-3-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 3",
+  "early-maint-msg-4-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 4",
+  "early-maint-msg-5-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 5",
+  "early-maint-msg-6-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 6",
+  "early-maint-msg-7-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 7",
+  "early-maint-msg-8-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 8",
+  "early-maint-msg-9-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 9",
+  "early-maint-msg-10-no": "Early v_care maintenance completion.Maintenance Phase Message Completion.No.Message - 10",
+
+  "early-maint-msg-1-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 1",
+  "early-maint-msg-2-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 2",
+  "early-maint-msg-3-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 3",
+  "early-maint-msg-4-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 4",
+  "early-maint-msg-5-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 5",
+  "early-maint-msg-6-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 6",
+  "early-maint-msg-7-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 7",
+  "early-maint-msg-8-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 8",
+  "early-maint-msg-9-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 9",
+  "early-maint-msg-10-inprog": "Early v_care maintenance completion.Maintenance Phase Message Completion.In Progress.Message - 10",
+
+  "early-maint-msg-1-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 1",
+  "early-maint-msg-2-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 2",
+  "early-maint-msg-3-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 3",
+  "early-maint-msg-4-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 4",
+  "early-maint-msg-5-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 5",
+  "early-maint-msg-6-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 6",
+  "early-maint-msg-7-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 7",
+  "early-maint-msg-8-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 8",
+  "early-maint-msg-9-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 9",
+  "early-maint-msg-10-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 10",
+
+
+  "early-counsel-1-complete": "Counseling Session Status.Early.Session 1.Completed",
+  "early-counsel-2-complete": "Counseling Session Status.Early.Session 2.Completed",
+  "early-counsel-3-complete": "Counseling Session Status.Early.Session 3.Completed",
+  "early-counsel-4-complete": "Counseling Session Status.Early.Session 4.Completed",
+  "early-counsel-5-complete": "Counseling Session Status.Early.Session 5.Completed",
+  "early-counsel-6-complete": "Counseling Session Status.Early.Session 6.Completed",
+  "early-counsel-7-complete": "Counseling Session Status.Early.Session 7.Completed",
+  "early-counsel-8-complete": "Counseling Session Status.Early.Session 8.Completed",
+  "early-counsel-9-complete": "Counseling Session Status.Early.Session 9.Completed",
+
+  "early-counsel-1-pending": "Counseling Session Status.Early.Session 1.Pending",
+  "early-counsel-2-pending": "Counseling Session Status.Early.Session 2.Pending",
+  "early-counsel-3-pending": "Counseling Session Status.Early.Session 3.Pending",
+  "early-counsel-4-pending": "Counseling Session Status.Early.Session 4.Pending",
+  "early-counsel-5-pending": "Counseling Session Status.Early.Session 5.Pending",
+  "early-counsel-6-pending": "Counseling Session Status.Early.Session 6.Pending",
+  "early-counsel-7-pending": "Counseling Session Status.Early.Session 7.Pending",
+  "early-counsel-8-pending": "Counseling Session Status.Early.Session 8.Pending",
+  "early-counsel-9-pending": "Counseling Session Status.Early.Session 9.Pending",
+
+  "early-counsel-1-missed": "Counseling Session Status.Early.Session 1.Missed",
+  "early-counsel-2-missed": "Counseling Session Status.Early.Session 2.Missed",
+  "early-counsel-3-missed": "Counseling Session Status.Early.Session 3.Missed",
+  "early-counsel-4-missed": "Counseling Session Status.Early.Session 4.Missed",
+  "early-counsel-5-missed": "Counseling Session Status.Early.Session 5.Missed",
+  "early-counsel-6-missed": "Counseling Session Status.Early.Session 6.Missed",
+  "early-counsel-7-missed": "Counseling Session Status.Early.Session 7.Missed",
+  "early-counsel-8-missed": "Counseling Session Status.Early.Session 8.Missed",
+  "early-counsel-9-missed": "Counseling Session Status.Early.Session 9.Missed",
+
+  "early-counsel-1-withdraw": "Counseling Session Status.Early.Session 1.Withdrawn",
+  "early-counsel-2-withdraw": "Counseling Session Status.Early.Session 2.Withdrawn",
+  "early-counsel-3-withdraw": "Counseling Session Status.Early.Session 3.Withdrawn",
+  "early-counsel-4-withdraw": "Counseling Session Status.Early.Session 4.Withdrawn",
+  "early-counsel-5-withdraw": "Counseling Session Status.Early.Session 5.Withdrawn",
+  "early-counsel-6-withdraw": "Counseling Session Status.Early.Session 6.Withdrawn",
+  "early-counsel-7-withdraw": "Counseling Session Status.Early.Session 7.Withdrawn",
+  "early-counsel-8-withdraw": "Counseling Session Status.Early.Session 8.Withdrawn",
+  "early-counsel-9-withdraw": "Counseling Session Status.Early.Session 9.Withdrawn",
+
+
+  "early-phq9-1-yes": "PHQ-9 Status by Session.Early.Session 1.Completed",
+  "early-phq9-2-yes": "PHQ-9 Status by Session.Early.Session 2.Completed",
+  "early-phq9-3-yes": "PHQ-9 Status by Session.Early.Session 3.Completed",
+  "early-phq9-4-yes": "PHQ-9 Status by Session.Early.Session 4.Completed",
+  "early-phq9-5-yes": "PHQ-9 Status by Session.Early.Session 5.Completed",
+  "early-phq9-6-yes": "PHQ-9 Status by Session.Early.Session 6.Completed",
+  "early-phq9-7-yes": "PHQ-9 Status by Session.Early.Session 7.Completed",
+  "early-phq9-8-yes": "PHQ-9 Status by Session.Early.Session 8.Completed",
+  "early-phq9-9-yes": "PHQ-9 Status by Session.Early.Session 9.Completed",
+
+  "early-phq9-1-incomplete": "PHQ-9 Status by Session.Early.Session 1.Expected",
+  "early-phq9-2-incomplete": "PHQ-9 Status by Session.Early.Session 2.Expected",
+  "early-phq9-3-incomplete": "PHQ-9 Status by Session.Early.Session 3.Expected",
+  "early-phq9-4-incomplete": "PHQ-9 Status by Session.Early.Session 4.Expected",
+  "early-phq9-5-incomplete": "PHQ-9 Status by Session.Early.Session 5.Expected",
+  "early-phq9-6-incomplete": "PHQ-9 Status by Session.Early.Session 6.Expected",
+  "early-phq9-7-incomplete": "PHQ-9 Status by Session.Early.Session 7.Expected",
+  "early-phq9-8-incomplete": "PHQ-9 Status by Session.Early.Session 8.Expected",
+  "early-phq9-9-incomplete": "PHQ-9 Status by Session.Early.Session 9.Expected",
+
+  "early-phq9-1-overdue": "PHQ-9 Status by Session.Early.Session 1.Overdue",
+  "early-phq9-2-overdue": "PHQ-9 Status by Session.Early.Session 2.Overdue",
+  "early-phq9-3-overdue": "PHQ-9 Status by Session.Early.Session 3.Overdue",
+  "early-phq9-4-overdue": "PHQ-9 Status by Session.Early.Session 4.Overdue",
+  "early-phq9-5-overdue": "PHQ-9 Status by Session.Early.Session 5.Overdue",
+  "early-phq9-6-overdue": "PHQ-9 Status by Session.Early.Session 6.Overdue",
+  "early-phq9-7-overdue": "PHQ-9 Status by Session.Early.Session 7.Overdue",
+  "early-phq9-8-overdue": "PHQ-9 Status by Session.Early.Session 8.Overdue",
+  "early-phq9-9-overdue": "PHQ-9 Status by Session.Early.Session 9.Overdue",
+
+
+  // YES
+  "later-msg-1-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 1",
+  "later-msg-2-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 2",
+  "later-msg-3-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 3",
+  "later-msg-4-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 4",
+  "later-msg-5-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 5",
+  "later-msg-6-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 6",
+  "later-msg-7-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 7",
+  "later-msg-8-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 8",
+  "later-msg-9-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 9",
+  "later-msg-10-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 10",
+  "later-msg-11-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 11",
+
+  // NO
+  "later-msg-1-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 1",
+  "later-msg-2-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 2",
+  "later-msg-3-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 3",
+  "later-msg-4-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 4",
+  "later-msg-5-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 5",
+  "later-msg-6-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 6",
+  "later-msg-7-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 7",
+  "later-msg-8-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 8",
+  "later-msg-9-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 9",
+  "later-msg-10-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 10",
+  "later-msg-11-no": "Later v_care message completion.Active Phase Message Completion.No.Message - 11",
+
+  // IN PROGRESS
+  "later-msg-1-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 1",
+  "later-msg-2-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 2",
+  "later-msg-3-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 3",
+  "later-msg-4-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 4",
+  "later-msg-5-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 5",
+  "later-msg-6-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 6",
+  "later-msg-7-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 7",
+  "later-msg-8-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 8",
+  "later-msg-9-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 9",
+  "later-msg-10-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 10",
+  "later-msg-11-inprog": "Later v_care message completion.Active Phase Message Completion.In Progress.Message - 11",
+
+  // WITHDRAWN
+  "later-msg-1-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 1",
+  "later-msg-2-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 2",
+  "later-msg-3-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 3",
+  "later-msg-4-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 4",
+  "later-msg-5-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 5",
+  "later-msg-6-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 6",
+  "later-msg-7-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 7",
+  "later-msg-8-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 8",
+  "later-msg-9-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 9",
+  "later-msg-10-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 10",
+  "later-msg-11-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 11",
+
+
+  "later-counsel-1-complete": "Counseling Session Status.Later.Session 1.Completed",
+  "later-counsel-2-complete": "Counseling Session Status.Later.Session 2.Completed",
+  "later-counsel-3-complete": "Counseling Session Status.Later.Session 3.Completed",
+  "later-counsel-4-complete": "Counseling Session Status.Later.Session 4.Completed",
+  "later-counsel-5-complete": "Counseling Session Status.Later.Session 5.Completed",
+  "later-counsel-6-complete": "Counseling Session Status.Later.Session 6.Completed",
+  "later-counsel-7-complete": "Counseling Session Status.Later.Session 7.Completed",
+  "later-counsel-8-complete": "Counseling Session Status.Later.Session 8.Completed",
+  "later-counsel-9-complete": "Counseling Session Status.Later.Session 9.Completed",
+
+  "later-counsel-1-pending": "Counseling Session Status.Later.Session 1.Pending",
+  "later-counsel-2-pending": "Counseling Session Status.Later.Session 2.Pending",
+  "later-counsel-3-pending": "Counseling Session Status.Later.Session 3.Pending",
+  "later-counsel-4-pending": "Counseling Session Status.Later.Session 4.Pending",
+  "later-counsel-5-pending": "Counseling Session Status.Later.Session 5.Pending",
+  "later-counsel-6-pending": "Counseling Session Status.Later.Session 6.Pending",
+  "later-counsel-7-pending": "Counseling Session Status.Later.Session 7.Pending",
+  "later-counsel-8-pending": "Counseling Session Status.Later.Session 8.Pending",
+  "later-counsel-9-pending": "Counseling Session Status.Later.Session 9.Pending",
+
+  "later-counsel-1-missed": "Counseling Session Status.Later.Session 1.Missed",
+  "later-counsel-2-missed": "Counseling Session Status.Later.Session 2.Missed",
+  "later-counsel-3-missed": "Counseling Session Status.Later.Session 3.Missed",
+  "later-counsel-4-missed": "Counseling Session Status.Later.Session 4.Missed",
+  "later-counsel-5-missed": "Counseling Session Status.Later.Session 5.Missed",
+  "later-counsel-6-missed": "Counseling Session Status.Later.Session 6.Missed",
+  "later-counsel-7-missed": "Counseling Session Status.Later.Session 7.Missed",
+  "later-counsel-8-missed": "Counseling Session Status.Later.Session 8.Missed",
+  "later-counsel-9-missed": "Counseling Session Status.Later.Session 9.Missed",
+
+  "later-counsel-1-withdraw": "Counseling Session Status.Later.Session 1.Withdrawn",
+  "later-counsel-2-withdraw": "Counseling Session Status.Later.Session 2.Withdrawn",
+  "later-counsel-3-withdraw": "Counseling Session Status.Later.Session 3.Withdrawn",
+  "later-counsel-4-withdraw": "Counseling Session Status.Later.Session 4.Withdrawn",
+  "later-counsel-5-withdraw": "Counseling Session Status.Later.Session 5.Withdrawn",
+  "later-counsel-6-withdraw": "Counseling Session Status.Later.Session 6.Withdrawn",
+  "later-counsel-7-withdraw": "Counseling Session Status.Later.Session 7.Withdrawn",
+  "later-counsel-8-withdraw": "Counseling Session Status.Later.Session 8.Withdrawn",
+  "later-counsel-9-withdraw": "Counseling Session Status.Later.Session 9.Withdrawn",
+
+
+  "later-phq9-1-yes": "PHQ-9 Status by Session.Later.Session 1.Completed",
+  "later-phq9-2-yes": "PHQ-9 Status by Session.Later.Session 2.Completed",
+  "later-phq9-3-yes": "PHQ-9 Status by Session.Later.Session 3.Completed",
+  "later-phq9-4-yes": "PHQ-9 Status by Session.Later.Session 4.Completed",
+  "later-phq9-5-yes": "PHQ-9 Status by Session.Later.Session 5.Completed",
+  "later-phq9-6-yes": "PHQ-9 Status by Session.Later.Session 6.Completed",
+  "later-phq9-7-yes": "PHQ-9 Status by Session.Later.Session 7.Completed",
+  "later-phq9-8-yes": "PHQ-9 Status by Session.Later.Session 8.Completed",
+  "later-phq9-9-yes": "PHQ-9 Status by Session.Later.Session 9.Completed",
+
+  "later-phq9-1-incomplete": "PHQ-9 Status by Session.Later.Session 1.Expected",
+  "later-phq9-2-incomplete": "PHQ-9 Status by Session.Later.Session 2.Expected",
+  "later-phq9-3-incomplete": "PHQ-9 Status by Session.Later.Session 3.Expected",
+  "later-phq9-4-incomplete": "PHQ-9 Status by Session.Later.Session 4.Expected",
+  "later-phq9-5-incomplete": "PHQ-9 Status by Session.Later.Session 5.Expected",
+  "later-phq9-6-incomplete": "PHQ-9 Status by Session.Later.Session 6.Expected",
+  "later-phq9-7-incomplete": "PHQ-9 Status by Session.Later.Session 7.Expected",
+  "later-phq9-8-incomplete": "PHQ-9 Status by Session.Later.Session 8.Expected",
+  "later-phq9-9-incomplete": "PHQ-9 Status by Session.Later.Session 9.Expected",
+
+  "later-phq9-1-overdue": "PHQ-9 Status by Session.Later.Session 1.Overdue",
+  "later-phq9-2-overdue": "PHQ-9 Status by Session.Later.Session 2.Overdue",
+  "later-phq9-3-overdue": "PHQ-9 Status by Session.Later.Session 3.Overdue",
+  "later-phq9-4-overdue": "PHQ-9 Status by Session.Later.Session 4.Overdue",
+  "later-phq9-5-overdue": "PHQ-9 Status by Session.Later.Session 5.Overdue",
+  "later-phq9-6-overdue": "PHQ-9 Status by Session.Later.Session 6.Overdue",
+  "later-phq9-7-overdue": "PHQ-9 Status by Session.Later.Session 7.Overdue",
+  "later-phq9-8-overdue": "PHQ-9 Status by Session.Later.Session 8.Overdue",
+  "later-phq9-9-overdue": "PHQ-9 Status by Session.Later.Session 9.Overdue",
+
+
+  "survey-tech-scheduled": "Additional Surveys.Tech Check.Scheduled",
+  "survey-eval-scheduled": "Additional Surveys.Evaluation.Scheduled",
+  "survey-lumen-scheduled": "Additional Surveys.On demand Session.Scheduled",
+
+  "survey-tech-completed": "Additional Surveys.Tech Check.Completed",
+  "survey-eval-completed": "Additional Surveys.Evaluation.Completed",
+  "survey-lumen-completed": "Additional Surveys.On demand Session.Completed",
+
+  "survey-tech-notyetdue": "Additional Surveys.Tech Check.Not yet due",
+  "survey-eval-notyetdue": "Additional Surveys.Evaluation.Not yet due",
+  "survey-lumen-notyetdue": "Additional Surveys.On demand Session.Not yet due",
+
+  "survey-tech-overdue": "Additional Surveys.Tech Check.Overdue",
+  "survey-eval-overdue": "Additional Surveys.Evaluation.Overdue",
+  "survey-lumen-overdue": "Additional Surveys.On demand Session.Overdue",
+
+  "survey-tech-withdrawals": "Additional Surveys.Tech Check.Withdrawals",
+  "survey-eval-withdrawals": "Additional Surveys.Evaluation.Withdrawals",
+  "survey-lumen-withdrawals": "Additional Surveys.On demand Session.Withdrawals"
+
 }
 
+
+function fillInterventionTable(dataJson, mappingJson) {
+  const filled = [];
+  const missingData = [];
+  const missingDOM = [];
+
+  function getNestedValue(obj, pathStr) {
+    const parts = pathStr.split('.');
+    return parts.reduce((acc, key) => acc && acc[key], obj);
+  }
+
+  for (const [id, path] of Object.entries(mappingJson)) {
+    const el = document.getElementById(id);
+    const value = getNestedValue(dataJson, path);
+
+    if (el) {
+      if (value !== undefined) {
+        el.innerText = value;
+        filled.push(id);
+      } else {
+        el.innerText = "-";
+        missingData.push(`${id} → Missing data at path: ${path}`);
+      }
+    } else {
+      missingDOM.push(`${id} → No element with this ID`);
+    }
+  }
+
+  // console.log(`✅ Filled fields (${filled.length}):`, filled);
+  console.warn(`⚠️ Missing in data (${missingData.length}):`, missingData);
+  console.error(`❌ Missing in DOM (${missingDOM.length}):`, missingDOM);
+}
+
+function fillInterventionWithFetch() {
+  const button = document.querySelector('button[onclick="fillInterventionWithFetch()"]');
+  const buttonText = document.getElementById("fetch-intervention-text");
+  const buttonSpinner = document.getElementById("fetch-intervention-spinner");
+
+  // Disable button & show loader
+  button.disabled = true;
+  buttonText.style.display = "none";
+  buttonSpinner.style.display = "inline-block";
+
+  fetch(`${serverUrl}/ignite/intervention/`)
+    .then(response => {
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
+      return response.json();
+    })
+    .then(data => {
+      fillInterventionTable(data, mappingJson);
+    })
+    .catch(error => {
+      console.error("Failed to fetch intervention data:", error);
+      alert("Error fetching intervention data. See console for details.");
+    })
+    .finally(() => {
+      // Restore button to default state
+      button.disabled = false;
+      buttonText.style.display = "inline";
+      buttonSpinner.style.display = "none";
+    });
+}
+
+// STATIC DATA TEST ONLY
 function fillInterventionWithStaticFetch () {
-  fillInterventionFromData(interventionData);
+  fillInterventionTable(interventionData, mappingJson);
 }
 </script>
 
