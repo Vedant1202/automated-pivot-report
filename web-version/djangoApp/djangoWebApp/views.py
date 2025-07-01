@@ -13,6 +13,7 @@ import ignite_recruitment_report  # Import your existing script
 from django.views.decorators.csrf import csrf_exempt
 from ignite_detailed_list import fetch_redcap_staff_report
 from ignite_self_harm import process_self_harm_data
+from ignite_intervention_report import fetch_ignite_intervention_report
 
 ## For scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -103,6 +104,19 @@ def get_detailed_staff_report(request):
     """
     try:
         report_data = fetch_redcap_staff_report()
+        return JsonResponse(report_data, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@csrf_exempt
+@api_view(['GET'])
+@login_required
+def get_ignite_intervention_report(request):
+    """
+    GET endpoint to return staff activity summary from REDCap.
+    """
+    try:
+        report_data = fetch_ignite_intervention_report()
         return JsonResponse(report_data, safe=False)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
