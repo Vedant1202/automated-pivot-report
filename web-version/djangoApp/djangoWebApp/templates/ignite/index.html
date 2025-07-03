@@ -2344,6 +2344,63 @@ function fillInterventionWithFetch() {
 function fillInterventionWithStaticFetch () {
   fillInterventionTable(interventionData, mappingJson);
 }
+
+
+async function exportInterventionToExcel() {
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet('IGNITE Intervention');
+
+  const today = new Date().toISOString().split('T')[0];
+  const fileName = `IGNITE Intervention Report - ${today}.xlsx`;
+
+  const tables = document.querySelectorAll('#intervention-container table');
+  let currentRow = 1;
+
+  for (const table of tables) {
+    const caption = table.previousElementSibling;
+    if (caption && caption.tagName === 'H5') {
+      sheet.getCell(`A${currentRow}`).value = caption.textContent;
+      sheet.getCell(`A${currentRow}`).font = { bold: true };
+      currentRow++;
+    }
+
+    const rows = table.querySelectorAll('tr');
+    for (const row of rows) {
+      const cells = row.querySelectorAll('th, td');
+      let colIndex = 1;
+
+      for (const cell of cells) {
+        const value = cell.innerText.trim();
+        const excelCell = sheet.getCell(currentRow, colIndex);
+        excelCell.value = isNaN(value) || value === '' ? value : Number(value);
+        excelCell.border = {
+          top: { style: 'thin' },
+          bottom: { style: 'thin' },
+          left: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+        if (cell.tagName === 'TH') {
+          excelCell.font = { bold: true };
+          excelCell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFEEEEEE' }
+          };
+        }
+        colIndex++;
+      }
+      currentRow++;
+    }
+
+    // Add a blank row for spacing after each table
+    currentRow++;
+  }
+
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  saveAs(blob, fileName);
+}
+
 </script>
 
 
