@@ -274,23 +274,23 @@ def fetch_ignite_intervention_report():
                 s5_date = datetime.strptime(i['s5_appoint'], '%Y-%m-%d').date()
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s5_date > withdrawn_date:
+                if withdrawn_date and (s5_date + timedelta(days=-3)) >= withdrawn_date:
                     e_apm_msg_1_withdrawn_count += 1
 
                 #----scheduled msgs------
-                elif (s5_date - date_today).days > -3 and i.get("active_phase_message_1_complete") != "2":
+                elif (date_today - s5_date).days >= -3 :
                     e_apm_msg_1_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (s5_date - date_today).days <= -3 and i.get("active_phase_message_1_complete") == "2":
+                if (date_today - s5_date).days >= -3 and i.get("active_phase_message_1_complete") == "2":
                     e_apm_msg_1_yes_count += 1
 
                 #----for ip msgs-----
-                elif (s5_date - date_today).days <= -3 and i.get("active_phase_message_1_complete") == "1":
+                elif (date_today - s5_date).days >= -3 and i.get("active_phase_message_1_complete") == "1":
                     e_apm_msg_1_ip_count += 1
 
                 #----for no msgs-----
-                elif (s5_date - date_today).days <= -3 and i.get("active_phase_message_1_complete") == "0":
+                elif (date_today - s5_date).days >= -3 and i.get("active_phase_message_1_complete") == "0":
                     e_apm_msg_1_no_count += 1
 
             if i['ap1_date'].strip() and 'ap1_date' in i:
@@ -298,179 +298,179 @@ def fetch_ignite_intervention_report():
 
                 #------check msg - 2--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=7) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=7) >= withdrawn_date):
                     e_apm_msg_2_withdrawn_count += 1
 
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > -3 and i.get("active_phase_message_2_complete") != "2":
+                elif (date_today - ap1_date).days >= 7:
                     e_apm_msg_2_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 7 and i.get("active_phase_message_2_complete") == "2":
+                if (date_today - ap1_date).days >= 7 and i.get("active_phase_message_2_complete") == "2":
                     e_apm_msg_2_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 7 and i.get("active_phase_message_2_complete") == "1":
+                elif (date_today - ap1_date).days >= 7 and i.get("active_phase_message_2_complete") == "1":
                     e_apm_msg_2_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 7 and i.get("active_phase_message_2_complete") == "0":
+                elif (date_today - ap1_date).days >= 7 and i.get("active_phase_message_2_complete") == "0":
                     e_apm_msg_2_no_count += 1
 
                 #------check msg - 3--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=14) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=14) >= withdrawn_date):
                     e_apm_msg_3_withdrawn_count += 1
 
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 14 and i.get("active_phase_message_3_complete") != "2":
+                elif (date_today - ap1_date).days >= 14 :
                     e_apm_msg_3_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 14 and i.get("active_phase_message_3_complete") == "2":
+                if (date_today - ap1_date).days >= 14 and i.get("active_phase_message_3_complete") == "2":
                     e_apm_msg_3_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 14 and i.get("active_phase_message_3_complete") == "1":
+                elif (date_today - ap1_date).days >= 14 and i.get("active_phase_message_3_complete") == "1":
                     e_apm_msg_3_ip_count += 1
 
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 14 and i.get("active_phase_message_3_complete") == "0":
+                elif (date_today - ap1_date).days >= 14 and i.get("active_phase_message_3_complete") == "0":
                     e_apm_msg_3_no_count += 1
 
                 #------check msg - 4--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=21) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=21) >= withdrawn_date):
                     e_apm_msg_4_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 21 and i.get("active_phase_message_4_complete") != "2":
+                elif (date_today - ap1_date).days >= 21 :
                     e_apm_msg_4_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 21 and i.get("active_phase_message_4_complete") == "2":
+                if (date_today - ap1_date).days >= 21 and i.get("active_phase_message_4_complete") == "2":
                     e_apm_msg_4_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 21 and i.get("active_phase_message_4_complete") == "1":
+                elif (date_today - ap1_date).days >= 21 and i.get("active_phase_message_4_complete") == "1":
                     e_apm_msg_4_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 21 and i.get("active_phase_message_4_complete") == "0":
+                elif (date_today - ap1_date).days >= 21 and i.get("active_phase_message_4_complete") == "0":
                     e_apm_msg_4_no_count += 1
 
                 #------check msg - 5--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=28) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=28) >= withdrawn_date):
                     e_apm_msg_5_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 28 and i.get("active_phase_message_5_complete") != "2":
+                elif (date_today - ap1_date).days >= 28 :
                     e_apm_msg_5_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 28 and i.get("active_phase_message_5_complete") == "2":
+                if (date_today - ap1_date).days >= 28 and i.get("active_phase_message_5_complete") == "2":
                     e_apm_msg_5_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 28 and i.get("active_phase_message_5_complete") == "1":
+                elif (date_today - ap1_date).days >= 28 and i.get("active_phase_message_5_complete") == "1":
                     e_apm_msg_5_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 28 and i.get("active_phase_message_5_complete") == "0":
+                elif (date_today - ap1_date).days >= 28 and i.get("active_phase_message_5_complete") == "0":
                     e_apm_msg_5_no_count += 1
 
 
                 #------check msg - 6--------------
-                if withdrawn_date and (ap1_date + timedelta(days=35) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=35) >= withdrawn_date):
                     e_apm_msg_6_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 35 and i.get("active_phase_message_5_complete") != "2":
+                elif (date_today - ap1_date).days >= 35 :
                     e_apm_msg_6_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 35 and i.get("active_phase_message_5_complete") == "2":
+                if (date_today - ap1_date).days >= 35 and i.get("active_phase_message_5_complete") == "2":
                     e_apm_msg_6_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 35 and i.get("active_phase_message_5_complete") == "1":
+                elif (date_today - ap1_date).days >= 35 and i.get("active_phase_message_5_complete") == "1":
                     e_apm_msg_6_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 35 and i.get("active_phase_message_5_complete") == "0":
+                elif (date_today - ap1_date).days >= 35 and i.get("active_phase_message_5_complete") == "0":
                     e_apm_msg_6_no_count += 1
 
                 #------check msg - 7--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=42) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=42) >= withdrawn_date):
                     e_apm_msg_7_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 42 and i.get("active_phase_message_7_complete") != "2":
+                elif (date_today - ap1_date).days >= 42 :
                     e_apm_msg_7_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 42 and i.get("active_phase_message_7_complete") == "2":
+                if (date_today - ap1_date).days >= 42 and i.get("active_phase_message_7_complete") == "2":
                     e_apm_msg_7_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 42 and i.get("active_phase_message_7_complete") == "1":
+                elif (date_today - ap1_date).days >= 42 and i.get("active_phase_message_7_complete") == "1":
                     e_apm_msg_7_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 42 and i.get("active_phase_message_7_complete") == "0":
+                elif (date_today - ap1_date).days >= 42 and i.get("active_phase_message_7_complete") == "0":
                     e_apm_msg_7_no_count += 1
 
                 #------check msg - 8--------------
-                if withdrawn_date and (ap1_date + timedelta(days=49) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=49) >= withdrawn_date):
                     e_apm_msg_8_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 49 and i.get("active_phase_message_8_complete") != "2":
+                elif (date_today - ap1_date).days >= 49 :
                     e_apm_msg_8_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 49 and i.get("active_phase_message_8_complete") == "2":
+                if (date_today - ap1_date).days >= 49 and i.get("active_phase_message_8_complete") == "2":
                     e_apm_msg_8_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 49 and i.get("active_phase_message_8_complete") == "1":
+                elif (date_today - ap1_date).days >= 49 and i.get("active_phase_message_8_complete") == "1":
                     e_apm_msg_8_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 49 and i.get("active_phase_message_8_complete") == "0":
+                elif (date_today - ap1_date).days >= 49 and i.get("active_phase_message_8_complete") == "0":
                     e_apm_msg_8_no_count += 1
 
                 #------check msg - 9--------------
                     #-----withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=56) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=56) >= withdrawn_date):
                     e_apm_msg_9_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 56 and i.get("active_phase_message_9_complete") != "2":
+                elif (date_today - ap1_date).days >= 56 :
                     e_apm_msg_9_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 56 and i.get("active_phase_message_9_complete") == "2":
+                if (date_today - ap1_date).days >= 56 and i.get("active_phase_message_9_complete") == "2":
                     e_apm_msg_9_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 56 and i.get("active_phase_message_9_complete") == "1":
+                elif (date_today - ap1_date).days >= 56 and i.get("active_phase_message_9_complete") == "1":
                     e_apm_msg_9_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 56 and i.get("active_phase_message_9_complete") == "0":
+                elif (date_today - ap1_date).days >= 56 and i.get("active_phase_message_9_complete") == "0":
                     e_apm_msg_9_no_count += 1
 
                 #------check msg - 10--------------
-                if withdrawn_date and (ap1_date + timedelta(days=63) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=63) >= withdrawn_date):
                     e_apm_msg_10_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 63 and i.get("active_phase_message_10_complete") != "2":
+                elif (date_today - ap1_date).days >= 63 :
                     e_apm_msg_10_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 63 and i.get("active_phase_message_10_complete") == "2":
+                if (date_today - ap1_date).days >= 63 and i.get("active_phase_message_10_complete") == "2":
                     e_apm_msg_10_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 63 and i.get("active_phase_message_10_complete") == "1":
+                elif (date_today - ap1_date).days >= 63 and i.get("active_phase_message_10_complete") == "1":
                     e_apm_msg_10_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 63 and i.get("active_phase_message_10_complete") == "0":
+                elif (date_today - ap1_date).days >= 63 and i.get("active_phase_message_10_complete") == "0":
                     e_apm_msg_10_no_count += 1
 
                 #------check msg - 11--------------
-                if withdrawn_date and (ap1_date + timedelta(days=70) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=70) >= withdrawn_date):
                     e_apm_msg_11_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 70 and i.get("active_phase_message_11_complete") != "2":
+                elif (date_today - ap1_date).days >= 70 :
                     e_apm_msg_11_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 70 and i.get("active_phase_message_11_complete") == "2":
+                if (date_today - ap1_date).days >=  70 and i.get("active_phase_message_11_complete") == "2":
                     e_apm_msg_11_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 70 and i.get("active_phase_message_11_complete") == "1":
+                elif (date_today - ap1_date).days >= 70 and i.get("active_phase_message_11_complete") == "1":
                     e_apm_msg_11_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 70 and i.get("active_phase_message_11_complete") == "0":
+                elif (date_today - ap1_date).days >= 70 and i.get("active_phase_message_11_complete") == "0":
                     e_apm_msg_11_no_count += 1
 
         #--------Late v care Message Completion-----------
@@ -481,21 +481,21 @@ def fetch_ignite_intervention_report():
                 s5_date = datetime.strptime(i['s5_appoint'], '%Y-%m-%d').date()
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s5_date > withdrawn_date:
+                if withdrawn_date and (s5_date + timedelta(days=-3)) >= withdrawn_date:
                     l_apm_msg_1_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (s5_date - date_today).days > -3 and i.get("active_phase_message_1_complete") != "2":
+                elif (s5_date - date_today).days >= -3 :
                     l_apm_msg_1_scheduled_count += 1
                 #----for yes msgs-----
-                elif (s5_date - date_today).days <= -3 and i.get("active_phase_message_1_complete") == "2":
+                if (s5_date - date_today).days >= -3 and i.get("active_phase_message_1_complete") == "2":
                     l_apm_msg_1_yes_count += 1
 
                 #----for ip msgs-----
-                elif (s5_date - date_today).days <= -3 and i.get("active_phase_message_1_complete") == "1":
+                elif (s5_date - date_today).days >= -3 and i.get("active_phase_message_1_complete") == "1":
                     l_apm_msg_1_ip_count += 1
 
                 #----for no msgs-----
-                elif (s5_date - date_today).days <= -3 and i.get("active_phase_message_1_complete") == "0":
+                elif (s5_date - date_today).days >= -3 and i.get("active_phase_message_1_complete") == "0":
                     l_apm_msg_1_no_count += 1
 
             if i['ap1_date'].strip() and 'ap1_date' in i:
@@ -503,171 +503,171 @@ def fetch_ignite_intervention_report():
 
                 #------check msg - 2--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=7) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=7) >= withdrawn_date):
                     l_apm_msg_2_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 7 and i.get("active_phase_message_2_complete") != "2":
+                elif (date_today - ap1_date).days >= 7 :
                     l_apm_msg_2_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 7 and i.get("active_phase_message_2_complete") == "2":
+                if (date_today - ap1_date).days >= 7 and i.get("active_phase_message_2_complete") == "2":
                     l_apm_msg_2_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 7 and i.get("active_phase_message_2_complete") == "1":
+                elif (date_today - ap1_date).days >= 7 and i.get("active_phase_message_2_complete") == "1":
                     l_apm_msg_2_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 7 and i.get("active_phase_message_2_complete") == "0":
+                elif (date_today - ap1_date).days >= 7 and i.get("active_phase_message_2_complete") == "0":
                     l_apm_msg_2_no_count += 1
 
                 #------check msg - 3--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=14) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=14) >= withdrawn_date):
                     l_apm_msg_3_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 14 and i.get("active_phase_message_3_complete") != "2":
+                elif (date_today - ap1_date).days >= 14 :
                     l_apm_msg_3_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 14 and i.get("active_phase_message_3_complete") == "2":
+                if (date_today - ap1_date).days >= 14 and i.get("active_phase_message_3_complete") == "2":
                     l_apm_msg_3_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 14 and i.get("active_phase_message_3_complete") == "1":
+                elif (date_today - ap1_date).days >= 14 and i.get("active_phase_message_3_complete") == "1":
                     l_apm_msg_3_ip_count += 1
 
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 14 and i.get("active_phase_message_3_complete") == "0":
+                elif (date_today - ap1_date).days >= 14 and i.get("active_phase_message_3_complete") == "0":
                     l_apm_msg_3_no_count += 1
 
                 #------check msg - 4--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=21) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=21) >= withdrawn_date):
                     l_apm_msg_4_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 21 and i.get("active_phase_message_4_complete") != "2":
+                elif (date_today - ap1_date).days >= 21 :
                     l_apm_msg_4_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 21 and i.get("active_phase_message_4_complete") == "2":
+                if (date_today - ap1_date).days >= 21 and i.get("active_phase_message_4_complete") == "2":
                     l_apm_msg_4_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 21 and i.get("active_phase_message_4_complete") == "1":
+                elif (date_today - ap1_date).days >= 21 and i.get("active_phase_message_4_complete") == "1":
                     l_apm_msg_4_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 21 and i.get("active_phase_message_4_complete") == "0":
+                elif (date_today - ap1_date).days >= 21 and i.get("active_phase_message_4_complete") == "0":
                     l_apm_msg_4_no_count += 1
 
                 #------check msg - 5--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=28) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=28) >= withdrawn_date):
                     l_apm_msg_5_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 28 and i.get("active_phase_message_5_complete") != "2":
+                elif (date_today - ap1_date).days >= 28 :
                     l_apm_msg_5_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 28 and i.get("active_phase_message_5_complete") == "2":
+                if (date_today - ap1_date).days >= 28 and i.get("active_phase_message_5_complete") == "2":
                     l_apm_msg_5_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 28 and i.get("active_phase_message_5_complete") == "1":
+                elif (date_today - ap1_date).days >= 28 and i.get("active_phase_message_5_complete") == "1":
                     l_apm_msg_5_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 28 and i.get("active_phase_message_5_complete") == "0":
+                elif (date_today - ap1_date).days >= 28 and i.get("active_phase_message_5_complete") == "0":
                     l_apm_msg_5_no_count += 1
 
                 #------check msg - 6--------------
-                if withdrawn_date and (ap1_date + timedelta(days=35) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=35) >= withdrawn_date):
                     l_apm_msg_6_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 35 and i.get("active_phase_message_5_complete") != "2":
+                elif (date_today - ap1_date).days >= 35 :
                     l_apm_msg_6_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 35 and i.get("active_phase_message_5_complete") == "2":
+                if (date_today - ap1_date).days >= 35 and i.get("active_phase_message_5_complete") == "2":
                     l_apm_msg_6_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 35 and i.get("active_phase_message_5_complete") == "1":
+                elif (date_today - ap1_date).days >= 35 and i.get("active_phase_message_5_complete") == "1":
                     l_apm_msg_6_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 35 and i.get("active_phase_message_5_complete") == "0":
+                elif (date_today - ap1_date).days >= 35 and i.get("active_phase_message_5_complete") == "0":
                     l_apm_msg_6_no_count += 1
 
                 #------check msg - 7--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=42) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=42) >= withdrawn_date):
                     l_apm_msg_7_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 42 and i.get("active_phase_message_7_complete") != "2":
+                elif (date_today - ap1_date).days >= 42 :
                     l_apm_msg_7_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 42 and i.get("active_phase_message_7_complete") == "2":
+                if (date_today - ap1_date).days >= 42 and i.get("active_phase_message_7_complete") == "2":
                     l_apm_msg_7_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 42 and i.get("active_phase_message_7_complete") == "1":
+                elif (date_today - ap1_date).days >= 42 and i.get("active_phase_message_7_complete") == "1":
                     l_apm_msg_7_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 42 and i.get("active_phase_message_7_complete") == "0":
+                elif (date_today - ap1_date).days >= 42 and i.get("active_phase_message_7_complete") == "0":
                     l_apm_msg_7_no_count += 1
 
                 #------check msg - 8--------------
-                if withdrawn_date and (ap1_date + timedelta(days=49) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=49) >= withdrawn_date):
                     l_apm_msg_8_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 49 and i.get("active_phase_message_8_complete") != "2":
+                elif (date_today - ap1_date).days >= 49 :
                     l_apm_msg_8_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 49 and i.get("active_phase_message_8_complete") == "2":
+                if (date_today - ap1_date).days >= 49 and i.get("active_phase_message_8_complete") == "2":
                     l_apm_msg_8_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 49 and i.get("active_phase_message_8_complete") == "1":
+                elif (date_today - ap1_date).days >= 49 and i.get("active_phase_message_8_complete") == "1":
                     l_apm_msg_8_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 49 and i.get("active_phase_message_8_complete") == "0":
+                elif (date_today - ap1_date).days >= 49 and i.get("active_phase_message_8_complete") == "0":
                     l_apm_msg_8_no_count += 1
 
                 #------check msg - 9--------------
                     #-----withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=56) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=56) >= withdrawn_date):
                     l_apm_msg_9_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 56 and i.get("active_phase_message_9_complete") != "2":
+                elif (date_today - ap1_date).days >= 56 :
                     l_apm_msg_9_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 56 and i.get("active_phase_message_9_complete") == "2":
+                if (date_today - ap1_date).days >= 56 and i.get("active_phase_message_9_complete") == "2":
                     l_apm_msg_9_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 56 and i.get("active_phase_message_9_complete") == "1":
+                elif (date_today - ap1_date).days >= 56 and i.get("active_phase_message_9_complete") == "1":
                     l_apm_msg_9_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 56 and i.get("active_phase_message_9_complete") == "0":
+                elif (date_today - ap1_date).days >= 56 and i.get("active_phase_message_9_complete") == "0":
                     l_apm_msg_9_no_count += 1
 
                 #------check msg - 10--------------
-                if withdrawn_date and (ap1_date + timedelta(days=63) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=63) >= withdrawn_date):
                     l_apm_msg_10_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 63 and i.get("active_phase_message_10_complete") != "2":
+                elif (date_today - ap1_date).days >= 63 :
                     l_apm_msg_10_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 63 and i.get("active_phase_message_10_complete") == "2":
+                if (date_today - ap1_date).days >= 63 and i.get("active_phase_message_10_complete") == "2":
                     l_apm_msg_10_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 63 and i.get("active_phase_message_10_complete") == "1":
+                elif (date_today - ap1_date).days >= 63 and i.get("active_phase_message_10_complete") == "1":
                     l_apm_msg_10_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 63 and i.get("active_phase_message_10_complete") == "0":
+                elif (date_today - ap1_date).days >= 63 and i.get("active_phase_message_10_complete") == "0":
                     l_apm_msg_10_no_count += 1
 
                 #------check msg - 11--------------
-                if withdrawn_date and (ap1_date + timedelta(days=70) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=70) >= withdrawn_date):
                     l_apm_msg_11_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 70 and i.get("active_phase_message_11_complete") != "2":
+                elif (date_today - ap1_date).days >= 70 :
                     l_apm_msg_11_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 70 and i.get("active_phase_message_11_complete") == "2":
+                if (date_today - ap1_date).days >= 70 and i.get("active_phase_message_11_complete") == "2":
                     l_apm_msg_11_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 70 and i.get("active_phase_message_11_complete") == "1":
+                elif (date_today - ap1_date).days >= 70 and i.get("active_phase_message_11_complete") == "1":
                     l_apm_msg_11_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 70 and i.get("active_phase_message_11_complete") == "0":
+                elif (date_today - ap1_date).days >= 70 and i.get("active_phase_message_11_complete") == "0":
                     l_apm_msg_11_no_count += 1
 
 
@@ -747,179 +747,179 @@ def fetch_ignite_intervention_report():
                 ap1_date = datetime.strptime(i['ap1_date'], '%Y-%m-%d').date()
 
                 #----for withdrawn participants-----
-                if withdrawn_date and ap1_date + 84 > withdrawn_date:
+                if withdrawn_date and ap1_date + 84 >= withdrawn_date:
                     e_mpm_msg_1_withdrawn_count += 1
 
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 84 and i.get("maintenance_phase_message_1_complete") != "2":
+                elif (date_today - ap1_date).days >= 84 :
                     e_mpm_msg_1_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 84 and i.get("maintenance_phase_message_1_complete") == "2":
+                if (date_today - ap1_date).days >= 84 and i.get("maintenance_phase_message_1_complete") == "2":
                     e_mpm_msg_1_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 84 and i.get("maintenance_phase_message_1_complete") == "1":
+                elif (date_today - ap1_date).days >=  84 and i.get("maintenance_phase_message_1_complete") == "1":
                     e_mpm_msg_1_ip_count += 1
 
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 84 and i.get("maintenance_phase_message_1_complete") == "0":
+                elif (date_today - ap1_date).days >= 84 and i.get("maintenance_phase_message_1_complete") == "0":
                     e_mpm_msg_1_no_count += 1
 
                 #------check msg - 2--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=98) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=98) >=withdrawn_date):
                     e_mpm_msg_2_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 98 and i.get("maintenance_phase_message_2_complete") != "2":
+                elif (date_today - ap1_date).days >=98 :
                     e_mpm_msg_2_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 98 and i.get("maintenance_phase_message_2_complete") == "2":
+                if (date_today - ap1_date).days >= 98 and i.get("maintenance_phase_message_2_complete") == "2":
                     e_mpm_msg_2_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 98 and i.get("maintenance_phase_message_2_complete") == "1":
+                elif (date_today - ap1_date).days >= 98 and i.get("maintenance_phase_message_2_complete") == "1":
                     e_mpm_msg_2_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 98 and i.get("maintenance_phase_message_2_complete") == "0":
+                elif (date_today - ap1_date).days >= 98 and i.get("maintenance_phase_message_2_complete") == "0":
                     e_mpm_msg_2_no_count += 1
 
                 #------check msg - 3--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=112) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=112) >=withdrawn_date):
                     e_mpm_msg_3_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 112 and i.get("maintenance_phase_message_3_complete") != "2":
+                elif (date_today - ap1_date).days >=112:
                     e_mpm_msg_3_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 112 and i.get("maintenance_phase_message_3_complete") == "2":
+                if (date_today - ap1_date).days >= 112 and i.get("maintenance_phase_message_3_complete") == "2":
                     e_mpm_msg_3_yes_count += 1
 
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 112 and i.get("maintenance_phase_message_3_complete") == "1":
+                elif (date_today - ap1_date).days >= 112 and i.get("maintenance_phase_message_3_complete") == "1":
                     e_mpm_msg_3_ip_count += 1
 
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 112 and i.get("maintenance_phase_message_3_complete") == "0":
+                elif (date_today - ap1_date).days >= 112 and i.get("maintenance_phase_message_3_complete") == "0":
                     e_mpm_msg_3_no_count += 1
 
                 #------check msg - 4--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=140) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=140) >=withdrawn_date):
                     e_mpm_msg_4_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 140 and i.get("maintenance_phase_message_4_complete") != "2":
+                elif (date_today - ap1_date).days >=140 :
                     e_mpm_msg_4_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 140 and i.get("maintenance_phase_message_4_complete") == "2":
+                if (date_today - ap1_date).days >= 140 and i.get("maintenance_phase_message_4_complete") == "2":
                     e_mpm_msg_4_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 140 and i.get("maintenance_phase_message_4_complete") == "1":
+                elif (date_today - ap1_date).days >= 140 and i.get("maintenance_phase_message_4_complete") == "1":
                     e_mpm_msg_4_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 140 and i.get("maintenance_phase_message_4_complete") == "0":
+                elif (date_today - ap1_date).days >= 140 and i.get("maintenance_phase_message_4_complete") == "0":
                     e_mpm_msg_4_no_count += 1
 
                 #------check msg - 5--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=168) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=168) >=withdrawn_date):
                     e_mpm_msg_5_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 168 and i.get("maintenance_phase_message_5_complete") != "2":
+                elif (date_today - ap1_date).days >=168:
                     e_mpm_msg_5_scheduled_count += 1
 
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 168 and i.get("maintenance_phase_message_5_complete") == "2":
+                if (date_today - ap1_date).days >= 168 and i.get("maintenance_phase_message_5_complete") == "2":
                     e_mpm_msg_5_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 168 and i.get("maintenance_phase_message_5_complete") == "1":
+                elif (date_today - ap1_date).days >= 168 and i.get("maintenance_phase_message_5_complete") == "1":
                     e_mpm_msg_5_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 168 and i.get("maintenance_phase_message_5_complete") == "0":
+                elif (date_today - ap1_date).days >= 168 and i.get("maintenance_phase_message_5_complete") == "0":
                     e_mpm_msg_5_no_count += 1
 
                 #------check msg - 6--------------
-                if withdrawn_date and (ap1_date + timedelta(days=196) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=196) >= withdrawn_date):
                     e_mpm_msg_6_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 196 and i.get("maintenance_phase_message_6_complete") != "2":
+                elif (date_today - ap1_date).days >= 196 :
                     e_mpm_msg_6_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 196 and i.get("maintenance_phase_message_6_complete") == "2":
+                if (date_today - ap1_date).days >= 196 and i.get("maintenance_phase_message_6_complete") == "2":
                     e_mpm_msg_6_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 196 and i.get("maintenance_phase_message_6_complete") == "1":
+                elif (date_today - ap1_date).days >= 196 and i.get("maintenance_phase_message_6_complete") == "1":
                     e_mpm_msg_6_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 196 and i.get("maintenance_phase_message_6_complete") == "0":
+                elif (date_today - ap1_date).days >= 196 and i.get("maintenance_phase_message_6_complete") == "0":
                     e_mpm_msg_6_no_count += 1
 
                 #------check msg - 7--------------
                     #----for withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=224) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=224) >= withdrawn_date):
                     e_mpm_msg_7_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 224 and i.get("maintenance_phase_message_7_complete") != "2":
+                elif (date_today - ap1_date).days >= 224 :
                     e_mpm_msg_7_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 224 and i.get("maintenance_phase_message_7_complete") == "2":
+                if (date_today - ap1_date).days >= 224 and i.get("maintenance_phase_message_7_complete") == "2":
                     e_mpm_msg_7_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 224 and i.get("maintenance_phase_message_7_complete") == "1":
+                elif (date_today - ap1_date).days >= 224 and i.get("maintenance_phase_message_7_complete") == "1":
                     e_mpm_msg_7_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 224 and i.get("maintenance_phase_message_7_complete") == "0":
+                elif (date_today - ap1_date).days >= 224 and i.get("maintenance_phase_message_7_complete") == "0":
                     e_mpm_msg_7_no_count += 1
 
                 #------check msg - 8--------------
-                if withdrawn_date and (ap1_date + timedelta(days=252) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=252) >=withdrawn_date):
                     e_mpm_msg_8_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 252 and i.get("maintenance_phase_message_8_complete") != "2":
+                elif (date_today - ap1_date).days >=252 :
                     e_mpm_msg_8_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 252 and i.get("maintenance_phase_message_8_complete") == "2":
+                if (date_today - ap1_date).days >= 252 and i.get("maintenance_phase_message_8_complete") == "2":
                     e_mpm_msg_8_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 252 and i.get("maintenance_phase_message_8_complete") == "1":
+                elif (date_today - ap1_date).days >= 252 and i.get("maintenance_phase_message_8_complete") == "1":
                     e_mpm_msg_8_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 252 and i.get("maintenance_phase_message_8_complete") == "0":
+                elif (date_today - ap1_date).days >= 252 and i.get("maintenance_phase_message_8_complete") == "0":
                     e_mpm_msg_8_no_count += 1
 
                 #------check msg - 9--------------
                     #-----withdrawn participants-----
-                if withdrawn_date and (ap1_date + timedelta(days=280) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=280) >=withdrawn_date):
                     e_mpm_msg_9_withdrawn_count += 1
                 #----scheduled msgs------
-                elif (ap1_date - date_today).days > 280 and i.get("maintenance_phase_message_9_complete") != "2":
+                elif (date_today - ap1_date).days >=280 :
                     e_mpm_msg_9_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 280 and i.get("maintenance_phase_message_9_complete") == "2":
+                if (date_today - ap1_date).days >= 280 and i.get("maintenance_phase_message_9_complete") == "2":
                     e_mpm_msg_9_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 280 and i.get("maintenance_phase_message_9_complete") == "1":
+                elif (date_today - ap1_date).days >= 280 and i.get("maintenance_phase_message_9_complete") == "1":
                     e_mpm_msg_9_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 280 and i.get("maintenance_phase_message_9_complete") == "0":
+                elif (date_today - ap1_date).days >= 280 and i.get("maintenance_phase_message_9_complete") == "0":
                     e_mpm_msg_9_no_count += 1
 
                 #------check msg - 10--------------
-                if withdrawn_date and (ap1_date + timedelta(days=308) > withdrawn_date):
+                if withdrawn_date and (ap1_date + timedelta(days=308) >=withdrawn_date):
                     e_mpm_msg_10_withdrawn_count += 1
                 #----for scheduled msgs------
-                elif (ap1_date - date_today).days > 308 and i.get("maintenance_phase_message_10_complete") != "2":
+                elif (date_today - ap1_date).days >=308 :
                     e_mpm_msg_10_scheduled_count += 1
                 #----for yes msgs-----
-                elif (ap1_date - date_today).days <= 308 and i.get("maintenance_phase_message_11_complete") == "2":
+                if (date_today - ap1_date).days >= 308 and i.get("maintenance_phase_message_11_complete") == "2":
                     e_mpm_msg_10_yes_count += 1
                 #----for ip msgs-----
-                elif (ap1_date - date_today).days <= 308 and i.get("maintenance_phase_message_11_complete") == "1":
+                elif (date_today - ap1_date).days >= 308 and i.get("maintenance_phase_message_11_complete") == "1":
                     e_mpm_msg_10_ip_count += 1
                 #----for no msgs-----
-                elif (ap1_date - date_today).days <= 308 and i.get("maintenance_phase_message_11_complete") == "0":
+                elif (date_today - ap1_date).days >= 308 and i.get("maintenance_phase_message_11_complete") == "0":
                     e_mpm_msg_10_no_count += 1
 
 
@@ -1036,16 +1036,16 @@ def fetch_ignite_intervention_report():
             #-----checking session-1(human)--------------
             if 'zoom_appt_date' in i and i['zoom_appt_date'].strip():
                 zoom_appt_date = datetime.strptime(i['zoom_appt_date'], '%Y-%m-%d').date()
-                s1_date = datetime.strptime(i['s1_date'], '%Y-%m-%d').date() if i.get('s1_') else None
+                s1_date = datetime.strptime(i['s1_date'], '%Y-%m-%d').date() if i.get('s1_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     e_session_1_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (zoom_appt_date - date_today).days > 0 and s1_date is None:
+                elif (date_today - zoom_appt_date).days >= 0 :
                     e_session_1_scheduled_count += 1
 
-                elif s1_date:
+                if s1_date:
                     e_session_1_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1060,12 +1060,13 @@ def fetch_ignite_intervention_report():
                 s2_date = datetime.strptime(i['s2_date'], '%Y-%m-%d').date() if i.get('s2_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s2_appoint > withdrawn_date:
+                if withdrawn_date and s2_appoint >= withdrawn_date:
                     e_session_2_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s2_appoint - date_today).days > 0 and s2_date is None:
+                elif (date_today - s2_appoint).days > 0:
                     e_session_2_scheduled_count += 1
-                elif s2_date:
+
+                if s2_date:
                     e_session_2_completed_count += 1
 
                 elif s2_appoint < date_today and s2_date is None:
@@ -1080,12 +1081,13 @@ def fetch_ignite_intervention_report():
                 s3_date = datetime.strptime(i['s3_date'], '%Y-%m-%d').date() if i.get('s3_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s3_appoint > withdrawn_date:
+                if withdrawn_date and s3_appoint >= withdrawn_date:
                     e_session_3_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s3_appoint - date_today).days > 0 and s3_date is None:
+                elif (date_today - s3_appoint).days > 0 :
                     e_session_3_scheduled_count += 1
-                elif s3_date:
+
+                if s3_date:
                     e_session_3_completed_count += 1
 
                 elif s3_appoint < date_today and s3_date is None:
@@ -1100,12 +1102,12 @@ def fetch_ignite_intervention_report():
                 s4_date = datetime.strptime(i['s4_date'], '%Y-%m-%d').date() if i.get('s4_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s4_appoint > withdrawn_date:
+                if withdrawn_date and s4_appoint >= withdrawn_date:
                     e_session_4_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s4_appoint - date_today).days > 0 and s4_date is None:
+                elif (date_today - s4_appoint).days > 0 :
                     e_session_4_scheduled_count += 1
-                elif s4_date:
+                if s4_date:
                     e_session_4_completed_count += 1
 
                 elif s4_appoint < date_today and s4_date is None:
@@ -1120,12 +1122,13 @@ def fetch_ignite_intervention_report():
                 s5_date = datetime.strptime(i['s5_date'], '%Y-%m-%d').date() if i.get('s5_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s5_appoint > withdrawn_date:
+                if withdrawn_date and s5_appoint >= withdrawn_date:
                     e_session_5_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s5_appoint - date_today).days > 0 and s5_date is None:
+                elif (date_today - s5_appoint).days > 0 :
                     e_session_5_scheduled_count += 1
-                elif s5_date:
+
+                if s5_date:
                     e_session_5_completed_count += 1
 
                 elif s5_appoint < date_today and s5_date is None:
@@ -1140,13 +1143,13 @@ def fetch_ignite_intervention_report():
                 s6_date = datetime.strptime(i['s6_date'], '%Y-%m-%d').date() if i.get('s6_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s6_appoint > withdrawn_date:
+                if withdrawn_date and s6_appoint >= withdrawn_date:
                     e_session_6_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s6_appoint - date_today).days > 0 and s6_date is None:
+                elif (date_today - s6_appoint).days > 0 :
                     e_session_6_scheduled_count += 1
 
-                elif s6_date:
+                if s6_date:
                     e_session_6_completed_count += 1
 
                 elif s6_appoint < date_today and s6_date is None:
@@ -1161,12 +1164,12 @@ def fetch_ignite_intervention_report():
                 s7_date = datetime.strptime(i['s7_date'], '%Y-%m-%d').date() if i.get('s7_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s7_appoint > withdrawn_date:
+                if withdrawn_date and s7_appoint >= withdrawn_date:
                     e_session_7_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s7_appoint - date_today).days > 0 and s7_date is None:
+                elif (date_today - s7_appoint).days > 0 :
                     e_session_7_scheduled_count += 1
-                elif s7_date:
+                if s7_date:
                     e_session_7_completed_count += 1
 
                 elif s7_appoint < date_today and s7_date is None:
@@ -1181,13 +1184,13 @@ def fetch_ignite_intervention_report():
                 s8_date = datetime.strptime(i['s8_date'], '%Y-%m-%d').date() if i.get('s8_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s8_appoint > withdrawn_date:
+                if withdrawn_date and s8_appoint >= withdrawn_date:
                     e_session_8_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s8_appoint - date_today).days > 0 and s8_date is None:
+                elif (date_today - s8_appoint).days > 0 :
                     e_session_8_scheduled_count += 1
 
-                elif s8_date:
+                if s8_date:
                     e_session_8_completed_count += 1
 
                 elif s8_appoint < date_today and s8_date is None:
@@ -1202,13 +1205,13 @@ def fetch_ignite_intervention_report():
                 s9_date = datetime.strptime(i['s9_date'], '%Y-%m-%d').date() if i.get('s9_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and s9_appoint > withdrawn_date:
+                if withdrawn_date and s9_appoint >= withdrawn_date:
                     e_session_9_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s9_appoint - date_today).days > 0 and s9_date is None:
+                elif (date_today - s9_appoint).days > 0:
                     e_session_9_scheduled_count += 1
 
-                elif s9_date:
+                if s9_date:
                     e_session_9_completed_count += 1
 
                 elif s9_appoint < date_today and s9_date is None:
@@ -1226,13 +1229,13 @@ def fetch_ignite_intervention_report():
                 s1_date = datetime.strptime(i['s1_date'], '%Y-%m-%d').date() if i.get('s1_') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_1_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (zoom_appt_date - date_today).days > 0 and s1_date is None:
+                elif (date_today - zoom_appt_date).days > 0 :
                     l_session_1_scheduled_count += 1
 
-                elif s1_date:
+                if s1_date:
                     l_session_1_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1247,13 +1250,13 @@ def fetch_ignite_intervention_report():
                 s2_date = datetime.strptime(i['s2_date'], '%Y-%m-%d').date() if i.get('s2_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_2_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s2_appoint - date_today).days > 0 and s2_date is None:
+                elif (date_today - s2_appoint).days > 0 :
                     l_session_2_scheduled_count += 1
 
-                elif s2_date:
+                if s2_date:
                     l_session_2_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1268,13 +1271,13 @@ def fetch_ignite_intervention_report():
                 s3_date = datetime.strptime(i['s3_date'], '%Y-%m-%d').date() if i.get('s3_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_3_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s3_appoint - date_today).days > 0 and s3_date is None:
+                elif (date_today - s3_appoint).days > 0 :
                     l_session_3_scheduled_count += 1
 
-                elif s3_date:
+                if s3_date:
                     l_session_3_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1289,12 +1292,12 @@ def fetch_ignite_intervention_report():
                 s4_date = datetime.strptime(i['s4_date'], '%Y-%m-%d').date() if i.get('s4_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_4_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s4_appoint - date_today).days > 0 and s4_date is None:
+                elif (date_today - s4_appoint).days > 0 :
                     l_session_4_scheduled_count += 1
-                elif s4_date:
+                if s4_date:
                     l_session_4_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1309,12 +1312,12 @@ def fetch_ignite_intervention_report():
                 s5_date = datetime.strptime(i['s5_date'], '%Y-%m-%d').date() if i.get('s5_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_5_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s5_appoint - date_today).days > 0 and s5_date is None:
+                elif (date_today - s5_appoint).days > 0 :
                     l_session_5_scheduled_count += 1
-                elif s5_date:
+                if s5_date:
                     l_session_5_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1329,13 +1332,13 @@ def fetch_ignite_intervention_report():
                 s6_date = datetime.strptime(i['s6_date'], '%Y-%m-%d').date() if i.get('s6_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_6_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s6_appoint - date_today).days > 0 and s6_date is None:
+                elif (date_today - s6_appoint).days > 0:
                     l_session_6_scheduled_count += 1
 
-                elif s6_date:
+                if s6_date:
                     l_session_6_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1350,12 +1353,12 @@ def fetch_ignite_intervention_report():
                 s7_date = datetime.strptime(i['s7_date'], '%Y-%m-%d').date() if i.get('s7_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_7_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s7_appoint - date_today).days > 0 and s7_date is None:
+                elif (date_today - s7_appoint).days > 0:
                     l_session_7_scheduled_count += 1
-                elif s7_date:
+                if s7_date:
                     l_session_7_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1370,13 +1373,13 @@ def fetch_ignite_intervention_report():
                 s8_date = datetime.strptime(i['s8_date'], '%Y-%m-%d').date() if i.get('s8_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_8_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s8_appoint - date_today).days > 0 and s8_date is None:
+                elif (date_today - s8_appoint).days > 0 :
                     l_session_8_scheduled_count += 1
 
-                elif s8_date:
+                if s8_date:
                     l_session_8_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1391,12 +1394,12 @@ def fetch_ignite_intervention_report():
                 s9_date = datetime.strptime(i['s9_date'], '%Y-%m-%d').date() if i.get('s9_date') else None
 
                 #----for withdrawn participants-----
-                if withdrawn_date and zoom_appt_date > withdrawn_date:
+                if withdrawn_date and zoom_appt_date >= withdrawn_date:
                     l_session_9_withdrawn_count += 1
                 #----scheduled sessions------
-                elif (s9_appoint - date_today).days > 0 and s9_date is None:
+                elif (date_today - s9_appoint).days > 0 :
                     l_session_9_scheduled_count += 1
-                elif s9_date:
+                if s9_date:
                     l_session_9_completed_count += 1
 
                 elif zoom_appt_date < date_today and s1_date is None:
@@ -1422,77 +1425,55 @@ def fetch_ignite_intervention_report():
     on_demand_completed = 0
     on_demand_withdrawals = 0
 
-    #--------Additional Surveys--------
+    #--------Additional Surveys-------- 
     for i in response_json:
         # Get the date of withdrawal if it exists
         withdrawn_date = i.get('date_of_withdrawal', '').strip()
     #-----------tech check survey -----------
         #  Withdrawals (any record with participant_status == '3') // what if withdraw after session 2? this goes out after 3 days right?
-        if i['participant_status'] == '3' and datetime.strptime(i["s2_date"], "%Y-%m-%d").date() > withdrawn_date and i['technical_check_survey_complete'] != '2':
-            tech_check_withdrawals += 1
+        if i['s2_date'].strip():
 
-        #  Scheduled
-        if (
-            i.get("technical_check_survey_complete") != '2'
-            and i.get("s2_date")  # makes sure key exists and is not empty/None
-            and i["s2_date"].strip()  # makes sure it's not just whitespace
-        ):
-            s2_date_obj = datetime.strptime(i["s2_date"], "%Y-%m-%d").date()
-            if (s2_date_obj - date_today).days == 3:
+            s2_date = datetime.strptime(i['s2_date'], "%Y-%m-%d").date()
+            if i['participant_status'] == '3' and s2_date > withdrawn_date and i['technical_check_survey_complete'] != '2':
+                tech_check_withdrawals += 1
+
+        #  Scheduled 
+            if i['s2_appoint'].strip() and i['technical_check_survey_complete'] != '2' and (date_today - s2_appoint).days == 3:
                 tech_check_scheduled += 1
 
-            tech_check_scheduled += 1
-
         #  Completed
-        elif i['technical_check_survey_complete'] == '2':
-            tech_check_completed += 1
+            elif i['technical_check_survey_complete'] == '2':
+                tech_check_completed += 1
 
         # Not yet due
-        elif (
-            i.get('technical_check_survey_complete') != '2'
-            and i.get("s2_date", "").strip() != ""
-            and (datetime.strptime(i["s2_date"], "%Y-%m-%d").date() - date_today).days > 3
-        ):
-
-            tech_check_not_yet_due += 1
+            elif i['technical_check_survey_complete'] != '2' and (date_today - s2_appoint).days > 3:
+                tech_check_not_yet_due += 1
 
         # Overdue
-        elif (
-            i.get('technical_check_survey_complete') != '2'
-            and i.get("s2_date", "").strip() != ""
-            and (datetime.strptime(i["s2_date"], "%Y-%m-%d").date() - date_today).days <= 0
-        ):
-            tech_check_overdue += 1
+            elif i['technical_check_survey_complete'] != '2' and (date_today - s2_appoint).days < 0:
+                tech_check_overdue += 1
 
         #--------valuation survey-------------
-        if i['participant_status'] == '3' and datetime.strptime(i["s9_date"], "%Y-%m-%d").date() > withdrawn_date and i['evaluation_survey_complete'] != '2':
-            eval_withdrawals += 1
+        if i['s9_date'].strip()  :
+            s9_appoint = datetime.strptime(i["s9_date"], "%Y-%m-%d").date()
+            if i['participant_status'] == '3' and i['evaluation_survey_complete'] != '2' and s9_appoint > withdrawn_date:
+                eval_withdrawals += 1
 
-        #  Scheduled
-        if i['technical_check_survey_complete'] != '2' and i.get("s2_date") and i["s2_date"].strip():
-            s2_date_obj = datetime.strptime(i["s2_date"], "%Y-%m-%d").date()
-            if (s2_date_obj - date.today()).days == 3:
+            #  Scheduled
+            elif i['s9_date'].strip() and i['evaluation_survey_complete'] != '2' and (s9_date - date_today).days == 0:
                 eval_scheduled += 1
 
-        #  Completed
-        elif i['evaluation_survey_complete'] == '2':
-            eval_completed += 1
+            #  Completed
+            elif i['evaluation_survey_complete'] == '2':
+                eval_completed += 1
 
-        # Not yet due
-        elif (
-            i.get('technical_check_survey_complete') != '2'
-            and i.get("s2_date", "").strip() != ""
-            and (datetime.strptime(i["s2_date"], "%Y-%m-%d").date() - date_today).days > 3
-        ):
-            eval_not_yet_due += 1
+            # Not yet due
+            elif i['evaluation_survey_complete'] != '2' and (s9_date - date_today).days > 0:
+                eval_not_yet_due += 1
 
-        # Overdue
-        elif (
-            i.get('technical_check_survey_complete') != '2'
-            and i.get("s2_date", "").strip() != ""
-            and (datetime.strptime(i["s2_date"], "%Y-%m-%d").date() - date_today).days <= 0
-        ):
-            eval_overdue += 1
+            # Overdue
+            elif i['evaluation_survey_complete'] != '2' and (s9_date - date_today).days < 0:
+                eval_overdue += 1
 
         #--------on demand session-------------
         if i['participant_status'] == '3':
@@ -1662,7 +1643,7 @@ def fetch_ignite_intervention_report():
             if 'zoom_appt_date' in i and i['zoom_appt_date'].strip() and i['redcap_event_name'] == 'baseline_arm_1':
                 zoom_appt_date = datetime.strptime(i['zoom_appt_date'], '%Y-%m-%d').date()
 
-                if i.get('lumen_administered_phq9_complete') == '2' and zoom_appt_date <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     e_phq9_completed_s1_count += 1
 
                 elif i.get('lumen_administered_phq9_complete') != '2' and zoom_appt_date > date_today:
@@ -1672,7 +1653,7 @@ def fetch_ignite_intervention_report():
 
             # Session 2
             if i['redcap_event_name'] == 'session_2_arm_1' and s2_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s2_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     e_phq9_completed_s2_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s2_appoint > date_today:
                     e_phq9_expected_s2_count += 1
@@ -1681,7 +1662,7 @@ def fetch_ignite_intervention_report():
 
             # Session 3
             if i['redcap_event_name'] == 'session_3_arm_1' and s3_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s3_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     e_phq9_completed_s3_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s3_appoint > date_today:
                     e_phq9_expected_s3_count += 1
@@ -1690,7 +1671,7 @@ def fetch_ignite_intervention_report():
 
             # Session 4
             if i['redcap_event_name'] == 'session_4_arm_1' and s4_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s4_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     e_phq9_completed_s4_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s4_appoint > date_today:
                     e_phq9_expected_s4_count += 1
@@ -1699,7 +1680,7 @@ def fetch_ignite_intervention_report():
 
             # Session 5
             if i['redcap_event_name'] == 'session_5_arm_1' and s5_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s5_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     e_phq9_completed_s5_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s5_appoint > date_today:
                     e_phq9_expected_s5_count += 1
@@ -1708,7 +1689,7 @@ def fetch_ignite_intervention_report():
 
             # Session 6
             if i['redcap_event_name'] == 'session_6_arm_1' and s6_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s6_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     e_phq9_completed_s6_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s6_appoint > date_today:
                     e_phq9_expected_s6_count += 1
@@ -1717,7 +1698,7 @@ def fetch_ignite_intervention_report():
 
             # Session 7
             if i['redcap_event_name'] == 'session_7_arm_1' and s7_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s7_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     e_phq9_completed_s7_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s7_appoint > date_today:
                     e_phq9_expected_s7_count += 1
@@ -1726,7 +1707,7 @@ def fetch_ignite_intervention_report():
 
             # Session 8
             if i['redcap_event_name'] == 'session_8_arm_1' and s8_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s8_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     e_phq9_completed_s8_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s8_appoint > date_today:
                     e_phq9_expected_s8_count += 1
@@ -1735,7 +1716,7 @@ def fetch_ignite_intervention_report():
 
             # Session 9
             if i['redcap_event_name'] == 'session_9_arm_1' and s9_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s9_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     e_phq9_completed_s9_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s9_appoint > date_today:
                     e_phq9_expected_s9_count += 1
@@ -1751,7 +1732,7 @@ def fetch_ignite_intervention_report():
             if 'zoom_appt_date' in i and i['zoom_appt_date'].strip() and i['redcap_event_name'] == 'baseline_arm_1':
                 zoom_appt_date = datetime.strptime(i['zoom_appt_date'], '%Y-%m-%d').date()
 
-                if i.get('lumen_administered_phq9_complete') == '2' and zoom_appt_date <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s1_count += 1
 
                 elif i.get('lumen_administered_phq9_complete') != '2' and zoom_appt_date > date_today:
@@ -1761,7 +1742,7 @@ def fetch_ignite_intervention_report():
 
             # Session 2
             if i['redcap_event_name'] == 'session_2_arm_1' and s2_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s2_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s2_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s2_appoint > date_today:
                     l_phq9_expected_s2_count += 1
@@ -1770,7 +1751,7 @@ def fetch_ignite_intervention_report():
 
             # Session 3
             if i['redcap_event_name'] == 'session_3_arm_1' and s3_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s3_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s3_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s3_appoint > date_today:
                     l_phq9_expected_s3_count += 1
@@ -1779,7 +1760,7 @@ def fetch_ignite_intervention_report():
 
             # Session 4
             if i['redcap_event_name'] == 'session_4_arm_1' and s4_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s4_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s4_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s4_appoint > date_today:
                     l_phq9_expected_s4_count += 1
@@ -1788,7 +1769,7 @@ def fetch_ignite_intervention_report():
 
             # Session 5
             if i['redcap_event_name'] == 'session_5_arm_1' and s5_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s5_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s5_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s5_appoint > date_today:
                     l_phq9_expected_s5_count += 1
@@ -1797,7 +1778,7 @@ def fetch_ignite_intervention_report():
 
             # Session 6
             if i['redcap_event_name'] == 'session_6_arm_1' and s6_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s6_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s6_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s6_appoint > date_today:
                     l_phq9_expected_s6_count += 1
@@ -1806,7 +1787,7 @@ def fetch_ignite_intervention_report():
 
             # Session 7
             if i['redcap_event_name'] == 'session_7_arm_1' and s7_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s7_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     l_phq9_completed_s7_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s7_appoint > date_today:
                     l_phq9_expected_s7_count += 1
@@ -1815,7 +1796,7 @@ def fetch_ignite_intervention_report():
 
             # Session 8
             if i['redcap_event_name'] == 'session_8_arm_1' and s8_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s8_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2':
                     l_phq9_completed_s8_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s8_appoint > date_today:
                     l_phq9_expected_s8_count += 1
@@ -1824,7 +1805,7 @@ def fetch_ignite_intervention_report():
 
             # Session 9
             if i['redcap_event_name'] == 'session_9_arm_1' and s9_appoint:
-                if i.get('lumen_administered_phq9_complete') == '2' and s9_appoint <= date_today:
+                if i.get('lumen_administered_phq9_complete') == '2' :
                     l_phq9_completed_s9_count += 1
                 elif i.get('lumen_administered_phq9_complete') != '2' and s9_appoint > date_today:
                     l_phq9_expected_s9_count += 1

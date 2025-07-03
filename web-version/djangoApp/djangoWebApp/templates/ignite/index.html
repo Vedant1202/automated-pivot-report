@@ -448,14 +448,14 @@
                 <td id="reschedule-no-show-visit-tech-percent"></td>
                 <td id="reschedule-no-show-visit-tech-change"></td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Tech Setup Scheduled</td>
                 <td id="tech-setup-scheduled"></td>
                 <td id="tech-setup-scheduled-percent"></td>
                 <td id="tech-setup-scheduled-change"></td>
-              </tr>
+              </tr> -->
               <tr>
-                <td class="highlight">Tech Setup Scheduled</td>
+                <td class="highlight">Tech Setup Attended</td>
                 <td class="highlight" id="tech-setup-attended"></td>
                 <td class="highlight" id="tech-setup-attended-percent"></td>
                 <td class="highlight" id="tech-setup-attended-change"></td>
@@ -1411,12 +1411,12 @@
         startDateDoc.res_no_show_tech_appt_count,
         endDateDoc.visit_attended_count
       );
-      updateField(
-        "tech-setup-scheduled",
-        endDateDoc.tech_setup_schedule_count,
-        startDateDoc.tech_setup_schedule_count,
-        endDateDoc.visit_attended_count
-      );
+      // updateField(
+      //   "tech-setup-scheduled",
+      //   endDateDoc.tech_setup_schedule_count,
+      //   startDateDoc.tech_setup_schedule_count,
+      //   endDateDoc.visit_attended_count
+      // );
       updateField(
         "tech-setup-attended",
         endDateDoc.tech_setup_attended_count,
