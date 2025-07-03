@@ -63,6 +63,9 @@
               <a class="nav-link active" href="{% url 'ignite_report' %}">IGNITE</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link active" href="{% url 'aced_report' %}">ACE-D</a>
+            </li>
+            <li class="nav-item">
               <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button class="mt-5 btn btn-dark" type="submit">
@@ -648,6 +651,12 @@
               </tr>
             </thead>
             <tbody>
+              <tr><td>Scheduled (Expected), n*</td>
+                <td id="early-msg-1-sched"></td><td id="early-msg-2-sched"></td><td id="early-msg-3-sched"></td>
+                <td id="early-msg-4-sched"></td><td id="early-msg-5-sched"></td><td id="early-msg-6-sched"></td>
+                <td id="early-msg-7-sched"></td><td id="early-msg-8-sched"></td><td id="early-msg-9-sched"></td>
+                <td id="early-msg-10-sched"></td><td id="early-msg-11-sched"></td>
+              </tr>
               <tr><td>Yes</td>
                 <td id="early-msg-1-yes"></td><td id="early-msg-2-yes"></td><td id="early-msg-3-yes"></td>
                 <td id="early-msg-4-yes"></td><td id="early-msg-5-yes"></td><td id="early-msg-6-yes"></td>
@@ -675,6 +684,7 @@
             </tbody>
           </table>
 
+
           <h5 class="mt-5">Early vCare – Maintenance Phase Message Completion</h5>
           <table class="table table-bordered">
             <thead class="table-dark">
@@ -685,6 +695,12 @@
               </tr>
             </thead>
             <tbody>
+              <tr><td>Scheduled (Expected), n*</td>
+                <td id="early-maint-msg-1-sched"></td><td id="early-maint-msg-2-sched"></td><td id="early-maint-msg-3-sched"></td>
+                <td id="early-maint-msg-4-sched"></td><td id="early-maint-msg-5-sched"></td><td id="early-maint-msg-6-sched"></td>
+                <td id="early-maint-msg-7-sched"></td><td id="early-maint-msg-8-sched"></td><td id="early-maint-msg-9-sched"></td>
+                <td id="early-maint-msg-10-sched"></td>
+              </tr>
               <tr><td>Yes</td>
                 <td id="early-maint-msg-1-yes"></td><td id="early-maint-msg-2-yes"></td><td id="early-maint-msg-3-yes"></td>
                 <td id="early-maint-msg-4-yes"></td><td id="early-maint-msg-5-yes"></td><td id="early-maint-msg-6-yes"></td>
@@ -712,6 +728,7 @@
             </tbody>
           </table>
 
+
           <h5 class="mt-5">Early vCare – Counseling Sessions</h5>
           <table class="table table-bordered">
             <thead class="table-dark">
@@ -722,6 +739,11 @@
               </tr>
             </thead>
             <tbody>
+              <tr><td>Scheduled (Expected), n*</td>
+                <td id="early-counsel-1-sched"></td><td id="early-counsel-2-sched"></td><td id="early-counsel-3-sched"></td>
+                <td id="early-counsel-4-sched"></td><td id="early-counsel-5-sched"></td><td id="early-counsel-6-sched"></td>
+                <td id="early-counsel-7-sched"></td><td id="early-counsel-8-sched"></td><td id="early-counsel-9-sched"></td>
+              </tr>
               <tr><td>Completed</td>
                 <td id="early-counsel-1-complete"></td><td id="early-counsel-2-complete"></td><td id="early-counsel-3-complete"></td>
                 <td id="early-counsel-4-complete"></td><td id="early-counsel-5-complete"></td><td id="early-counsel-6-complete"></td>
@@ -783,6 +805,12 @@
               </tr>
             </thead>
             <tbody>
+              <tr><td>Scheduled (Expected), n*</td>
+                <td id="later-msg-1-sched"></td><td id="later-msg-2-sched"></td><td id="later-msg-3-sched"></td>
+                <td id="later-msg-4-sched"></td><td id="later-msg-5-sched"></td><td id="later-msg-6-sched"></td>
+                <td id="later-msg-7-sched"></td><td id="later-msg-8-sched"></td><td id="later-msg-9-sched"></td>
+                <td id="later-msg-10-sched"></td><td id="later-msg-11-sched"></td>
+              </tr>
               <tr><td>Yes</td>
                 <td id="later-msg-1-yes"></td><td id="later-msg-2-yes"></td><td id="later-msg-3-yes"></td>
                 <td id="later-msg-4-yes"></td><td id="later-msg-5-yes"></td><td id="later-msg-6-yes"></td>
@@ -810,6 +838,7 @@
             </tbody>
           </table>
 
+
           <h5 class="mt-5">Later vCare – Counseling Sessions</h5>
           <table class="table table-bordered">
             <thead class="table-dark">
@@ -820,6 +849,11 @@
               </tr>
             </thead>
             <tbody>
+              <tr><td>Scheduled (Expected), n*</td>
+                <td id="later-counsel-1-sched"></td><td id="later-counsel-2-sched"></td><td id="later-counsel-3-sched"></td>
+                <td id="later-counsel-4-sched"></td><td id="later-counsel-5-sched"></td><td id="later-counsel-6-sched"></td>
+                <td id="later-counsel-7-sched"></td><td id="later-counsel-8-sched"></td><td id="later-counsel-9-sched"></td>
+              </tr>
               <tr><td>Completed</td>
                 <td id="later-counsel-1-complete"></td><td id="later-counsel-2-complete"></td><td id="later-counsel-3-complete"></td>
                 <td id="later-counsel-4-complete"></td><td id="later-counsel-5-complete"></td><td id="later-counsel-6-complete"></td>
@@ -1795,6 +1829,17 @@ const mappingJson = {
   "early-postrand": "Table_1.Early.Early Post Rand Exclusion",
   "later-postrand": "Table_1.Later.Later Post Rand Exclusion",
 
+  "early-msg-1-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 1",
+  "early-msg-2-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 2",
+  "early-msg-3-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 3",
+  "early-msg-4-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 4",
+  "early-msg-5-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 5",
+  "early-msg-6-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 6",
+  "early-msg-7-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 7",
+  "early-msg-8-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 8",
+  "early-msg-9-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 9",
+  "early-msg-10-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 10",
+  "early-msg-11-sched": "Early v_care message completion.Active Phase Message Completion.Scheduled.Message - 11",
 
   "early-msg-1-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 1",
   "early-msg-2-yes": "Early v_care message completion.Active Phase Message Completion.Yes.Message - 2",
@@ -1845,6 +1890,17 @@ const mappingJson = {
   "early-msg-11-withdraw": "Early v_care message completion.Active Phase Message Completion.Withdrawn.Message - 11",
 
 
+  "early-maint-msg-1-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 1",
+  "early-maint-msg-2-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 2",
+  "early-maint-msg-3-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 3",
+  "early-maint-msg-4-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 4",
+  "early-maint-msg-5-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 5",
+  "early-maint-msg-6-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 6",
+  "early-maint-msg-7-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 7",
+  "early-maint-msg-8-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 8",
+  "early-maint-msg-9-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 9",
+  "early-maint-msg-10-sched": "Early v_care maintenance completion.Maintenance Phase Message Completion.Scheduled.Message - 10",
+
   "early-maint-msg-1-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 1",
   "early-maint-msg-2-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 2",
   "early-maint-msg-3-yes": "Early v_care maintenance completion.Maintenance Phase Message Completion.Yes.Message - 3",
@@ -1889,6 +1945,16 @@ const mappingJson = {
   "early-maint-msg-9-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 9",
   "early-maint-msg-10-withdraw": "Early v_care maintenance completion.Maintenance Phase Message Completion.Withdrawn.Message - 10",
 
+  
+  "early-counsel-1-sched": "Counseling Session Status.Early.Session 1.Scheduled",
+  "early-counsel-2-sched": "Counseling Session Status.Early.Session 2.Scheduled",
+  "early-counsel-3-sched": "Counseling Session Status.Early.Session 3.Scheduled",
+  "early-counsel-4-sched": "Counseling Session Status.Early.Session 4.Scheduled",
+  "early-counsel-5-sched": "Counseling Session Status.Early.Session 5.Scheduled",
+  "early-counsel-6-sched": "Counseling Session Status.Early.Session 6.Scheduled",
+  "early-counsel-7-sched": "Counseling Session Status.Early.Session 7.Scheduled",
+  "early-counsel-8-sched": "Counseling Session Status.Early.Session 8.Scheduled",
+  "early-counsel-9-sched": "Counseling Session Status.Early.Session 9.Scheduled",
 
   "early-counsel-1-complete": "Counseling Session Status.Early.Session 1.Completed",
   "early-counsel-2-complete": "Counseling Session Status.Early.Session 2.Completed",
@@ -1961,6 +2027,18 @@ const mappingJson = {
   "early-phq9-8-overdue": "PHQ-9 Status by Session.Early.Session 8.Overdue",
   "early-phq9-9-overdue": "PHQ-9 Status by Session.Early.Session 9.Overdue",
 
+  
+  "later-msg-1-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 1",
+  "later-msg-2-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 2",
+  "later-msg-3-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 3",
+  "later-msg-4-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 4",
+  "later-msg-5-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 5",
+  "later-msg-6-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 6",
+  "later-msg-7-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 7",
+  "later-msg-8-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 8",
+  "later-msg-9-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 9",
+  "later-msg-10-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 10",
+  "later-msg-11-sched": "Later v_care message completion.Active Phase Message Completion.Scheduled.Message - 11",
 
   // YES
   "later-msg-1-yes": "Later v_care message completion.Active Phase Message Completion.Yes.Message - 1",
@@ -2014,6 +2092,16 @@ const mappingJson = {
   "later-msg-10-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 10",
   "later-msg-11-withdraw": "Later v_care message completion.Active Phase Message Completion.Withdrawn.Message - 11",
 
+
+  "later-counsel-1-sched": "Counseling Session Status.Later.Session 1.Scheduled",
+  "later-counsel-2-sched": "Counseling Session Status.Later.Session 2.Scheduled",
+  "later-counsel-3-sched": "Counseling Session Status.Later.Session 3.Scheduled",
+  "later-counsel-4-sched": "Counseling Session Status.Later.Session 4.Scheduled",
+  "later-counsel-5-sched": "Counseling Session Status.Later.Session 5.Scheduled",
+  "later-counsel-6-sched": "Counseling Session Status.Later.Session 6.Scheduled",
+  "later-counsel-7-sched": "Counseling Session Status.Later.Session 7.Scheduled",
+  "later-counsel-8-sched": "Counseling Session Status.Later.Session 8.Scheduled",
+  "later-counsel-9-sched": "Counseling Session Status.Later.Session 9.Scheduled",
 
   "later-counsel-1-complete": "Counseling Session Status.Later.Session 1.Completed",
   "later-counsel-2-complete": "Counseling Session Status.Later.Session 2.Completed",
@@ -2110,6 +2198,39 @@ const mappingJson = {
 }
 
 
+// function fillInterventionTable(dataJson, mappingJson) {
+//   const filled = [];
+//   const missingData = [];
+//   const missingDOM = [];
+
+//   function getNestedValue(obj, pathStr) {
+//     const parts = pathStr.split('.');
+//     return parts.reduce((acc, key) => acc && acc[key], obj);
+//   }
+
+//   for (const [id, path] of Object.entries(mappingJson)) {
+//     const el = document.getElementById(id);
+//     const value = getNestedValue(dataJson, path);
+
+//     if (el) {
+//       if (value !== undefined) {
+//         el.innerText = value;
+//         filled.push(id);
+//       } else {
+//         el.innerText = "-";
+//         missingData.push(`${id} → Missing data at path: ${path}`);
+//       }
+//     } else {
+//       missingDOM.push(`${id} → No element with this ID`);
+//     }
+//   }
+
+//   // console.log(`✅ Filled fields (${filled.length}):`, filled);
+//   console.warn(`⚠️ Missing in data (${missingData.length}):`, missingData);
+//   console.error(`❌ Missing in DOM (${missingDOM.length}):`, missingDOM);
+// }
+
+
 function fillInterventionTable(dataJson, mappingJson) {
   const filled = [];
   const missingData = [];
@@ -2120,27 +2241,74 @@ function fillInterventionTable(dataJson, mappingJson) {
     return parts.reduce((acc, key) => acc && acc[key], obj);
   }
 
+  const scheduledSections = [
+    "Early v_care message completion.Active Phase Message Completion",
+    "Early v_care maintenance completion.Maintenance Phase Message Completion",
+    "Later v_care message completion.Active Phase Message Completion",
+    "Counseling Session Status.Early",
+    "Counseling Session Status.Later"
+  ];
+
   for (const [id, path] of Object.entries(mappingJson)) {
     const el = document.getElementById(id);
     const value = getNestedValue(dataJson, path);
 
-    if (el) {
-      if (value !== undefined) {
-        el.innerText = value;
-        filled.push(id);
+    if (!el) {
+      missingDOM.push(`${id} → No element with this ID`);
+      continue;
+    }
+
+    if (value === undefined) {
+      el.innerText = "-";
+      missingData.push(`${id} → Missing data at path: ${path}`);
+      continue;
+    }
+
+    // Define your percentage color styles
+    const percentageColor = "#777";     // Normal %
+    const zeroColor = "#999";           // 0%
+    const naColor = "#bbb";             // (n/a)
+
+    // Determine if this is a "sched" cell
+    const isSched = id.endsWith("-sched");
+
+    if (!isSched) {
+      const parts = path.split(".");
+      const sectionKey = parts.slice(0, -2).join(".");
+      const messageOrSession = parts.at(-1);
+      let scheduledPath;
+      
+      if (sectionKey.startsWith("Counseling Session Status")) {
+        scheduledPath = [...parts.slice(0, -1), "Scheduled"].join(".");
       } else {
-        el.innerText = "-";
-        missingData.push(`${id} → Missing data at path: ${path}`);
+        scheduledPath = [...parts.slice(0, -2), "Scheduled", messageOrSession].join(".");
+      }
+
+      const scheduledValue = getNestedValue(dataJson, scheduledPath);
+
+      if (scheduledSections.includes(sectionKey) && scheduledValue !== undefined && scheduledValue !== 0) {
+        const percentage = Math.round((value / scheduledValue) * 100);
+        el.innerHTML = `${value} <span style="font-size: 0.85em; color: ${percentageColor};">(${percentage}%)</span>`;
+      } else if (scheduledSections.includes(sectionKey) && scheduledValue === 0) {
+        el.innerHTML = `${value} <span style="font-size: 0.85em; color: ${zeroColor};">(0%)</span>`;
+      } else if (scheduledSections.includes(sectionKey) && scheduledValue === undefined) {
+        el.innerHTML = `${value} <span style="font-size: 0.85em; color: ${naColor};">(n/a)</span>`;
+      } else {
+        el.innerText = value;
       }
     } else {
-      missingDOM.push(`${id} → No element with this ID`);
+      el.innerText = value;
     }
+
+    filled.push(id);
   }
 
   // console.log(`✅ Filled fields (${filled.length}):`, filled);
   console.warn(`⚠️ Missing in data (${missingData.length}):`, missingData);
   console.error(`❌ Missing in DOM (${missingDOM.length}):`, missingDOM);
 }
+
+
 
 function fillInterventionWithFetch() {
   const button = document.querySelector('button[onclick="fillInterventionWithFetch()"]');
@@ -2176,6 +2344,63 @@ function fillInterventionWithFetch() {
 function fillInterventionWithStaticFetch () {
   fillInterventionTable(interventionData, mappingJson);
 }
+
+
+async function exportInterventionToExcel() {
+  const workbook = new ExcelJS.Workbook();
+  const sheet = workbook.addWorksheet('IGNITE Intervention');
+
+  const today = new Date().toISOString().split('T')[0];
+  const fileName = `IGNITE Intervention Report - ${today}.xlsx`;
+
+  const tables = document.querySelectorAll('#intervention-container table');
+  let currentRow = 1;
+
+  for (const table of tables) {
+    const caption = table.previousElementSibling;
+    if (caption && caption.tagName === 'H5') {
+      sheet.getCell(`A${currentRow}`).value = caption.textContent;
+      sheet.getCell(`A${currentRow}`).font = { bold: true };
+      currentRow++;
+    }
+
+    const rows = table.querySelectorAll('tr');
+    for (const row of rows) {
+      const cells = row.querySelectorAll('th, td');
+      let colIndex = 1;
+
+      for (const cell of cells) {
+        const value = cell.innerText.trim();
+        const excelCell = sheet.getCell(currentRow, colIndex);
+        excelCell.value = isNaN(value) || value === '' ? value : Number(value);
+        excelCell.border = {
+          top: { style: 'thin' },
+          bottom: { style: 'thin' },
+          left: { style: 'thin' },
+          right: { style: 'thin' }
+        };
+        if (cell.tagName === 'TH') {
+          excelCell.font = { bold: true };
+          excelCell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFEEEEEE' }
+          };
+        }
+        colIndex++;
+      }
+      currentRow++;
+    }
+
+    // Add a blank row for spacing after each table
+    currentRow++;
+  }
+
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  saveAs(blob, fileName);
+}
+
 </script>
 
 

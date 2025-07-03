@@ -40,6 +40,11 @@ def ignite_report_page(request):
     return render(request, 'ignite/index.html')
 
 @login_required
+def aced_report_page(request):
+    """Render the Ignite Report Page."""
+    return render(request, 'aced/index.html')
+
+@login_required
 @api_view(['POST'])
 def get_recruitment_data_from_mongo(request):
     try:
