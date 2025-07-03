@@ -2198,6 +2198,39 @@ const mappingJson = {
 }
 
 
+// function fillInterventionTable(dataJson, mappingJson) {
+//   const filled = [];
+//   const missingData = [];
+//   const missingDOM = [];
+
+//   function getNestedValue(obj, pathStr) {
+//     const parts = pathStr.split('.');
+//     return parts.reduce((acc, key) => acc && acc[key], obj);
+//   }
+
+//   for (const [id, path] of Object.entries(mappingJson)) {
+//     const el = document.getElementById(id);
+//     const value = getNestedValue(dataJson, path);
+
+//     if (el) {
+//       if (value !== undefined) {
+//         el.innerText = value;
+//         filled.push(id);
+//       } else {
+//         el.innerText = "-";
+//         missingData.push(`${id} → Missing data at path: ${path}`);
+//       }
+//     } else {
+//       missingDOM.push(`${id} → No element with this ID`);
+//     }
+//   }
+
+//   // console.log(`✅ Filled fields (${filled.length}):`, filled);
+//   console.warn(`⚠️ Missing in data (${missingData.length}):`, missingData);
+//   console.error(`❌ Missing in DOM (${missingDOM.length}):`, missingDOM);
+// }
+
+
 function fillInterventionTable(dataJson, mappingJson) {
   const filled = [];
   const missingData = [];
@@ -2208,27 +2241,74 @@ function fillInterventionTable(dataJson, mappingJson) {
     return parts.reduce((acc, key) => acc && acc[key], obj);
   }
 
+  const scheduledSections = [
+    "Early v_care message completion.Active Phase Message Completion",
+    "Early v_care maintenance completion.Maintenance Phase Message Completion",
+    "Later v_care message completion.Active Phase Message Completion",
+    "Counseling Session Status.Early",
+    "Counseling Session Status.Later"
+  ];
+
   for (const [id, path] of Object.entries(mappingJson)) {
     const el = document.getElementById(id);
     const value = getNestedValue(dataJson, path);
 
-    if (el) {
-      if (value !== undefined) {
-        el.innerText = value;
-        filled.push(id);
+    if (!el) {
+      missingDOM.push(`${id} → No element with this ID`);
+      continue;
+    }
+
+    if (value === undefined) {
+      el.innerText = "-";
+      missingData.push(`${id} → Missing data at path: ${path}`);
+      continue;
+    }
+
+    // Define your percentage color styles
+    const percentageColor = "#777";     // Normal %
+    const zeroColor = "#999";           // 0%
+    const naColor = "#bbb";             // (n/a)
+
+    // Determine if this is a "sched" cell
+    const isSched = id.endsWith("-sched");
+
+    if (!isSched) {
+      const parts = path.split(".");
+      const sectionKey = parts.slice(0, -2).join(".");
+      const messageOrSession = parts.at(-1);
+      let scheduledPath;
+      
+      if (sectionKey.startsWith("Counseling Session Status")) {
+        scheduledPath = [...parts.slice(0, -1), "Scheduled"].join(".");
       } else {
-        el.innerText = "-";
-        missingData.push(`${id} → Missing data at path: ${path}`);
+        scheduledPath = [...parts.slice(0, -2), "Scheduled", messageOrSession].join(".");
+      }
+
+      const scheduledValue = getNestedValue(dataJson, scheduledPath);
+
+      if (scheduledSections.includes(sectionKey) && scheduledValue !== undefined && scheduledValue !== 0) {
+        const percentage = Math.round((value / scheduledValue) * 100);
+        el.innerHTML = `${value} <span style="font-size: 0.85em; color: ${percentageColor};">(${percentage}%)</span>`;
+      } else if (scheduledSections.includes(sectionKey) && scheduledValue === 0) {
+        el.innerHTML = `${value} <span style="font-size: 0.85em; color: ${zeroColor};">(0%)</span>`;
+      } else if (scheduledSections.includes(sectionKey) && scheduledValue === undefined) {
+        el.innerHTML = `${value} <span style="font-size: 0.85em; color: ${naColor};">(n/a)</span>`;
+      } else {
+        el.innerText = value;
       }
     } else {
-      missingDOM.push(`${id} → No element with this ID`);
+      el.innerText = value;
     }
+
+    filled.push(id);
   }
 
   // console.log(`✅ Filled fields (${filled.length}):`, filled);
   console.warn(`⚠️ Missing in data (${missingData.length}):`, missingData);
   console.error(`❌ Missing in DOM (${missingDOM.length}):`, missingDOM);
 }
+
+
 
 function fillInterventionWithFetch() {
   const button = document.querySelector('button[onclick="fillInterventionWithFetch()"]');
