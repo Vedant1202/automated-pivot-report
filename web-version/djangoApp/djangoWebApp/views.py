@@ -9,7 +9,9 @@ import json
 import datetime
 import threading
 import time
-import ignite_recruitment_report  # Import your existing script
+
+## IGNITE
+import ignite_recruitment_report
 from django.views.decorators.csrf import csrf_exempt
 from ignite_detailed_list import fetch_redcap_staff_report
 from ignite_self_harm import process_self_harm_data
@@ -24,11 +26,16 @@ import pytz
 
 # Initialize MongoDB client (global)
 client = MongoClient('mongodb://localhost:27017/')
+
 db = client['pivot-report-summaries']  # Your database name
 ignite_db = client['ignite_report_db']
+aced_db = client["aced_automated_reporting"]
+
 collectionRecruitment = db['summaries']  # Your collection name
 collectionMdReview = db['md-review-summaries']
+
 collectionIgniteRecruitment = ignite_db['ignite_recruitment_records']  # New collection for Ignite recruitment data
+collectionAcedRecruitment = aced_db['recruitment']  # New collection for ACED recruitment data
 
 @login_required
 def protected_page(request):
@@ -138,6 +145,43 @@ def get_selfharm_summary(request):
         return JsonResponse(summary_data, safe=False)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+
+@csrf_exempt
+@api_view(['GET'])
+# @login_required
+def get_aced_recruitment_data(request):
+    """
+    GET endpoint to return ACED REDCap recruitment data between two dates.
+    Expects startDate and endDate as URL parameters in mm-dd-yyyy format.
+    Example: /api/aced-data?startDate=07-01-2025&endDate=07-08-2025
+    """
+    try:
+        start_date = request.GET.get('startDate')
+        end_date = request.GET.get('endDate')
+
+        print(start_date)
+        print(end_date)
+
+        if not start_date or not end_date:
+            return JsonResponse({"error": "Missing 'startDate' or 'endDate'"}, status=400)
+
+        start_date_doc = collectionAcedRecruitment.find_one({"date": start_date})
+        end_date_doc = collectionAcedRecruitment.find_one({"date": end_date})
+
+        if not start_date_doc or not end_date_doc:
+            return JsonResponse({"error": "Data not found for one or both dates"}, status=500)
+
+        response = {
+            "startDateDoc": json.loads(dumps(start_date_doc)),
+            "endDateDoc": json.loads(dumps(end_date_doc)),
+        }
+
+        return JsonResponse(response)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
 
 #### =========== SCHEDULING =================
 

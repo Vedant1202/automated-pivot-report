@@ -19,7 +19,8 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from djangoWebApp.views import protected_page, get_recruitment_data_from_mongo, get_mdreview_data_from_mongo, get_available_dates
 from djangoWebApp.views import (
-    fetch_and_store_data_for_ignite, get_saved_data_for_ignite, ignite_report_page, aced_report_page, get_detailed_staff_report, get_selfharm_summary, get_ignite_intervention_report
+    fetch_and_store_data_for_ignite, get_saved_data_for_ignite, ignite_report_page, aced_report_page, get_detailed_staff_report, get_selfharm_summary, get_ignite_intervention_report,
+    get_aced_recruitment_data
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -42,7 +43,9 @@ urlpatterns = [
     path('ignite/self-harm-report/', get_selfharm_summary, name='self-harm-report'),
     path('ignite/intervention/', get_ignite_intervention_report, name='ignite_intervention_report'),
 
+    # ACED Routes
     path('aced/report/', aced_report_page, name='aced_report'),
+    path('aced/recruitment/', get_aced_recruitment_data, name='aced_recruitment_report'),
 ]
 
 if settings.DEBUG:
