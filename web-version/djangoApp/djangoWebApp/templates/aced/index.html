@@ -2,93 +2,148 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IGNITE Recruitment Report</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/exceljs/dist/exceljs.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+      integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IGNITE Recruitment Report</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-  <script src="https://unpkg.com/exceljs/dist/exceljs.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-    integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      body {
+        margin: 20px;
+      }
 
-  <style>
-    body {
-      margin: 20px;
-    }
+      .table th,
+      .table td {
+        text-align: right;
+      }
 
-    .table th,
-    .table td {
-      text-align: right;
-    }
+      td:not([id]) {
+        text-align: left;
+      }
 
-    .highlight {
-      background-color: #baddf1 !important;
-      font-size: 18px;
-      text-align: left !important;
-      font-weight: bold;
-    }
-  </style>
-</head>
+      .align-right {
+        text-align: right !important;
+      }
 
-<body>
-  <!-- Menu -->
-  <nav class="navbar bg-body-tertiary fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navigation Bar</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      .align-left {
+        text-align: left !important;
+      }
 
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-            List of Projects
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
+      .text-bold {
+        font-weight: bold !important;
+      }
 
-        <div class="offcanvas-body">
-          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'protected_page' %}">PIVOT</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'ignite_report' %}">IGNITE</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'aced_report' %}">ACE-D</a>
-            </li>
-            <li class="nav-item">
-              <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button class="mt-5 btn btn-dark" type="submit">
-                  Log Out
-                </button>
-              </form>
-            </li>
-          </ul>
+      .highlight {
+        background-color: #baddf1 !important;
+        font-size: 18px;
+        text-align: left !important;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Menu -->
+    <nav class="navbar bg-body-tertiary fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navigation Bar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
+              List of Projects
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  aria-current="page"
+                  href="{% url 'protected_page' %}"
+                  >PIVOT</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'ignite_report' %}"
+                  >IGNITE</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="{% url 'aced_report' %}"
+                  >ACE-D</a
+                >
+              </li>
+              <li class="nav-item">
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button class="mt-5 btn btn-dark" type="submit">
+                    Log Out
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
-  <div class="container">
-    <h2 class="text-center title-page my-3">ACE-D Recruitment Report</h2>
+    </nav>
+    <div class="container">
+      <h2 class="text-center title-page my-3">ACE-D Recruitment Report</h2>
 
-    <ul class="nav nav-tabs mt-5" id="igniteTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button"
-          role="tab">
-          Summary Report
-        </button>
-      </li>
-      <!-- <li class="nav-item" role="presentation">
+      <ul class="nav nav-tabs mt-5" id="igniteTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="summary-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#summary"
+            type="button"
+            role="tab"
+          >
+            Summary Report
+          </button>
+        </li>
+        <!-- <li class="nav-item" role="presentation">
         <button class="nav-link" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#detailed" type="button"
           role="tab">
           Detailed Staff Report
@@ -100,351 +155,1225 @@
       <li class="nav-item">
         <a class="nav-link" id="intervention-tab" data-bs-toggle="tab" href="#intervention" role="tab">Intervention Report</a>
       </li> -->
-    </ul>
+      </ul>
 
-    <div class="tab-content" id="igniteTabContent">
-      <div class="tab-pane fade show active" id="summary" role="tabpanel">
-        <!-- This wraps your existing summary report content -->
-        <div class="container">
-          <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
-          <div class="row my-3">
-            <div class="col">
-              <label for="startDateSelect">Compare data from:</label>
-              <input type="date" class="form-control" id="startDateSelect" />
+      <div class="tab-content" id="igniteTabContent">
+        <div class="tab-pane fade show active" id="summary" role="tabpanel">
+          <!-- This wraps your existing summary report content -->
+          <div class="container">
+            <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
+            <div class="row my-3">
+              <div class="col">
+                <label for="startDateSelect">Compare data from:</label>
+                <input type="date" class="form-control" id="startDateSelect" />
+              </div>
+              <div class="col">
+                <label for="endDateSelect">to:</label>
+                <input type="date" class="form-control" id="endDateSelect" />
+              </div>
+              <div class="col d-flex align-items-end">
+                <button
+                  id="show-results-btn"
+                  class="btn btn-primary"
+                  onclick="fetchAcedRecruitmentReport()"
+                >
+                  <span id="show-results-text"
+                    >Load latest ACE-D recruitment data</span
+                  >
+                  <span
+                    id="show-results-spinner"
+                    class="spinner-border spinner-border-sm text-white ms-2"
+                    role="status"
+                    style="display: none"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </span>
+                </button>
+                <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
+                <button
+                  class="btn btn-secondary-outline ms-2"
+                  onclick="populateStaticData()"
+                >
+                  Populate Static Data
+                </button>
+                <button class="btn btn-warning ms-2" id="export-btn">
+                  Download to Excel
+                </button>
+              </div>
             </div>
-            <div class="col">
-              <label for="endDateSelect">to:</label>
-              <input type="date" class="form-control" id="endDateSelect" />
-            </div>
-            <div class="col d-flex align-items-end">
-              <button id="show-results-btn" class="btn btn-primary" onclick="getSummariesAndDisplay()">
-                <span id="show-results-text">Show Results</span>
-                <span id="show-results-spinner" class="spinner-border spinner-border-sm text-white ms-2" role="status" style="display: none;">
-                  <span class="visually-hidden">Loading...</span>
-                </span>
-              </button>
-              <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
-              <button class="btn btn-secondary-outline ms-2" onclick="populateStaticData()">
-                Populate Static Data
-              </button>
-              <button class="btn btn-warning ms-2" id="export-btn">
-                Download to Excel
-              </button>
-            </div>
-          </div>
-
-            <table class="table table-bordered table-sm align-middle text-center" id="recruitment-table">
-                <thead class="table-dark">
-                    <tr>
-                        <th rowspan="2">Recruitment Invitations</th>
-                        <th colspan="3" class="bg-secondary-subtle">Cumulative</th>
-                        <th colspan="3" class="bg-warning-subtle">Stanford</th>
-                        <th colspan="3" class="bg-primary-subtle">UIC</th>
-                    </tr>
-                    <tr>
-                        <th>Total</th>
-                        <th>%</th>
-                        <th>Weekly</th>
-                        <th>Total</th>
-                        <th>%</th>
-                        <th>Change</th>
-                        <th>Total</th>
-                        <th>%</th>
-                        <th>Change</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Invitations sent</td><td colspan="6"></td>
-                    <td id="uic-site-1--invite_sent"></td><td></td><td></td></tr>
-
-                <tr><td>Within 2-week wait</td><td colspan="6"></td>
-                    <td id="uic-site-1--two_week_wait"></td><td></td><td></td></tr>
-
-                <tr><td>Calling in-progress</td><td colspan="6"></td>
-                    <td id="uic-site-1--calling_in_progress"></td><td></td><td></td></tr>
-
-                <tr><td>Ceased outreach</td><td>101</td><td></td><td></td><td>0</td><td></td><td></td>
-                    <td id="uic-site-1--ceased_outreach"></td><td></td><td></td></tr>
-
-                <tr><td>Requested call (via Website or Twilio)</td><td>3</td><td></td><td></td><td>3</td><td></td><td></td>
-                    <td id="uic-site-1--requested_call"></td><td></td><td></td></tr>
 
-                <tr><td>Partial Screen</td><td>98</td><td></td><td></td><td>90</td><td></td><td></td>
-                    <td id="uic-site-1--partial_screen"></td><td></td><td></td></tr>
-
-                <tr class="table-secondary fw-bold"><td>Not Screened</td><td>45</td><td></td><td></td><td>0</td><td></td><td></td>
-                    <td id="uic-site-1--not_screened"></td><td></td><td></td></tr>
-
-                <tr><td>Ineligible prior to screen</td><td>14</td><td></td><td></td><td>0</td><td></td><td></td>
-                    <td id="uic-site-1--ineligible_prior_to_screen"></td><td></td><td></td></tr>
-
-                <tr><td>Declined to screen</td><td>31</td><td></td><td></td><td>0</td><td></td><td></td>
-                    <td id="uic-site-1--declined_to_screen"></td><td></td><td></td></tr>
-
-                <tr class="table-secondary fw-bold"><td>Screened</td><td>193</td><td></td><td></td><td>100</td><td></td><td></td>
-                    <td id="uic-site-1--screened"></td><td></td><td></td></tr>
-
-                <tr><td>Ineligible</td><td>132</td><td>68%</td><td></td><td>56</td><td>56%</td><td></td>
-                    <td id="uic-site-1--ineligible"></td><td></td><td></td></tr>
-
-                <tr><td>Eligible - Declined TO</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--eligible_but_declined_to"></td><td></td><td></td></tr>
-
-                <tr><td>Eligible - Undecided</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--eligible_undecided"></td><td></td><td></td></tr>
-
-                <tr class="fw-bold"><td>Eligible</td><td>61</td><td>32%</td><td></td><td>44</td><td>44%</td><td></td>
-                    <td id="uic-site-1--screened_eligible"></td><td></td><td></td></tr>
-
-                <tr><td>EHR mismatch to be resolved</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--ehr_mismatch"></td><td></td><td></td></tr>
-
-                <tr class="table-light fw-bold"><td>Tele-Orientation</td><td>61</td><td></td><td></td><td>44</td><td></td><td></td>
-                    <td id="uic-site-1--to_schedule"></td><td></td><td></td></tr>
-
-                <tr><td>Appointment declined/ceased</td><td>1</td><td>2%</td><td></td><td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--appt_declined"></td><td></td><td></td></tr>
-
-                <tr><td>Appointment needed within wk since IES</td><td>12</td><td>20%</td><td></td><td>11</td><td>25%</td><td></td>
-                    <td id="uic-site-1--appt_needed_within_week_since_ies"></td><td></td><td></td></tr>
-
-                <tr><td>Appointment needed over 1 wk since IES</td><td>6</td><td>10%</td><td></td><td>6</td><td>14%</td><td></td>
-                    <td id="uic-site-1--appt_needed_over_week_since_ies"></td><td></td><td></td></tr>
-
-                <tr><td>Reschedule No-show</td><td>5</td><td>8%</td><td></td><td>3</td><td>7%</td><td></td>
-                    <td id="uic-site-1--reschedule_no_show"></td><td></td><td></td></tr>
-
-                <tr><td class="fw-bold">TO Scheduled</td><td>2</td><td>3%</td><td></td><td>1</td><td>2%</td><td></td>
-                    <td id="uic-site-1--to_scheduled"></td><td></td><td></td></tr>
-
-                <tr class="table-secondary fw-bold"><td>Tele-Orientation Attended</td><td>36</td><td>59%</td><td></td><td>24</td><td>55%</td><td></td>
-                    <td id="uic-site-1--to_attended"></td><td></td><td></td></tr>
-
-                <tr><td>Declined ICF</td><td>1</td><td>3%</td><td></td><td>1</td><td>4%</td><td></td>
-                    <td id="uic-site-1--declined_icf"></td><td></td><td></td></tr>
-
-                <tr class="fw-bold"><td>Consented</td><td>34</td><td>94%</td><td></td><td>22</td><td>92%</td><td></td>
-                    <td id="uic-site-1--consented"></td><td></td><td></td></tr>
-
-                <tr><td class="ps-4">Agreed BiAffect, w/ iPhone</td><td>14</td><td>41%</td><td></td><td>9</td><td>41%</td><td></td>
-                    <td id="uic-site-1--consented_biaffect"></td><td></td><td></td></tr>
-
-                <tr><td class="ps-4">Agreed NDA</td><td>29</td><td>85%</td><td></td><td>18</td><td>82%</td><td></td>
-                    <td id="uic-site-1--consented_nda"></td><td></td><td></td></tr>
-
-                <tr><td>Ineligible at TO</td><td>2</td><td>6%</td><td></td><td>2</td><td>8%</td><td></td>
-                    <td id="uic-site-1--ineligible_at_to"></td><td></td><td></td></tr>
-
-                <tr><td>Declined to proceed</td><td>1</td><td>3%</td><td></td><td>1</td><td>5%</td><td></td>
-                    <td id="uic-site-1--to_declined_to_proceed"></td><td></td><td></td></tr>
-
-                <tr><td>Eligible - Undecided</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--to_elig_undecided"></td><td></td><td></td></tr>
-
-                <tr><td>Eligible - Pending MD Clearance</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--to_elig_pending_md_clearance"></td><td></td><td></td></tr>
-
-                <tr class="fw-bold"><td>Consented and Eligible</td><td>33</td><td>92%</td><td></td><td>21</td><td>88%</td><td></td>
-                    <td id="uic-site-1--consesnted_and_eligible"></td><td></td><td></td></tr>
-
-
-                    <tr class="table-light fw-bold"><td colspan="10">T1 Baseline</td></tr>
-                    <tr><td>Pre-window</td><td>4</td><td></td><td></td><td>3</td><td></td><td></td>
-                        <td id="uic-site-1--t1_baseline_prewindow">1</td><td></td><td></td></tr>
-
-                    <tr><td>T1 now in-window</td><td>5</td><td></td><td></td><td>2</td><td></td><td></td>
-                        <td id="uic-site-1--t1_baseline_inwindow">3</td><td></td><td></td></tr>
-
-                    <tr class="fw-bold"><td><em>T1 Complete - Fully enrolled</em></td><td>24</td><td>73%</td><td></td><td>16</td><td>76%</td><td></td>
-                        <td id="uic-site-1--t1_baseline_complete_fully_enrolled">8</td><td>67%</td><td></td></tr>
-
-                    <tr><td>T1 incomplete (WebNeuro only)</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t1_baseline_incomplete_webneuro_only">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T1 incomplete (PROs only)</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t1_baseline_incomplete_pros_only">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T1 Missing</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t1_baseline_missing">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td class="text-primary fw-bold">Tri-yearly Target: 8/1/25</td><td>48</td><td></td><td></td><td>24</td><td></td><td></td>
-                        <td><!-- Static -->24</td><td></td><td></td></tr>
-
-                    <tr><td class="text-primary">% of target</td><td></td><td>50%</td><td></td><td></td><td>67%</td><td></td>
-                        <td><!-- Static -->33%</td><td></td><td></td></tr>
-
-                    <tr class="table-light fw-bold"><td colspan="10">Timepoint 2</td></tr>
-                    <tr><td>T2 Pre-window</td><td>4</td><td></td><td></td><td>2</td><td></td><td></td>
-                        <td id="uic-site-1--t2_baseline_prewindow">2</td><td></td><td></td></tr>
-
-                    <tr><td>T2 Now in-window</td><td>3</td><td></td><td></td><td>3</td><td></td><td></td>
-                        <td id="uic-site-1--t2_baseline_inwindow">0</td><td></td><td></td></tr>
-
-                    <tr class="fw-bold"><td>T2 Complete</td><td>17</td><td>85%</td><td></td><td>11</td><td>79%</td><td></td>
-                        <td id="uic-site-1--t2_baseline_complete_fully_enrolled">6</td><td>100%</td><td></td></tr>
-
-                    <tr><td>T2 incomplete (WebNeuro only)</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t2_baseline_incomplete_webneuro_only">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T2 incomplete (PROs only)</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t2_baseline_incomplete_pros_only">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T2 Missing</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t2_baseline_missing">0</td><td>0%</td><td></td></tr>
-
-                    <tr class="fw-bold"><td>Total entered T2 window:</td><td>20</td><td></td><td></td><td>14</td><td></td><td></td>
-                        <td id="uic-site-1--t2_baseline_total_entered">6</td><td></td><td></td></tr>
-
-                    <tr class="table-light fw-bold"><td colspan="10">Timepoint 3</td></tr>
-                    <tr><td>T3 Pre-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t3_baseline_prewindow">0</td><td></td><td></td></tr>
-
-                    <tr><td>T3 Now in-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t3_baseline_inwindow">0</td><td></td><td></td></tr>
-
-                    <tr class="fw-bold"><td>T3 Complete</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t3_baseline_complete_fully_enrolled">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T3 incomplete (WebNeuro only)</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t3_baseline_incomplete_webneuro_only">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T3 incomplete (PROs only)</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t3_baseline_incomplete_pros_only">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T3 Missing</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t3_baseline_missing">0</td><td>0%</td><td></td></tr>
-
-                    <tr class="fw-bold"><td>Total entered T3 window:</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t3_baseline_total_entered">0</td><td></td><td></td></tr>
-
-                    <tr class="table-light fw-bold"><td colspan="10">Timepoint 4</td></tr>
-                    <tr><td>T4 Pre-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t4_baseline_prewindow">0</td><td></td><td></td></tr>
-
-                    <tr><td>T4 Now in-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t4_baseline_inwindow">0</td><td></td><td></td></tr>
-
-                    <tr class="fw-bold"><td>T4 Complete</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t4_baseline_complete_fully_enrolled">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T4 Missing PROs</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t4_baseline_missing">0</td><td>0%</td><td></td></tr>
-
-                    <tr class="fw-bold"><td>Total entered T4 window:</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t4_baseline_total_entered">0</td><td></td><td></td></tr>
-
-
-                    <tr class="table-light fw-bold"><td colspan="10">Timepoint 5</td></tr>
-
-                    <tr><td>T5 Pre-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t5_baseline_prewindow">0</td><td></td><td></td></tr>
-
-                    <tr><td>T5 Now in-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t5_baseline_inwindow">0</td><td></td><td></td></tr>
-
-                    <tr class="fw-bold"><td>T5 Complete</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t5_baseline_complete_fully_enrolled">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T5 Missing PROs</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t5_baseline_missing">0</td><td>0%</td><td></td></tr>
-
-                    <tr class="fw-bold"><td>Total entered T5 window:</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t5_baseline_total_entered">0</td><td></td><td></td></tr>
-
-                    <tr class="table-light fw-bold"><td colspan="10">Timepoint 6</td></tr>
-
-                    <tr><td>T6 Pre-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t6_baseline_prewindow">0</td><td></td><td></td></tr>
-
-                    <tr><td>T6 Now in-window</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t6_baseline_inwindow">0</td><td></td><td></td></tr>
-
-                    <tr class="fw-bold"><td>T6 Complete</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t6_baseline_complete_fully_enrolled">0</td><td>0%</td><td></td></tr>
-
-                    <tr><td>T6 Missing PROs</td><td>0</td><td>0%</td><td></td><td>0</td><td>0%</td><td></td>
-                        <td id="uic-site-1--t6_baseline_missing">0</td><td>0%</td><td></td></tr>
-
-                    <tr class="fw-bold"><td>Total entered T6 window:</td><td>0</td><td></td><td></td><td>0</td><td></td><td></td>
-                        <td id="uic-site-1--t6_baseline_total_entered">0</td><td></td><td></td></tr>
-
-
-                    <!-- </tbody>
-                </table> -->
-                    <!-- IGNORE THIS BELOW LINE -->
-                    <tr><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td><td style="visibility: hidden;">_blank</td></tr>
-                    <!-- IGNORE THIS ABOVE LINE -->
-
-                    <tr class="table-secondary fw-bold">
-                    <td>Final Disposition</td><td colspan="3"></td><td colspan="3"></td><td colspan="3"></td>
-                    </tr>
-
-                    <tr>
-                    <td>Off-study:</td>
-                    <td>0</td><td>0%</td><td></td>
-                    <td>0</td><td>0%</td><td></td>
-                    <td id="uic-site-1--off_study">0</td><td>0%</td><td></td>
-                    </tr>
-
-                    <tr>
-                    <td>Withdrawn:</td>
-                    <td>0</td><td>0%</td><td></td>
-                    <td>0</td><td>0%</td><td></td>
-                    <td><!-- no direct key, handled in subtotals --></td><td>0%</td><td></td>
-                    </tr>
-
-                    <tr>
-                    <td class="ps-4">Timepoint 1</td>
-                    <td>0</td><td colspan="2"></td>
-                    <td>0</td><td colspan="2"></td>
-                    <td id="uic-site-1--withdraw_t1">0</td><td colspan="2"></td>
-                    </tr>
-
-                    <tr>
-                    <td class="ps-4">Timepoint 2</td>
-                    <td>0</td><td colspan="2"></td>
-                    <td>0</td><td colspan="2"></td>
-                    <td id="uic-site-1--withdraw_t2">0</td><td colspan="2"></td>
-                    </tr>
-
-                    <tr>
-                    <td class="ps-4">Timepoint 3</td>
-                    <td>0</td><td colspan="2"></td>
-                    <td>0</td><td colspan="2"></td>
-                    <td id="uic-site-1--withdraw_t3">0</td><td colspan="2"></td>
-                    </tr>
-
-                    <tr>
-                    <td class="ps-4">Timepoint 4</td>
-                    <td>0</td><td colspan="2"></td>
-                    <td>0</td><td colspan="2"></td>
-                    <td id="uic-site-1--withdraw_t4">0</td><td colspan="2"></td>
-                    </tr>
-
-                    <tr>
-                    <td class="ps-4">Timepoint 5</td>
-                    <td>0</td><td colspan="2"></td>
-                    <td>0</td><td colspan="2"></td>
-                    <td id="uic-site-1--withdraw_t5">0</td><td colspan="2"></td>
-                    </tr>
-
-                    <tr>
-                    <td class="ps-4">Timepoint 6</td>
-                    <td>0</td><td colspan="2"></td>
-                    <td>0</td><td colspan="2"></td>
-                    <td id="uic-site-1--withdraw_t6">0</td><td colspan="2"></td>
-                    </tr>
-
-                </tbody>
+            <table
+              class="table table-bordered table-sm align-middle text-center"
+              id="recruitment-table"
+            >
+              <thead class="table-dark">
+                <tr>
+                  <th class="align-left" rowspan="2">Recruitment Invitations</th>
+                  <th colspan="3" class="bg-secondary">Cumulative</th>
+                  <th colspan="3" class="bg-danger">Stanford</th>
+                  <th colspan="3" class="bg-primary">UIC</th>
+                </tr>
+                <tr>
+                  <th>Total</th>
+                  <th>%</th>
+                  <th>Change %</th>
+                  <th>Total</th>
+                  <th>%</th>
+                  <th>Change %</th>
+                  <th>Total</th>
+                  <th>%</th>
+                  <th>Change %</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Invitations sent</td>
+                  <td id="cumulative--invite_sent"></td>
+                  <td id="cumulative-percent--invite_sent"></td>
+                  <td id="cumulative-change--invite_sent"></td>
+                  <td id="stanford-site-2--invite_sent"></td>
+                  <td id="stanford-percent--invite_sent"></td>
+                  <td id="stanford-change--invite_sent"></td>
+                  <td id="uic-site-1--invite_sent"></td>
+                  <td id="uic-percent--invite_sent"></td>
+                  <td id="uic-change--invite_sent"></td>
+                </tr>
+
+                <tr>
+                  <td>Within 2-week wait</td>
+                  <td id="cumulative--two_week_wait"></td>
+                  <td id="cumulative-percent--two_week_wait"></td>
+                  <td id="cumulative-change--two_week_wait"></td>
+                  <td id="stanford-site-2--two_week_wait"></td>
+                  <td id="stanford-percent--two_week_wait"></td>
+                  <td id="stanford-change--two_week_wait"></td>
+                  <td id="uic-site-1--two_week_wait"></td>
+                  <td id="uic-percent--two_week_wait"></td>
+                  <td id="uic-change--two_week_wait"></td>
+                </tr>
+
+                <tr>
+                  <td>Calling in-progress</td>
+                  <td id="cumulative--calling_in_progress"></td>
+                  <td id="cumulative-percent--calling_in_progress"></td>
+                  <td id="cumulative-change--calling_in_progress"></td>
+                  <td id="stanford-site-2--calling_in_progress"></td>
+                  <td id="stanford-percent--calling_in_progress"></td>
+                  <td id="stanford-change--calling_in_progress"></td>
+                  <td id="uic-site-1--calling_in_progress"></td>
+                  <td id="uic-percent--calling_in_progress"></td>
+                  <td id="uic-change--calling_in_progress"></td>
+                </tr>
+
+                <tr>
+                  <td>Ceased outreach</td>
+                  <td id="cumulative--ceased_outreach"></td>
+                  <td id="cumulative-percent--ceased_outreach"></td>
+                  <td id="cumulative-change--ceased_outreach"></td>
+                  <td id="stanford-site-2--ceased_outreach"></td>
+                  <td id="stanford-percent--ceased_outreach"></td>
+                  <td id="stanford-change--ceased_outreach"></td>
+                  <td id="uic-site-1--ceased_outreach"></td>
+                  <td id="uic-percent--ceased_outreach"></td>
+                  <td id="uic-change--ceased_outreach"></td>
+                </tr>
+
+                <tr>
+                  <td>Requested call (via Website or Twilio)</td>
+                  <td id="cumulative--requested_call"></td>
+                  <td id="cumulative-percent--requested_call"></td>
+                  <td id="cumulative-change--requested_call"></td>
+                  <td id="stanford-site-2--requested_call"></td>
+                  <td id="stanford-percent--requested_call"></td>
+                  <td id="stanford-change--requested_call"></td>
+                  <td id="uic-site-1--requested_call"></td>
+                  <td id="uic-percent--requested_call"></td>
+                  <td id="uic-change--requested_call"></td>
+                </tr>
+
+                <tr>
+                  <td>Partial Screen</td>
+                  <td id="cumulative--partial_screen"></td>
+                  <td id="cumulative-percent--partial_screen"></td>
+                  <td id="cumulative-change--partial_screen"></td>
+                  <td id="stanford-site-2--partial_screen"></td>
+                  <td id="stanford-percent--partial_screen"></td>
+                  <td id="stanford-change--partial_screen"></td>
+                  <td id="uic-site-1--partial_screen"></td>
+                  <td id="uic-percent--partial_screen"></td>
+                  <td id="uic-change--partial_screen"></td>
+                </tr>
+
+                <tr class="table-secondary fw-bold">
+                  <td>Not Screened</td>
+                  <td id="cumulative--not_screened"></td>
+                  <td id="cumulative-percent--not_screened"></td>
+                  <td id="cumulative-change--not_screened"></td>
+                  <td id="stanford-site-2--not_screened"></td>
+                  <td id="stanford-percent--not_screened"></td>
+                  <td id="stanford-change--not_screened"></td>
+                  <td id="uic-site-1--not_screened"></td>
+                  <td id="uic-percent--not_screened"></td>
+                  <td id="uic-change--not_screened"></td>
+                </tr>
+
+                <tr>
+                  <td>Ineligible prior to screen</td>
+                  <td id="cumulative--ineligible_prior_to_screen"></td>
+                  <td id="cumulative-percent--ineligible_prior_to_screen"></td>
+                  <td id="cumulative-change--ineligible_prior_to_screen"></td>
+                  <td id="stanford-site-2--ineligible_prior_to_screen"></td>
+                  <td id="stanford-percent--ineligible_prior_to_screen"></td>
+                  <td id="stanford-change--ineligible_prior_to_screen"></td>
+                  <td id="uic-site-1--ineligible_prior_to_screen"></td>
+                  <td id="uic-percent--ineligible_prior_to_screen"></td>
+                  <td id="uic-change--ineligible_prior_to_screen"></td>
+                </tr>
+
+                <tr>
+                  <td>Declined to screen</td>
+                  <td id="cumulative--declined_to_screen"></td>
+                  <td id="cumulative-percent--declined_to_screen"></td>
+                  <td id="cumulative-change--declined_to_screen"></td>
+                  <td id="stanford-site-2--declined_to_screen"></td>
+                  <td id="stanford-percent--declined_to_screen"></td>
+                  <td id="stanford-change--declined_to_screen"></td>
+                  <td id="uic-site-1--declined_to_screen"></td>
+                  <td id="uic-percent--declined_to_screen"></td>
+                  <td id="uic-change--declined_to_screen"></td>
+                </tr>
+
+                <tr class="table-secondary fw-bold">
+                  <td>Screened</td>
+                  <td id="cumulative--screened"></td>
+                  <td id="cumulative-percent--screened"></td>
+                  <td id="cumulative-change--screened"></td>
+                  <td id="stanford-site-2--screened"></td>
+                  <td id="stanford-percent--screened"></td>
+                  <td id="stanford-change--screened"></td>
+                  <td id="uic-site-1--screened"></td>
+                  <td id="uic-percent--screened"></td>
+                  <td id="uic-change--screened"></td>
+                </tr>
+
+                <tr>
+                  <td>Ineligible</td>
+                  <td id="cumulative--ineligible"></td>
+                  <td id="cumulative-percent--ineligible"></td>
+                  <td id="cumulative-change--ineligible"></td>
+                  <td id="stanford-site-2--ineligible"></td>
+                  <td id="stanford-percent--ineligible"></td>
+                  <td id="stanford-change--ineligible"></td>
+                  <td id="uic-site-1--ineligible"></td>
+                  <td id="uic-percent--ineligible"></td>
+                  <td id="uic-change--ineligible"></td>
+                </tr>
+
+                <tr>
+                  <td>Eligible - Declined TO</td>
+                  <td id="cumulative--eligible_but_declined_to"></td>
+                  <td id="cumulative-percent--eligible_but_declined_to"></td>
+                  <td id="cumulative-change--eligible_but_declined_to"></td>
+                  <td id="stanford-site-2--eligible_but_declined_to"></td>
+                  <td id="stanford-percent--eligible_but_declined_to"></td>
+                  <td id="stanford-change--eligible_but_declined_to"></td>
+                  <td id="uic-site-1--eligible_but_declined_to"></td>
+                  <td id="uic-percent--eligible_but_declined_to"></td>
+                  <td id="uic-change--eligible_but_declined_to"></td>
+                </tr>
+
+                <tr>
+                  <td>Eligible - Undecided</td>
+                  <td id="cumulative--eligible_undecided"></td>
+                  <td id="cumulative-percent--eligible_undecided"></td>
+                  <td id="cumulative-change--eligible_undecided"></td>
+                  <td id="stanford-site-2--eligible_undecided"></td>
+                  <td id="stanford-percent--eligible_undecided"></td>
+                  <td id="stanford-change--eligible_undecided"></td>
+                  <td id="uic-site-1--eligible_undecided"></td>
+                  <td id="uic-percent--eligible_undecided"></td>
+                  <td id="uic-change--eligible_undecided"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td>Eligible</td>
+                  <td id="cumulative--screened_eligible"></td>
+                  <td id="cumulative-percent--screened_eligible"></td>
+                  <td id="cumulative-change--screened_eligible"></td>
+                  <td id="stanford-site-2--screened_eligible"></td>
+                  <td id="stanford-percent--screened_eligible"></td>
+                  <td id="stanford-change--screened_eligible"></td>
+                  <td id="uic-site-1--screened_eligible"></td>
+                  <td id="uic-percent--screened_eligible"></td>
+                  <td id="uic-change--screened_eligible"></td>
+                </tr>
+
+                <tr>
+                  <td>EHR mismatch to be resolved</td>
+                  <td id="cumulative--ehr_mismatch"></td>
+                  <td id="cumulative-percent--ehr_mismatch"></td>
+                  <td id="cumulative-change--ehr_mismatch"></td>
+                  <td id="stanford-site-2--ehr_mismatch"></td>
+                  <td id="stanford-percent--ehr_mismatch"></td>
+                  <td id="stanford-change--ehr_mismatch"></td>
+                  <td id="uic-site-1--ehr_mismatch"></td>
+                  <td id="uic-percent--ehr_mismatch"></td>
+                  <td id="uic-change--ehr_mismatch"></td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td>Tele-Orientation</td>
+                  <td id="cumulative--screened_eligible"></td>
+                  <td id="cumulative-percent--screened_eligible"></td>
+                  <td id="cumulative-change--screened_eligible"></td>
+                  <td id="stanford-site-2--screened_eligible"></td>
+                  <td id="stanford-percent--screened_eligible"></td>
+                  <td id="stanford-change--screened_eligible"></td>
+                  <td id="uic-site-1--screened_eligible"></td>
+                  <td id="uic-percent--screened_eligible"></td>
+                  <td id="uic-change--screened_eligible"></td>
+                </tr>
+
+                <tr>
+                  <td>Appointment declined/ceased</td>
+                  <td id="cumulative--appt_declined"></td>
+                  <td id="cumulative-percent--appt_declined"></td>
+                  <td id="cumulative-change--appt_declined"></td>
+                  <td id="stanford-site-2--appt_declined"></td>
+                  <td id="stanford-percent--appt_declined"></td>
+                  <td id="stanford-change--appt_declined"></td>
+                  <td id="uic-site-1--appt_declined"></td>
+                  <td id="uic-percent--appt_declined"></td>
+                  <td id="uic-change--appt_declined"></td>
+                </tr>
+
+                <tr>
+                  <td>Appointment needed within wk since IES</td>
+                  <td id="cumulative--appt_needed_within_week_since_ies"></td>
+                  <td
+                    id="cumulative-percent--appt_needed_within_week_since_ies"
+                  ></td>
+                  <td
+                    id="cumulative-change--appt_needed_within_week_since_ies"
+                  ></td>
+                  <td
+                    id="stanford-site-2--appt_needed_within_week_since_ies"
+                  ></td>
+                  <td
+                    id="stanford-percent--appt_needed_within_week_since_ies"
+                  ></td>
+                  <td
+                    id="stanford-change--appt_needed_within_week_since_ies"
+                  ></td>
+                  <td id="uic-site-1--appt_needed_within_week_since_ies"></td>
+                  <td id="uic-percent--appt_needed_within_week_since_ies"></td>
+                  <td id="uic-change--appt_needed_within_week_since_ies"></td>
+                </tr>
+
+                <tr>
+                  <td>Appointment needed over 1 wk since IES</td>
+                  <td id="cumulative--appt_needed_over_week_since_ies"></td>
+                  <td
+                    id="cumulative-percent--appt_needed_over_week_since_ies"
+                  ></td>
+                  <td
+                    id="cumulative-change--appt_needed_over_week_since_ies"
+                  ></td>
+                  <td
+                    id="stanford-site-2--appt_needed_over_week_since_ies"
+                  ></td>
+                  <td
+                    id="stanford-percent--appt_needed_over_week_since_ies"
+                  ></td>
+                  <td
+                    id="stanford-change--appt_needed_over_week_since_ies"
+                  ></td>
+                  <td id="uic-site-1--appt_needed_over_week_since_ies"></td>
+                  <td id="uic-percent--appt_needed_over_week_since_ies"></td>
+                  <td id="uic-change--appt_needed_over_week_since_ies"></td>
+                </tr>
+
+                <tr>
+                  <td>Reschedule No-show</td>
+                  <td id="cumulative--reschedule_no_show"></td>
+                  <td id="cumulative-percent--reschedule_no_show"></td>
+                  <td id="cumulative-change--reschedule_no_show"></td>
+                  <td id="stanford-site-2--reschedule_no_show"></td>
+                  <td id="stanford-percent--reschedule_no_show"></td>
+                  <td id="stanford-change--reschedule_no_show"></td>
+                  <td id="uic-site-1--reschedule_no_show"></td>
+                  <td id="uic-percent--reschedule_no_show"></td>
+                  <td id="uic-change--reschedule_no_show"></td>
+                </tr>
+
+                <tr>
+                  <td class="fw-bold">TO Scheduled</td>
+                  <td id="cumulative--to_scheduled"></td>
+                  <td id="cumulative-percent--to_scheduled"></td>
+                  <td id="cumulative-change--to_scheduled"></td>
+                  <td id="stanford-site-2--to_scheduled"></td>
+                  <td id="stanford-percent--to_scheduled"></td>
+                  <td id="stanford-change--to_scheduled"></td>
+                  <td id="uic-site-1--to_scheduled"></td>
+                  <td id="uic-percent--to_scheduled"></td>
+                  <td id="uic-change--to_scheduled"></td>
+                </tr>
+
+                <tr class="table-secondary fw-bold">
+                  <td>Tele-Orientation Attended</td>
+                  <td id="cumulative--to_attended"></td>
+                  <td id="cumulative-percent--to_attended"></td>
+                  <td id="cumulative-change--to_attended"></td>
+                  <td id="stanford-site-2--to_attended"></td>
+                  <td id="stanford-percent--to_attended"></td>
+                  <td id="stanford-change--to_attended"></td>
+                  <td id="uic-site-1--to_attended"></td>
+                  <td id="uic-percent--to_attended"></td>
+                  <td id="uic-change--to_attended"></td>
+                </tr>
+
+                <tr>
+                  <td>Declined ICF</td>
+                  <td id="cumulative--declined_icf"></td>
+                  <td id="cumulative-percent--declined_icf"></td>
+                  <td id="cumulative-change--declined_icf"></td>
+                  <td id="stanford-site-2--declined_icf"></td>
+                  <td id="stanford-percent--declined_icf"></td>
+                  <td id="stanford-change--declined_icf"></td>
+                  <td id="uic-site-1--declined_icf"></td>
+                  <td id="uic-percent--declined_icf"></td>
+                  <td id="uic-change--declined_icf"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td>Consented</td>
+                  <td id="cumulative--consented"></td>
+                  <td id="cumulative-percent--consented"></td>
+                  <td id="cumulative-change--consented"></td>
+                  <td id="stanford-site-2--consented"></td>
+                  <td id="stanford-percent--consented"></td>
+                  <td id="stanford-change--consented"></td>
+                  <td id="uic-site-1--consented"></td>
+                  <td id="uic-percent--consented"></td>
+                  <td id="uic-change--consented"></td>
+                </tr>
+
+                <tr>
+                  <td class="ps-4">Agreed BiAffect, w/ iPhone</td>
+                  <td id="cumulative--consented_biaffect"></td>
+                  <td id="cumulative-percent--consented_biaffect"></td>
+                  <td id="cumulative-change--consented_biaffect"></td>
+                  <td id="stanford-site-2--consented_biaffect"></td>
+                  <td id="stanford-percent--consented_biaffect"></td>
+                  <td id="stanford-change--consented_biaffect"></td>
+                  <td id="uic-site-1--consented_biaffect"></td>
+                  <td id="uic-percent--consented_biaffect"></td>
+                  <td id="uic-change--consented_biaffect"></td>
+                </tr>
+
+                <tr>
+                  <td class="ps-4">Agreed NDA</td>
+                  <td id="cumulative--consented_nda"></td>
+                  <td id="cumulative-percent--consented_nda"></td>
+                  <td id="cumulative-change--consented_nda"></td>
+                  <td id="stanford-site-2--consented_nda"></td>
+                  <td id="stanford-percent--consented_nda"></td>
+                  <td id="stanford-change--consented_nda"></td>
+                  <td id="uic-site-1--consented_nda"></td>
+                  <td id="uic-percent--consented_nda"></td>
+                  <td id="uic-change--consented_nda"></td>
+                </tr>
+
+                <tr>
+                  <td>Ineligible at TO</td>
+                  <td id="cumulative--ineligible_at_to"></td>
+                  <td id="cumulative-percent--ineligible_at_to"></td>
+                  <td id="cumulative-change--ineligible_at_to"></td>
+                  <td id="stanford-site-2--ineligible_at_to"></td>
+                  <td id="stanford-percent--ineligible_at_to"></td>
+                  <td id="stanford-change--ineligible_at_to"></td>
+                  <td id="uic-site-1--ineligible_at_to"></td>
+                  <td id="uic-percent--ineligible_at_to"></td>
+                  <td id="uic-change--ineligible_at_to"></td>
+                </tr>
+
+                <tr>
+                  <td>Declined to proceed</td>
+                  <td id="cumulative--to_declined_to_proceed"></td>
+                  <td id="cumulative-percent--to_declined_to_proceed"></td>
+                  <td id="cumulative-change--to_declined_to_proceed"></td>
+                  <td id="stanford-site-2--to_declined_to_proceed"></td>
+                  <td id="stanford-percent--to_declined_to_proceed"></td>
+                  <td id="stanford-change--to_declined_to_proceed"></td>
+                  <td id="uic-site-1--to_declined_to_proceed"></td>
+                  <td id="uic-percent--to_declined_to_proceed"></td>
+                  <td id="uic-change--to_declined_to_proceed"></td>
+                </tr>
+
+                <tr>
+                  <td>Eligible - Undecided</td>
+                  <td id="cumulative--to_elig_undecided"></td>
+                  <td id="cumulative-percent--to_elig_undecided"></td>
+                  <td id="cumulative-change--to_elig_undecided"></td>
+                  <td id="stanford-site-2--to_elig_undecided"></td>
+                  <td id="stanford-percent--to_elig_undecided"></td>
+                  <td id="stanford-change--to_elig_undecided"></td>
+                  <td id="uic-site-1--to_elig_undecided"></td>
+                  <td id="uic-percent--to_elig_undecided"></td>
+                  <td id="uic-change--to_elig_undecided"></td>
+                </tr>
+
+                <tr>
+                  <td>Eligible - Pending MD Clearance</td>
+                  <td id="cumulative--to_elig_pending_md_clearance"></td>
+                  <td
+                    id="cumulative-percent--to_elig_pending_md_clearance"
+                  ></td>
+                  <td id="cumulative-change--to_elig_pending_md_clearance"></td>
+                  <td id="stanford-site-2--to_elig_pending_md_clearance"></td>
+                  <td id="stanford-percent--to_elig_pending_md_clearance"></td>
+                  <td id="stanford-change--to_elig_pending_md_clearance"></td>
+                  <td id="uic-site-1--to_elig_pending_md_clearance"></td>
+                  <td id="uic-percent--to_elig_pending_md_clearance"></td>
+                  <td id="uic-change--to_elig_pending_md_clearance"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td>Consented and Eligible</td>
+                  <td id="cumulative--consesnted_and_eligible"></td>
+                  <td id="cumulative-percent--consesnted_and_eligible"></td>
+                  <td id="cumulative-change--consesnted_and_eligible"></td>
+                  <td id="stanford-site-2--consesnted_and_eligible"></td>
+                  <td id="stanford-percent--consesnted_and_eligible"></td>
+                  <td id="stanford-change--consesnted_and_eligible"></td>
+                  <td id="uic-site-1--consesnted_and_eligible"></td>
+                  <td id="uic-percent--consesnted_and_eligible"></td>
+                  <td id="uic-change--consesnted_and_eligible"></td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td colspan="10">T1 Baseline</td>
+                </tr>
+                <tr>
+                  <td>Pre-window</td>
+                  <td id="cumulative--t1_baseline_prewindow"></td>
+                  <td id="cumulative-percent--t1_baseline_prewindow"></td>
+                  <td id="cumulative-change--t1_baseline_prewindow"></td>
+                  <td id="stanford-site-2--t1_baseline_prewindow"></td>
+                  <td id="stanford-percent--t1_baseline_prewindow"></td>
+                  <td id="stanford-change--t1_baseline_prewindow"></td>
+                  <td id="uic-site-1--t1_baseline_prewindow"></td>
+                  <td id="uic-percent--t1_baseline_prewindow"></td>
+                  <td id="uic-change--t1_baseline_prewindow"></td>
+                </tr>
+                <tr>
+                  <td>T1 now in-window</td>
+                  <td id="cumulative--t1_baseline_inwindow"></td>
+                  <td id="cumulative-percent--t1_baseline_inwindow"></td>
+                  <td id="cumulative-change--t1_baseline_inwindow"></td>
+                  <td id="stanford-site-2--t1_baseline_inwindow"></td>
+                  <td id="stanford-percent--t1_baseline_inwindow"></td>
+                  <td id="stanford-change--t1_baseline_inwindow"></td>
+                  <td id="uic-site-1--t1_baseline_inwindow"></td>
+                  <td id="uic-percent--t1_baseline_inwindow"></td>
+                  <td id="uic-change--t1_baseline_inwindow"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td><em>T1 Complete - Fully enrolled</em></td>
+                  <td id="cumulative--t1_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="cumulative-percent--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="cumulative-change--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-percent--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-change--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-site-1--t1_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="uic-percent--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-change--t1_baseline_complete_fully_enrolled"></td>
+                </tr>
+                <tr>
+                  <td>T1 incomplete (WebNeuro only)</td>
+                  <td
+                    id="cumulative--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="cumulative-percent--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="cumulative-change--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-percent--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-change--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-site-1--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-percent--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-change--t1_baseline_incomplete_webneuro_only"
+                  ></td>
+                </tr>
+                <tr>
+                  <td>T1 incomplete (PROs only)</td>
+                  <td id="cumulative--t1_baseline_incomplete_pros_only"></td>
+                  <td
+                    id="cumulative-percent--t1_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="cumulative-change--t1_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t1_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-percent--t1_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-change--t1_baseline_incomplete_pros_only"
+                  ></td>
+                  <td id="uic-site-1--t1_baseline_incomplete_pros_only"></td>
+                  <td id="uic-percent--t1_baseline_incomplete_pros_only"></td>
+                  <td id="uic-change--t1_baseline_incomplete_pros_only"></td>
+                </tr>
+                <tr>
+                  <td>T1 Missing</td>
+                  <td id="cumulative--t1_baseline_missing"></td>
+                  <td id="cumulative-percent--t1_baseline_missing"></td>
+                  <td id="cumulative-change--t1_baseline_missing"></td>
+                  <td id="stanford-site-2--t1_baseline_missing"></td>
+                  <td id="stanford-percent--t1_baseline_missing"></td>
+                  <td id="stanford-change--t1_baseline_missing"></td>
+                  <td id="uic-site-1--t1_baseline_missing"></td>
+                  <td id="uic-percent--t1_baseline_missing"></td>
+                  <td id="uic-change--t1_baseline_missing"></td>
+                </tr>
+
+                <tr class="text-primary fw-bold">
+                  <td colspan="10">Tri‑yearly Target: 8/1/25</td>
+                </tr>
+                <tr class="text-primary">
+                  <td colspan="10">of target</td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td colspan="10">Timepoint 2</td>
+                </tr>
+                <tr>
+                  <td>T2 Pre-window</td>
+                  <td id="cumulative--t2_baseline_prewindow"></td>
+                  <td id="cumulative-percent--t2_baseline_prewindow"></td>
+                  <td id="cumulative-change--t2_baseline_prewindow"></td>
+                  <td id="stanford-site-2--t2_baseline_prewindow"></td>
+                  <td id="stanford-percent--t2_baseline_prewindow"></td>
+                  <td id="stanford-change--t2_baseline_prewindow"></td>
+                  <td id="uic-site-1--t2_baseline_prewindow"></td>
+                  <td id="uic-percent--t2_baseline_prewindow"></td>
+                  <td id="uic-change--t2_baseline_prewindow"></td>
+                </tr>
+                <tr>
+                  <td>T2 Now in-window</td>
+                  <td id="cumulative--t2_baseline_inwindow"></td>
+                  <td id="cumulative-percent--t2_baseline_inwindow"></td>
+                  <td id="cumulative-change--t2_baseline_inwindow"></td>
+                  <td id="stanford-site-2--t2_baseline_inwindow"></td>
+                  <td id="stanford-percent--t2_baseline_inwindow"></td>
+                  <td id="stanford-change--t2_baseline_inwindow"></td>
+                  <td id="uic-site-1--t2_baseline_inwindow"></td>
+                  <td id="uic-percent--t2_baseline_inwindow"></td>
+                  <td id="uic-change--t2_baseline_inwindow"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>T2 Complete</td>
+                  <td id="cumulative--t2_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="cumulative-percent--t2_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="cumulative-change--t2_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t2_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-percent--t2_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-change--t2_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-site-1--t2_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="uic-percent--t2_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-change--t2_baseline_complete_fully_enrolled"></td>
+                </tr>
+                <tr>
+                  <td>T2 incomplete (WebNeuro only)</td>
+                  <td
+                    id="cumulative--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="cumulative-percent--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="cumulative-change--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-percent--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-change--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-site-1--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-percent--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-change--t2_baseline_incomplete_webneuro_only"
+                  ></td>
+                </tr>
+                <tr>
+                  <td>T2 incomplete (PROs only)</td>
+                  <td id="cumulative--t2_baseline_incomplete_pros_only"></td>
+                  <td
+                    id="cumulative-percent--t2_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="cumulative-change--t2_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t2_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-percent--t2_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-change--t2_baseline_incomplete_pros_only"
+                  ></td>
+                  <td id="uic-site-1--t2_baseline_incomplete_pros_only"></td>
+                  <td id="uic-percent--t2_baseline_incomplete_pros_only"></td>
+                  <td id="uic-change--t2_baseline_incomplete_pros_only"></td>
+                </tr>
+                <tr>
+                  <td>T2 Missing</td>
+                  <td id="cumulative--t2_baseline_missing"></td>
+                  <td id="cumulative-percent--t2_baseline_missing"></td>
+                  <td id="cumulative-change--t2_baseline_missing"></td>
+                  <td id="stanford-site-2--t2_baseline_missing"></td>
+                  <td id="stanford-percent--t2_baseline_missing"></td>
+                  <td id="stanford-change--t2_baseline_missing"></td>
+                  <td id="uic-site-1--t2_baseline_missing"></td>
+                  <td id="uic-percent--t2_baseline_missing"></td>
+                  <td id="uic-change--t2_baseline_missing"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>Total entered T2 window</td>
+                  <td id="cumulative--t2_baseline_total_entered"></td>
+                  <td id="cumulative-percent--t2_baseline_total_entered"></td>
+                  <td id="cumulative-change--t2_baseline_total_entered"></td>
+                  <td id="stanford-site-2--t2_baseline_total_entered"></td>
+                  <td id="stanford-percent--t2_baseline_total_entered"></td>
+                  <td id="stanford-change--t2_baseline_total_entered"></td>
+                  <td id="uic-site-1--t2_baseline_total_entered"></td>
+                  <td id="uic-percent--t2_baseline_total_entered"></td>
+                  <td id="uic-change--t2_baseline_total_entered"></td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td colspan="10">Timepoint 3</td>
+                </tr>
+                <tr>
+                  <td>T3 Pre-window</td>
+                  <td id="cumulative--t3_baseline_prewindow"></td>
+                  <td id="cumulative-percent--t3_baseline_prewindow"></td>
+                  <td id="cumulative-change--t3_baseline_prewindow"></td>
+                  <td id="stanford-site-2--t3_baseline_prewindow"></td>
+                  <td id="stanford-percent--t3_baseline_prewindow"></td>
+                  <td id="stanford-change--t3_baseline_prewindow"></td>
+                  <td id="uic-site-1--t3_baseline_prewindow"></td>
+                  <td id="uic-percent--t3_baseline_prewindow"></td>
+                  <td id="uic-change--t3_baseline_prewindow"></td>
+                </tr>
+                <tr>
+                  <td>T3 Now in-window</td>
+                  <td id="cumulative--t3_baseline_inwindow"></td>
+                  <td id="cumulative-percent--t3_baseline_inwindow"></td>
+                  <td id="cumulative-change--t3_baseline_inwindow"></td>
+                  <td id="stanford-site-2--t3_baseline_inwindow"></td>
+                  <td id="stanford-percent--t3_baseline_inwindow"></td>
+                  <td id="stanford-change--t3_baseline_inwindow"></td>
+                  <td id="uic-site-1--t3_baseline_inwindow"></td>
+                  <td id="uic-percent--t3_baseline_inwindow"></td>
+                  <td id="uic-change--t3_baseline_inwindow"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>T3 Complete</td>
+                  <td id="cumulative--t3_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="cumulative-percent--t3_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="cumulative-change--t3_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t3_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-percent--t3_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-change--t3_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-site-1--t3_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="uic-percent--t3_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-change--t3_baseline_complete_fully_enrolled"></td>
+                </tr>
+                <tr>
+                  <td>T3 incomplete (WebNeuro only)</td>
+                  <td
+                    id="cumulative--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="cumulative-percent--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="cumulative-change--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-percent--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="stanford-change--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-site-1--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-percent--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                  <td
+                    id="uic-change--t3_baseline_incomplete_webneuro_only"
+                  ></td>
+                </tr>
+                <tr>
+                  <td>T3 incomplete (PROs only)</td>
+                  <td id="cumulative--t3_baseline_incomplete_pros_only"></td>
+                  <td
+                    id="cumulative-percent--t3_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="cumulative-change--t3_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t3_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-percent--t3_baseline_incomplete_pros_only"
+                  ></td>
+                  <td
+                    id="stanford-change--t3_baseline_incomplete_pros_only"
+                  ></td>
+                  <td id="uic-site-1--t3_baseline_incomplete_pros_only"></td>
+                  <td id="uic-percent--t3_baseline_incomplete_pros_only"></td>
+                  <td id="uic-change--t3_baseline_incomplete_pros_only"></td>
+                </tr>
+                <tr>
+                  <td>T3 Missing</td>
+                  <td id="cumulative--t3_baseline_missing"></td>
+                  <td id="cumulative-percent--t3_baseline_missing"></td>
+                  <td id="cumulative-change--t3_baseline_missing"></td>
+                  <td id="stanford-site-2--t3_baseline_missing"></td>
+                  <td id="stanford-percent--t3_baseline_missing"></td>
+                  <td id="stanford-change--t3_baseline_missing"></td>
+                  <td id="uic-site-1--t3_baseline_missing"></td>
+                  <td id="uic-percent--t3_baseline_missing"></td>
+                  <td id="uic-change--t3_baseline_missing"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>Total entered T3 window</td>
+                  <td id="cumulative--t3_baseline_total_entered"></td>
+                  <td id="cumulative-percent--t3_baseline_total_entered"></td>
+                  <td id="cumulative-change--t3_baseline_total_entered"></td>
+                  <td id="stanford-site-2--t3_baseline_total_entered"></td>
+                  <td id="stanford-percent--t3_baseline_total_entered"></td>
+                  <td id="stanford-change--t3_baseline_total_entered"></td>
+                  <td id="uic-site-1--t3_baseline_total_entered"></td>
+                  <td id="uic-percent--t3_baseline_total_entered"></td>
+                  <td id="uic-change--t3_baseline_total_entered"></td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td colspan="10">Timepoint 4</td>
+                </tr>
+
+                <tr>
+                  <td>T4 Pre-window</td>
+                  <td id="cumulative--t4_baseline_prewindow"></td>
+                  <td id="cumulative-percent--t4_baseline_prewindow"></td>
+                  <td id="cumulative-change--t4_baseline_prewindow"></td>
+                  <td id="stanford-site-2--t4_baseline_prewindow"></td>
+                  <td id="stanford-percent--t4_baseline_prewindow"></td>
+                  <td id="stanford-change--t4_baseline_prewindow"></td>
+                  <td id="uic-site-1--t4_baseline_prewindow"></td>
+                  <td id="uic-percent--t4_baseline_prewindow"></td>
+                  <td id="uic-change--t4_baseline_prewindow"></td>
+                </tr>
+
+                <tr>
+                  <td>T4 Now in-window</td>
+                  <td id="cumulative--t4_baseline_inwindow"></td>
+                  <td id="cumulative-percent--t4_baseline_inwindow"></td>
+                  <td id="cumulative-change--t4_baseline_inwindow"></td>
+                  <td id="stanford-site-2--t4_baseline_inwindow"></td>
+                  <td id="stanford-percent--t4_baseline_inwindow"></td>
+                  <td id="stanford-change--t4_baseline_inwindow"></td>
+                  <td id="uic-site-1--t4_baseline_inwindow"></td>
+                  <td id="uic-percent--t4_baseline_inwindow"></td>
+                  <td id="uic-change--t4_baseline_inwindow"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td>T4 Complete</td>
+                  <td id="cumulative--t4_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="cumulative-percent--t4_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="cumulative-change--t4_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t4_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-percent--t4_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-change--t4_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-site-1--t4_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="uic-percent--t4_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-change--t4_baseline_complete_fully_enrolled"></td>
+                </tr>
+
+                <tr>
+                  <td>T4 Missing PROs</td>
+                  <td id="cumulative--t4_baseline_missing"></td>
+                  <td id="cumulative-percent--t4_baseline_missing"></td>
+                  <td id="cumulative-change--t4_baseline_missing"></td>
+                  <td id="stanford-site-2--t4_baseline_missing"></td>
+                  <td id="stanford-percent--t4_baseline_missing"></td>
+                  <td id="stanford-change--t4_baseline_missing"></td>
+                  <td id="uic-site-1--t4_baseline_missing"></td>
+                  <td id="uic-percent--t4_baseline_missing"></td>
+                  <td id="uic-change--t4_baseline_missing"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td>Total entered T4 window:</td>
+                  <td id="cumulative--t4_baseline_total_entered"></td>
+                  <td id="cumulative-percent--t4_baseline_total_entered"></td>
+                  <td id="cumulative-change--t4_baseline_total_entered"></td>
+                  <td id="stanford-site-2--t4_baseline_total_entered"></td>
+                  <td id="stanford-percent--t4_baseline_total_entered"></td>
+                  <td id="stanford-change--t4_baseline_total_entered"></td>
+                  <td id="uic-site-1--t4_baseline_total_entered"></td>
+                  <td id="uic-percent--t4_baseline_total_entered"></td>
+                  <td id="uic-change--t4_baseline_total_entered"></td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td colspan="10">Timepoint 5</td>
+                </tr>
+                <tr>
+                  <td>T5 Pre-window</td>
+                  <td id="cumulative--t5_baseline_prewindow"></td>
+                  <td id="cumulative-percent--t5_baseline_prewindow"></td>
+                  <td id="cumulative-change--t5_baseline_prewindow"></td>
+                  <td id="stanford-site-2--t5_baseline_prewindow"></td>
+                  <td id="stanford-percent--t5_baseline_prewindow"></td>
+                  <td id="stanford-change--t5_baseline_prewindow"></td>
+                  <td id="uic-site-1--t5_baseline_prewindow"></td>
+                  <td id="uic-percent--t5_baseline_prewindow"></td>
+                  <td id="uic-change--t5_baseline_prewindow"></td>
+                </tr>
+                <tr>
+                  <td>T5 Now in-window</td>
+                  <td id="cumulative--t5_baseline_inwindow"></td>
+                  <td id="cumulative-percent--t5_baseline_inwindow"></td>
+                  <td id="cumulative-change--t5_baseline_inwindow"></td>
+                  <td id="stanford-site-2--t5_baseline_inwindow"></td>
+                  <td id="stanford-percent--t5_baseline_inwindow"></td>
+                  <td id="stanford-change--t5_baseline_inwindow"></td>
+                  <td id="uic-site-1--t5_baseline_inwindow"></td>
+                  <td id="uic-percent--t5_baseline_inwindow"></td>
+                  <td id="uic-change--t5_baseline_inwindow"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>T5 Complete</td>
+                  <td id="cumulative--t5_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="cumulative-percent--t5_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="cumulative-change--t5_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t5_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-percent--t5_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-change--t5_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-site-1--t5_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="uic-percent--t5_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-change--t5_baseline_complete_fully_enrolled"></td>
+                </tr>
+                <tr>
+                  <td>T5 Missing PROs</td>
+                  <td id="cumulative--t5_baseline_missing"></td>
+                  <td id="cumulative-percent--t5_baseline_missing"></td>
+                  <td id="cumulative-change--t5_baseline_missing"></td>
+                  <td id="stanford-site-2--t5_baseline_missing"></td>
+                  <td id="stanford-percent--t5_baseline_missing"></td>
+                  <td id="stanford-change--t5_baseline_missing"></td>
+                  <td id="uic-site-1--t5_baseline_missing"></td>
+                  <td id="uic-percent--t5_baseline_missing"></td>
+                  <td id="uic-change--t5_baseline_missing"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>Total entered T5 window:</td>
+                  <td id="cumulative--t5_baseline_total_entered"></td>
+                  <td id="cumulative-percent--t5_baseline_total_entered"></td>
+                  <td id="cumulative-change--t5_baseline_total_entered"></td>
+                  <td id="stanford-site-2--t5_baseline_total_entered"></td>
+                  <td id="stanford-percent--t5_baseline_total_entered"></td>
+                  <td id="stanford-change--t5_baseline_total_entered"></td>
+                  <td id="uic-site-1--t5_baseline_total_entered"></td>
+                  <td id="uic-percent--t5_baseline_total_entered"></td>
+                  <td id="uic-change--t5_baseline_total_entered"></td>
+                </tr>
+
+                <tr class="table-light fw-bold">
+                  <td colspan="10">Timepoint 6</td>
+                </tr>
+                <tr>
+                  <td>T6 Pre-window</td>
+                  <td id="cumulative--t6_baseline_prewindow"></td>
+                  <td id="cumulative-percent--t6_baseline_prewindow"></td>
+                  <td id="cumulative-change--t6_baseline_prewindow"></td>
+                  <td id="stanford-site-2--t6_baseline_prewindow"></td>
+                  <td id="stanford-percent--t6_baseline_prewindow"></td>
+                  <td id="stanford-change--t6_baseline_prewindow"></td>
+                  <td id="uic-site-1--t6_baseline_prewindow"></td>
+                  <td id="uic-percent--t6_baseline_prewindow"></td>
+                  <td id="uic-change--t6_baseline_prewindow"></td>
+                </tr>
+                <tr>
+                  <td>T6 Now in-window</td>
+                  <td id="cumulative--t6_baseline_inwindow"></td>
+                  <td id="cumulative-percent--t6_baseline_inwindow"></td>
+                  <td id="cumulative-change--t6_baseline_inwindow"></td>
+                  <td id="stanford-site-2--t6_baseline_inwindow"></td>
+                  <td id="stanford-percent--t6_baseline_inwindow"></td>
+                  <td id="stanford-change--t6_baseline_inwindow"></td>
+                  <td id="uic-site-1--t6_baseline_inwindow"></td>
+                  <td id="uic-percent--t6_baseline_inwindow"></td>
+                  <td id="uic-change--t6_baseline_inwindow"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>T6 Complete</td>
+                  <td id="cumulative--t6_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="cumulative-percent--t6_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="cumulative-change--t6_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-site-2--t6_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-percent--t6_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    id="stanford-change--t6_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-site-1--t6_baseline_complete_fully_enrolled"></td>
+                  <td
+                    id="uic-percent--t6_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td id="uic-change--t6_baseline_complete_fully_enrolled"></td>
+                </tr>
+                <tr>
+                  <td>T6 Missing PROs</td>
+                  <td id="cumulative--t6_baseline_missing"></td>
+                  <td id="cumulative-percent--t6_baseline_missing"></td>
+                  <td id="cumulative-change--t6_baseline_missing"></td>
+                  <td id="stanford-site-2--t6_baseline_missing"></td>
+                  <td id="stanford-percent--t6_baseline_missing"></td>
+                  <td id="stanford-change--t6_baseline_missing"></td>
+                  <td id="uic-site-1--t6_baseline_missing"></td>
+                  <td id="uic-percent--t6_baseline_missing"></td>
+                  <td id="uic-change--t6_baseline_missing"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td>Total entered T6 window:</td>
+                  <td id="cumulative--t6_baseline_total_entered"></td>
+                  <td id="cumulative-percent--t6_baseline_total_entered"></td>
+                  <td id="cumulative-change--t6_baseline_total_entered"></td>
+                  <td id="stanford-site-2--t6_baseline_total_entered"></td>
+                  <td id="stanford-percent--t6_baseline_total_entered"></td>
+                  <td id="stanford-change--t6_baseline_total_entered"></td>
+                  <td id="uic-site-1--t6_baseline_total_entered"></td>
+                  <td id="uic-percent--t6_baseline_total_entered"></td>
+                  <td id="uic-change--t6_baseline_total_entered"></td>
+                </tr>
+
+                <!-- Final Disposition -->
+                <tr class="table-secondary fw-bold">
+                  <td colspan="10">Final Disposition</td>
+                </tr>
+                <tr>
+                  <td>Off-study:</td>
+                  <td id="cumulative--off_study"></td>
+                  <td id="cumulative-percent--off_study"></td>
+                  <td id="cumulative-change--off_study"></td>
+                  <td id="stanford-site-2--off_study"></td>
+                  <td id="stanford-percent--off_study"></td>
+                  <td id="stanford-change--off_study"></td>
+                  <td id="uic-site-1--off_study"></td>
+                  <td id="uic-percent--off_study"></td>
+                  <td id="uic-change--off_study"></td>
+                </tr>
+                <tr>
+                  <td>Withdrawn:</td>
+                  <td colspan="9">Handled in subtotals below</td>
+                </tr>
+
+                <!-- Timepoint 1 -->
+                <tr>
+                  <td class="ps-4">Timepoint 1</td>
+                  <td id="cumulative--withdraw_t1"></td>
+                  <td id="cumulative-percent--withdraw_t1"></td>
+                  <td id="cumulative-change--withdraw_t1"></td>
+                  <td id="stanford-site-2--withdraw_t1"></td>
+                  <td id="stanford-percent--withdraw_t1"></td>
+                  <td id="stanford-change--withdraw_t1"></td>
+                  <td id="uic-site-1--withdraw_t1"></td>
+                  <td id="uic-percent--withdraw_t1"></td>
+                  <td id="uic-change--withdraw_t1"></td>
+                </tr>
+
+                <!-- Timepoint 2 -->
+                <tr>
+                  <td class="ps-4">Timepoint 2</td>
+                  <td id="cumulative--withdraw_t2"></td>
+                  <td id="cumulative-percent--withdraw_t2"></td>
+                  <td id="cumulative-change--withdraw_t2"></td>
+                  <td id="stanford-site-2--withdraw_t2"></td>
+                  <td id="stanford-percent--withdraw_t2"></td>
+                  <td id="stanford-change--withdraw_t2"></td>
+                  <td id="uic-site-1--withdraw_t2"></td>
+                  <td id="uic-percent--withdraw_t2"></td>
+                  <td id="uic-change--withdraw_t2"></td>
+                </tr>
+
+                <!-- Timepoint 3 -->
+                <tr>
+                  <td class="ps-4">Timepoint 3</td>
+                  <td id="cumulative--withdraw_t3"></td>
+                  <td id="cumulative-percent--withdraw_t3"></td>
+                  <td id="cumulative-change--withdraw_t3"></td>
+                  <td id="stanford-site-2--withdraw_t3"></td>
+                  <td id="stanford-percent--withdraw_t3"></td>
+                  <td id="stanford-change--withdraw_t3"></td>
+                  <td id="uic-site-1--withdraw_t3"></td>
+                  <td id="uic-percent--withdraw_t3"></td>
+                  <td id="uic-change--withdraw_t3"></td>
+                </tr>
+
+                <!-- Timepoint 4 -->
+                <tr>
+                  <td class="ps-4">Timepoint 4</td>
+                  <td id="cumulative--withdraw_t4"></td>
+                  <td id="cumulative-percent--withdraw_t4"></td>
+                  <td id="cumulative-change--withdraw_t4"></td>
+                  <td id="stanford-site-2--withdraw_t4"></td>
+                  <td id="stanford-percent--withdraw_t4"></td>
+                  <td id="stanford-change--withdraw_t4"></td>
+                  <td id="uic-site-1--withdraw_t4"></td>
+                  <td id="uic-percent--withdraw_t4"></td>
+                  <td id="uic-change--withdraw_t4"></td>
+                </tr>
+
+                <!-- Timepoint 5 -->
+                <tr>
+                  <td class="ps-4">Timepoint 5</td>
+                  <td id="cumulative--withdraw_t5"></td>
+                  <td id="cumulative-percent--withdraw_t5"></td>
+                  <td id="cumulative-change--withdraw_t5"></td>
+                  <td id="stanford-site-2--withdraw_t5"></td>
+                  <td id="stanford-percent--withdraw_t5"></td>
+                  <td id="stanford-change--withdraw_t5"></td>
+                  <td id="uic-site-1--withdraw_t5"></td>
+                  <td id="uic-percent--withdraw_t5"></td>
+                  <td id="uic-change--withdraw_t5"></td>
+                </tr>
+
+                <!-- Timepoint 6 -->
+                <tr>
+                  <td class="ps-4">Timepoint 6</td>
+                  <td id="cumulative--withdraw_t6"></td>
+                  <td id="cumulative-percent--withdraw_t6"></td>
+                  <td id="cumulative-change--withdraw_t6"></td>
+                  <td id="stanford-site-2--withdraw_t6"></td>
+                  <td id="stanford-percent--withdraw_t6"></td>
+                  <td id="stanford-change--withdraw_t6"></td>
+                  <td id="uic-site-1--withdraw_t6"></td>
+                  <td id="uic-percent--withdraw_t6"></td>
+                  <td id="uic-change--withdraw_t6"></td>
+                </tr>
+              </tbody>
             </table>
+          </div>
         </div>
       </div>
     </div>
-
-  </div>
-
-</body>
-
+  </body>
 </html>
 
 <style scoped>
@@ -461,46 +1390,398 @@
     const siteIdPrefix = "uic-site-1";
 
     if (!data[siteName]) {
-        console.error(`Site "${siteName}" not found in data`);
-        return;
+      console.error(`Site "${siteName}" not found in data`);
+      return;
     }
 
     const siteData = data[siteName];
 
     // Helper to safely set text
     function setCellValue(id, value) {
-        const el = document.getElementById(id);
-        if (el) {
+      const el = document.getElementById(id);
+      if (el) {
         el.textContent = value;
-        } else {
+      } else {
         console.warn(`Element with id "${id}" not found.`);
-        }
+      }
     }
 
     // Populate values from siteData
     for (const [key, value] of Object.entries(siteData)) {
-            // Normalize key → remove _count suffix for consistency with IDs
-            const normalizedKey = key.replace(/_count$/, "");
-            const id = `${siteIdPrefix}--${normalizedKey}`;
-            setCellValue(id, value);
-        }
+      // Normalize key → remove _count suffix for consistency with IDs
+      const normalizedKey = key.replace(/_count$/, "");
+      const id = `${siteIdPrefix}--${normalizedKey}`;
+      setCellValue(id, value);
     }
+  }
 
-    const staticData = {'UIC Site 1': {'ineligible_prior_to_screen_count': 16, 'declined_to_screen_count': 58, 'ineligible_count': 127, 'eligible_but_declined_to_count': 1, 'eligible_undecided_count': 0, 'screened_eligible_count': 42, 'ehr_mismatch_count': 0, 'appt_declined_count': 1, 'appt_needed_within_week_since_ies_count': 10, 'appt_needed_over_week_since_ies_count': 4, 'reschedule_no_show_count': 2, 'to_schedule_count': 26, 'to_attended_count': 244, 'ineligible_at_to_count': 2, 'declined_icf_count': 0, 'to_declined_to_proceed_count': 0, 'to_elig_undecided_count': 0, 'to_elig_pending_md_clearance_count': 0, 'consented_count': 21, 'consented_biaffect_count': 11, 'consented_nda_count': 19, 'consesnted_and_eligible_count': 19, 't1_baseline_prewindow_count': 0, 't1_baseline_inwindow_count': 1, 't1_baseline_complete_fully_enrolled_count': 0, 't1_baseline_incomplete_webneuro_only_count': 0, 't1_baseline_incomplete_pros_only_count': 0, 't1_baseline_missing_count': 0, 't2_baseline_prewindow_count': 0, 't2_baseline_inwindow_count': 0, 't2_baseline_complete_fully_enrolled_count': 0, 't2_baseline_incomplete_webneuro_only_count': 0, 't2_baseline_incomplete_pros_only_count': 0, 't2_baseline_missing_count': 0, 't2_baseline_total_entered_count': 0, 't3_baseline_prewindow_count': 0, 't3_baseline_inwindow_count': 0, 't3_baseline_complete_fully_enrolled_count': 0, 't3_baseline_incomplete_webneuro_only_count': 0, 't3_baseline_incomplete_pros_only_count': 0, 't3_baseline_total_entered_count': 0, 't4_baseline_prewindow_count': 0, 't4_baseline_inwindow_count': 0, 't4_baseline_complete_fully_enrolled_count': 0, 't4_baseline_missing_count': 0, 't4_baseline_total_entered_count': 0, 't5_baseline_prewindow_count': 0, 't5_baseline_inwindow_count': 0, 't5_baseline_complete_fully_enrolled_count': 0, 't5_baseline_missing_count': 0, 't5_baseline_total_entered_count': 0, 't6_baseline_prewindow_count': 0, 't6_baseline_inwindow_count': 0, 't6_baseline_complete_fully_enrolled_count': 0, 't6_baseline_missing_count': 0, 't6_baseline_total_entered_count': 0, 'off_study_count': 0, 'withdraw_t1_count': 0, 'withdraw_t2_count': 0, 'withdraw_t3_count': 0, 'withdraw_t4_count': 0, 'withdraw_t5_count': 0, 'withdraw_t6_count': 0, 'invite_sent_count': 1919, 'two_week_wait_count': 360, 'calling_in_progress_count': 1217, 'ceased_outreach_count': 126, 'requested_call_count': 1, 'partial_screen_count': 29}, 'UIC Site 1 - Invitations Sent': 1919, 'UIC Site 1 - Two Week Wait': 360, 'UIC Site 1 - Calling in Progress': 1217, 'UIC Site 1 - Ceased Outreach': 126, 'UIC Site 1 - Requested Call': 1, 'UIC Site 1 - Partial Screen': 29, 'UIC Site 1 - Ineligible Prior to Screen': 16, 'UIC Site 1 - Declined to Screen': 58, 'UIC Site 1 - Ineligible Count': 127, 'UIC Site 1 - Eligible but Declined TO': 1, 'UIC Site 1 - Eligible Undecided': 0, 'UIC Site 1 - Screened Eligible': 42, 'UIC Site 1 - EHR Mismatch': 0, 'UIC Site 1 - Appointment Declined': 1, 'UIC Site 1 - Appointment Needed Within Week Since IES': 10, 'UIC Site 1 - Appointment Needed Over Week Since IES': 4, 'UIC Site 1 - Reschedule No Show': 2, 'UIC Site 1 - To Schedule': 26, 'UIC Site 1 - To Attended': 244, 'UIC Site 1 - Ineligible at TO': 2, 'UIC Site 1 - Declined ICF': 0, 'UIC Site 1 - Declined to Proceed at TO': 0, 'UIC Site 1 - Eligible Undecided at TO': 0, 'UIC Site 1 - Eligible Pending MD Clearance at TO': 0, 'UIC Site 1 - Consented': 21, 'UIC Site 1 - Consented Biaffect': 11, 'UIC Site 1 - Consented NDA': 19, 'UIC Site 1 - Consented and Eligible': 19, 'T1 Baseline Prewindow': 0, 'T1 Baseline Inwindow': 1, 'T1 Baseline Complete Fully Enrolled': 0, 'T1 Baseline Incomplete Webneuro Only': 0, 'T1 Baseline Incomplete Pros Only': 0, 'T1 Baseline Missing': 0, 'T2 Baseline Prewindow': 0, 'T2 Baseline Inwindow': 0, 'T2 Baseline Complete Fully Enrolled': 0, 'T2 Baseline Incomplete Webneuro Only': 0, 'T2 Baseline Incomplete Pros Only': 0, 'T2 Baseline Missing': 0, 'T2 Baseline Total Entered': 0, 'T3 Baseline Prewindow': 0, 'T3 Baseline Inwindow': 0, 'T3 Baseline Complete Fully Enrolled': 0, 'T3 Baseline Incomplete Webneuro Only': 0, 'T3 Baseline Incomplete Pros Only': 0, 'T3 Baseline Missing': 0, 'T3 Baseline Total Entered': 0, 'T4 Baseline Prewindow': 0, 'T4 Baseline Inwindow': 0, 'T4 Baseline Complete Fully Enrolled': 0, 'T4 Baseline Missing': 0, 'T4 Baseline Total Entered': 0, 'T5 Baseline Prewindow': 0, 'T5 Baseline Inwindow': 0, 'T5 Baseline Complete Fully Enrolled': 0, 'T5 Baseline Missing': 0, 'T5 Baseline Total Entered': 0, 'T6 Baseline Prewindow': 0, 'T6 Baseline Inwindow': 0, 'T6 Baseline Complete Fully Enrolled': 0, 'T6 Baseline Missing': 0, 'T6 Baseline Total Entered': 0, 'Off Study': 0, 'Withdraw T1': 0, 'Withdraw T2': 0, 'Withdraw T3': 0, 'Withdraw T4': 0, 'Withdraw T5': 0, 'Withdraw T6': 0};
+  const staticData = {
+    "UIC Site 1": {
+      ineligible_prior_to_screen_count: 16,
+      declined_to_screen_count: 58,
+      ineligible_count: 127,
+      eligible_but_declined_to_count: 1,
+      eligible_undecided_count: 0,
+      screened_eligible_count: 42,
+      ehr_mismatch_count: 0,
+      appt_declined_count: 1,
+      appt_needed_within_week_since_ies_count: 10,
+      appt_needed_over_week_since_ies_count: 4,
+      reschedule_no_show_count: 2,
+      to_schedule_count: 26,
+      to_attended_count: 244,
+      ineligible_at_to_count: 2,
+      declined_icf_count: 0,
+      to_declined_to_proceed_count: 0,
+      to_elig_undecided_count: 0,
+      to_elig_pending_md_clearance_count: 0,
+      consented_count: 21,
+      consented_biaffect_count: 11,
+      consented_nda_count: 19,
+      consesnted_and_eligible_count: 19,
+      t1_baseline_prewindow_count: 0,
+      t1_baseline_inwindow_count: 1,
+      t1_baseline_complete_fully_enrolled_count: 0,
+      t1_baseline_incomplete_webneuro_only_count: 0,
+      t1_baseline_incomplete_pros_only_count: 0,
+      t1_baseline_missing_count: 0,
+      t2_baseline_prewindow_count: 0,
+      t2_baseline_inwindow_count: 0,
+      t2_baseline_complete_fully_enrolled_count: 0,
+      t2_baseline_incomplete_webneuro_only_count: 0,
+      t2_baseline_incomplete_pros_only_count: 0,
+      t2_baseline_missing_count: 0,
+      t2_baseline_total_entered_count: 0,
+      t3_baseline_prewindow_count: 0,
+      t3_baseline_inwindow_count: 0,
+      t3_baseline_complete_fully_enrolled_count: 0,
+      t3_baseline_incomplete_webneuro_only_count: 0,
+      t3_baseline_incomplete_pros_only_count: 0,
+      t3_baseline_total_entered_count: 0,
+      t4_baseline_prewindow_count: 0,
+      t4_baseline_inwindow_count: 0,
+      t4_baseline_complete_fully_enrolled_count: 0,
+      t4_baseline_missing_count: 0,
+      t4_baseline_total_entered_count: 0,
+      t5_baseline_prewindow_count: 0,
+      t5_baseline_inwindow_count: 0,
+      t5_baseline_complete_fully_enrolled_count: 0,
+      t5_baseline_missing_count: 0,
+      t5_baseline_total_entered_count: 0,
+      t6_baseline_prewindow_count: 0,
+      t6_baseline_inwindow_count: 0,
+      t6_baseline_complete_fully_enrolled_count: 0,
+      t6_baseline_missing_count: 0,
+      t6_baseline_total_entered_count: 0,
+      off_study_count: 0,
+      withdraw_t1_count: 0,
+      withdraw_t2_count: 0,
+      withdraw_t3_count: 0,
+      withdraw_t4_count: 0,
+      withdraw_t5_count: 0,
+      withdraw_t6_count: 0,
+      invite_sent_count: 1919,
+      two_week_wait_count: 360,
+      calling_in_progress_count: 1217,
+      ceased_outreach_count: 126,
+      requested_call_count: 1,
+      partial_screen_count: 29,
+    },
+    "UIC Site 1 - Invitations Sent": 1919,
+    "UIC Site 1 - Two Week Wait": 360,
+    "UIC Site 1 - Calling in Progress": 1217,
+    "UIC Site 1 - Ceased Outreach": 126,
+    "UIC Site 1 - Requested Call": 1,
+    "UIC Site 1 - Partial Screen": 29,
+    "UIC Site 1 - Ineligible Prior to Screen": 16,
+    "UIC Site 1 - Declined to Screen": 58,
+    "UIC Site 1 - Ineligible Count": 127,
+    "UIC Site 1 - Eligible but Declined TO": 1,
+    "UIC Site 1 - Eligible Undecided": 0,
+    "UIC Site 1 - Screened Eligible": 42,
+    "UIC Site 1 - EHR Mismatch": 0,
+    "UIC Site 1 - Appointment Declined": 1,
+    "UIC Site 1 - Appointment Needed Within Week Since IES": 10,
+    "UIC Site 1 - Appointment Needed Over Week Since IES": 4,
+    "UIC Site 1 - Reschedule No Show": 2,
+    "UIC Site 1 - To Schedule": 26,
+    "UIC Site 1 - To Attended": 244,
+    "UIC Site 1 - Ineligible at TO": 2,
+    "UIC Site 1 - Declined ICF": 0,
+    "UIC Site 1 - Declined to Proceed at TO": 0,
+    "UIC Site 1 - Eligible Undecided at TO": 0,
+    "UIC Site 1 - Eligible Pending MD Clearance at TO": 0,
+    "UIC Site 1 - Consented": 21,
+    "UIC Site 1 - Consented Biaffect": 11,
+    "UIC Site 1 - Consented NDA": 19,
+    "UIC Site 1 - Consented and Eligible": 19,
+    "T1 Baseline Prewindow": 0,
+    "T1 Baseline Inwindow": 1,
+    "T1 Baseline Complete Fully Enrolled": 0,
+    "T1 Baseline Incomplete Webneuro Only": 0,
+    "T1 Baseline Incomplete Pros Only": 0,
+    "T1 Baseline Missing": 0,
+    "T2 Baseline Prewindow": 0,
+    "T2 Baseline Inwindow": 0,
+    "T2 Baseline Complete Fully Enrolled": 0,
+    "T2 Baseline Incomplete Webneuro Only": 0,
+    "T2 Baseline Incomplete Pros Only": 0,
+    "T2 Baseline Missing": 0,
+    "T2 Baseline Total Entered": 0,
+    "T3 Baseline Prewindow": 0,
+    "T3 Baseline Inwindow": 0,
+    "T3 Baseline Complete Fully Enrolled": 0,
+    "T3 Baseline Incomplete Webneuro Only": 0,
+    "T3 Baseline Incomplete Pros Only": 0,
+    "T3 Baseline Missing": 0,
+    "T3 Baseline Total Entered": 0,
+    "T4 Baseline Prewindow": 0,
+    "T4 Baseline Inwindow": 0,
+    "T4 Baseline Complete Fully Enrolled": 0,
+    "T4 Baseline Missing": 0,
+    "T4 Baseline Total Entered": 0,
+    "T5 Baseline Prewindow": 0,
+    "T5 Baseline Inwindow": 0,
+    "T5 Baseline Complete Fully Enrolled": 0,
+    "T5 Baseline Missing": 0,
+    "T5 Baseline Total Entered": 0,
+    "T6 Baseline Prewindow": 0,
+    "T6 Baseline Inwindow": 0,
+    "T6 Baseline Complete Fully Enrolled": 0,
+    "T6 Baseline Missing": 0,
+    "T6 Baseline Total Entered": 0,
+    "Off Study": 0,
+    "Withdraw T1": 0,
+    "Withdraw T2": 0,
+    "Withdraw T3": 0,
+    "Withdraw T4": 0,
+    "Withdraw T5": 0,
+    "Withdraw T6": 0,
+  };
 
-    function populateStaticData () {
-        populateACEDTable(staticData);
-    }
+  function populateStaticData() {
+    populateACEDTable(staticData);
+  }
 
-    function clearAllACEDFields() {
-        const allSiteCells = document.querySelectorAll('[id*="--"]');
-        allSiteCells.forEach(cell => cell.textContent = "");
-    }
+  function clearAllACEDFields() {
+    const allSiteCells = document.querySelectorAll('[id*="--"]');
+    allSiteCells.forEach((cell) => (cell.textContent = ""));
+  }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        clearAllACEDFields();
-    });
-
+  document.addEventListener("DOMContentLoaded", () => {
+    clearAllACEDFields();
+  });
 </script>
 
-  
+<script>
+  // ACE-D Actual fetching
+
+  async function fetchAcedRecruitmentReport() {
+    const startDateRaw = document.getElementById("startDateSelect").value;
+    const endDateRaw = document.getElementById("endDateSelect").value;
+
+    if (!startDateRaw || !endDateRaw) {
+      alert("Please select both Start Date and End Date.");
+      return;
+    }
+
+    if (new Date(startDateRaw) >= new Date(endDateRaw)) {
+      alert("Start Date must be earlier than End Date.");
+      return;
+    }
+
+    function formatToMMDDYYYY(dateStr) {
+      const [yyyy, mm, dd] = dateStr.split("-");
+      return `${mm}-${dd}-${yyyy}`;
+    }
+
+    const startFormatted = formatToMMDDYYYY(startDateRaw);
+    const endFormatted = formatToMMDDYYYY(endDateRaw);
+
+    const btn = document.getElementById("show-results-btn");
+    const btnText = document.getElementById("show-results-text");
+    const spinner = document.getElementById("show-results-spinner");
+
+    // const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`; //uncomment this
+    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${startFormatted}`;
+
+    try {
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!data || !data.startDateDoc || !data.endDateDoc) {
+        alert("Data for the selected dates is not available.");
+        return null;
+      }
+
+      // Populate values and changes
+      populateFullACEDTable(data.endDateDoc.data);
+      populateAcedPercentChanges(data.startDateDoc.data, data.endDateDoc.data);
+      populateAcedPercentages(data.endDateDoc.data);
+
+    } catch (error) {
+      alert("Error fetching ACED data. Try again or contact support.");
+      console.error("Error fetching ACED summaries:", error);
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "Show Results";
+    }
+  }
+
+  function populateFullACEDTable(jsonData) {
+    const siteMap = {
+      "1": "uic-site-1",
+      "2": "stanford-site-2",
+      "3": "cumulative"
+    };
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      const siteData = jsonData[siteKey];
+      if (!siteData) continue;
+
+      for (const [dataKey, value] of Object.entries(siteData)) {
+        const cleanKey = dataKey.replace(/_count$/, "");
+        const elementId = `${sitePrefix}--${cleanKey}`;
+
+        // Select all matching elements (in case there are duplicates)
+        const elements = document.querySelectorAll(`#${CSS.escape(elementId)}`);
+        if (elements.length === 0) {
+          console.warn(`Missing element(s) for ID: ${elementId}`);
+          continue;
+        }
+
+        elements.forEach((el) => {
+          el.textContent = value;
+        });
+      }
+    }
+  }
+
+  function populateAcedPercentChanges(startData, endData) {
+    const siteMap = {
+      "1": "uic-change",
+      "2": "stanford-change",
+      "3": "cumulative-change"
+    };
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      const startSite = startData[siteKey];
+      const endSite = endData[siteKey];
+      if (!startSite || !endSite) continue;
+
+      for (const [dataKey, endVal] of Object.entries(endSite)) {
+        const cleanKey = dataKey.replace(/_count$/, "");
+        const elementId = `${sitePrefix}--${cleanKey}`;
+
+        const startVal = parseFloat(startSite[dataKey]) || 0;
+        const endValNum = parseFloat(endVal) || 0;
+
+        let change = 0;
+        if (startVal === 0 && endValNum > 0) {
+          change = 100;
+        } else if (startVal === 0 && endValNum === 0) {
+          change = 0;
+        } else {
+          change = ((endValNum - startVal) / startVal) * 100;
+        }
+
+        const el = document.getElementById(elementId);
+        if (el) {
+          el.textContent = `${change.toFixed(1)}%`;
+        }
+      }
+    }
+  }
+
+  const percentOfMapping = {
+    // Percent of Screened
+    "ineligible": "screened",
+    "eligible_but_declined_to": "screened",
+    "eligible_undecided": "screened",
+    "screened_eligible": "screened",
+    "ehr_mismatch": "screened",
+
+    // Percent of Tele-Orientation
+    "appt_declined": "screened_eligible",                      // Appointment declined/ceased
+    "appt_needed_within_week_since_ies": "screened_eligible", // Needed within wk since IES
+    "appt_needed_over_week_since_ies": "screened_eligible",   // Needed over wk since IES
+    "reschedule_no_show": "screened_eligible",
+    "to_schedule": "screened_eligible",
+    "to_attended": "screened_eligible",
+
+    "ineligible_at_to": "to_attended",
+    "declined_icf": "to_attended",
+    "consented": "to_attended",
+
+    "consented_biaffect": "consented",
+    "consented_nda": "consented",
+    "to_declined_to_proceed": "consented",
+    "to_elig_undecided": "consented",
+    "to_elig_pending_md_clearance": "consented",
+    "consesnted_and_eligible": "consented",
+
+    "t1_baseline_complete_fully_enrolled": "consesnted_and_eligible",
+    "t1_baseline_incomplete_webneuro_only": "consesnted_and_eligible",
+    "t1_baseline_incomplete_pros_only": "consesnted_and_eligible",
+    "t1_baseline_missing": "consesnted_and_eligible",
+
+    "t2_baseline_complete_fully_enrolled": "t2_baseline_total_entered",
+    "t2_baseline_incomplete_webneuro_only": "t2_baseline_total_entered",
+    "t2_baseline_incomplete_pros_only": "t2_baseline_total_entered",
+    "t2_baseline_missing": "t2_baseline_total_entered",
+
+    "t3_baseline_complete_fully_enrolled": "t3_baseline_total_entered",
+    "t3_baseline_incomplete_webneuro_only": "t3_baseline_total_entered",
+    "t3_baseline_incomplete_pros_only": "t3_baseline_total_entered",
+    "t3_baseline_missing": "t3_baseline_total_entered",
+
+    "t4_baseline_complete_fully_enrolled": "t4_baseline_total_entered",
+    "t4_baseline_missing": "t4_baseline_total_entered",
+
+    "t5_baseline_complete_fully_enrolled": "t5_baseline_total_entered",
+    "t5_baseline_missing": "t5_baseline_total_entered",
+
+    "t6_baseline_complete_fully_enrolled": "t6_baseline_total_entered",
+    "t6_baseline_missing": "t6_baseline_total_entered",
+
+    "off_study": "consesnted_and_eligible",
+    "withdrawn": "consesnted_and_eligible"
+  };
+
+  function populateAcedPercentages(endData) {
+    const siteMap = {
+      "1": "uic-percent",
+      "2": "stanford-percent",
+      "3": "cumulative-percent"
+    };
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      const siteData = endData[siteKey];
+      if (!siteData) continue;
+
+      for (const [metric, denominatorKey] of Object.entries(percentOfMapping)) {
+        const numerator = parseFloat(siteData[`${metric}_count`] || 0);
+        const denominator = parseFloat(siteData[`${denominatorKey}_count`] || 0);
+
+        let percent = 0;
+        if (denominator === 0 && numerator > 0) {
+          percent = 100;
+        } else if (denominator === 0) {
+          percent = 0;
+        } else {
+          percent = (numerator / denominator) * 100;
+        }
+
+        const el = document.getElementById(`${sitePrefix}--${metric}`);
+        if (el) {
+          el.textContent = `${percent.toFixed(1)}%`;
+        }
+      }
+    }
+  }
+</script>
