@@ -190,13 +190,17 @@
                   </span>
                 </button>
                 <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
-                <button
+                <!-- <button
                   class="btn btn-secondary-outline ms-2"
                   onclick="populateStaticData()"
                 >
                   Populate Static Data
-                </button>
-                <button class="btn btn-warning ms-2" id="export-btn">
+                </button> -->
+                <button
+                  class="btn btn-warning ms-2"
+                  id="export-btn"
+                  onclick="exportRecruitmentTableToExcel()"
+                >
                   Download to Excel
                 </button>
               </div>
@@ -208,7 +212,9 @@
             >
               <thead class="table-dark">
                 <tr>
-                  <th class="align-left" rowspan="2">Recruitment Invitations</th>
+                  <th class="align-left" rowspan="2">
+                    Recruitment Invitations
+                  </th>
                   <th colspan="3" class="bg-secondary">Cumulative</th>
                   <th colspan="3" class="bg-danger">Stanford</th>
                   <th colspan="3" class="bg-primary">UIC</th>
@@ -216,13 +222,13 @@
                 <tr>
                   <th>Total</th>
                   <th>%</th>
-                  <th>Change %</th>
+                  <th>Change</th>
                   <th>Total</th>
                   <th>%</th>
-                  <th>Change %</th>
+                  <th>Change</th>
                   <th>Total</th>
                   <th>%</th>
-                  <th>Change %</th>
+                  <th>Change</th>
                 </tr>
               </thead>
               <tbody>
@@ -345,15 +351,15 @@
 
                 <tr class="table-secondary fw-bold">
                   <td>Screened</td>
-                  <td id="cumulative--screened"></td>
-                  <td id="cumulative-percent--screened"></td>
-                  <td id="cumulative-change--screened"></td>
-                  <td id="stanford-site-2--screened"></td>
-                  <td id="stanford-percent--screened"></td>
-                  <td id="stanford-change--screened"></td>
-                  <td id="uic-site-1--screened"></td>
-                  <td id="uic-percent--screened"></td>
-                  <td id="uic-change--screened"></td>
+                  <td id="cumulative--screened_eligible_count"></td>
+                  <td id="cumulative-percent--screened_eligible_count"></td>
+                  <td id="cumulative-change--screened_eligible_count"></td>
+                  <td id="stanford-site-2--screened_eligible_count"></td>
+                  <td id="stanford-percent--screened_eligible_count"></td>
+                  <td id="stanford-change--screened_eligible_count"></td>
+                  <td id="uic-site-1--screened_eligible_count"></td>
+                  <td id="uic-percent--screened_eligible_count"></td>
+                  <td id="uic-change--screened_eligible_count"></td>
                 </tr>
 
                 <tr>
@@ -508,15 +514,15 @@
 
                 <tr>
                   <td class="fw-bold">TO Scheduled</td>
-                  <td id="cumulative--to_scheduled"></td>
-                  <td id="cumulative-percent--to_scheduled"></td>
-                  <td id="cumulative-change--to_scheduled"></td>
-                  <td id="stanford-site-2--to_scheduled"></td>
-                  <td id="stanford-percent--to_scheduled"></td>
-                  <td id="stanford-change--to_scheduled"></td>
-                  <td id="uic-site-1--to_scheduled"></td>
-                  <td id="uic-percent--to_scheduled"></td>
-                  <td id="uic-change--to_scheduled"></td>
+                  <td id="cumulative--to_schedule"></td>
+                  <td id="cumulative-percent--to_schedule"></td>
+                  <td id="cumulative-change--to_schedule"></td>
+                  <td id="stanford-site-2--to_schedule"></td>
+                  <td id="stanford-percent--to_schedule"></td>
+                  <td id="stanford-change--to_schedule"></td>
+                  <td id="uic-site-1--to_schedule"></td>
+                  <td id="uic-percent--to_schedule"></td>
+                  <td id="uic-change--to_schedule"></td>
                 </tr>
 
                 <tr class="table-secondary fw-bold">
@@ -768,10 +774,19 @@
                 </tr>
 
                 <tr class="text-primary fw-bold">
-                  <td colspan="10">Tri‑yearly Target: 8/1/25</td>
-                </tr>
-                <tr class="text-primary">
-                  <td colspan="10">of target</td>
+                  <td>
+                    <em>Tri‑yearly Target: </em>
+                    <span id="tri-yearly-milestone-date">n/a</span>
+                  </td>
+                  <td id="cumulative--tri_yearly_target"></td>
+                  <td id="cumulative-percent--tri_yearly_target"></td>
+                  <td id="cumulative-change--tri_yearly_target"></td>
+                  <td id="stanford-site-2--tri_yearly_target"></td>
+                  <td id="stanford-percent--tri_yearly_target"></td>
+                  <td id="stanford-change--tri_yearly_target"></td>
+                  <td id="uic-site-1--tri_yearly_target"></td>
+                  <td id="uic-percent--tri_yearly_target"></td>
+                  <td id="uic-change--tri_yearly_target"></td>
                 </tr>
 
                 <tr class="table-light fw-bold">
@@ -1602,8 +1617,8 @@
     const btnText = document.getElementById("show-results-text");
     const spinner = document.getElementById("show-results-spinner");
 
-    // const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`; //uncomment this
-    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${startFormatted}`;
+    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`; //uncomment this
+    // const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${startFormatted}`;
 
     try {
       btn.disabled = true;
@@ -1619,10 +1634,17 @@
       }
 
       // Populate values and changes
+      mergeStanfordSummaryIntoData(data.endDateDoc);
+      mergeStanfordSummaryIntoData(data.startDateDoc);
+
       populateFullACEDTable(data.endDateDoc.data);
       populateAcedPercentChanges(data.startDateDoc.data, data.endDateDoc.data);
       populateAcedPercentages(data.endDateDoc.data);
-
+      populateAcedTriYearlyTargets(
+        data.endDateDoc.target_value,
+        data.endDateDoc.milestone_date,
+        data.endDateDoc.data
+      );
     } catch (error) {
       alert("Error fetching ACED data. Try again or contact support.");
       console.error("Error fetching ACED summaries:", error);
@@ -1633,13 +1655,73 @@
     }
   }
 
+  function mergeStanfordSummaryIntoData(dataDoc) {
+    const summary = dataDoc.stanford_summary_data;
+    if (!summary || !dataDoc.data["2"]) return;
+
+    const ceased =
+      (summary["honest_broker_ceased_outreach_count"] || 0) +
+      (summary["stanford_public_ceased_outreach_count"] || 0);
+    const partial =
+      (summary["honest_broker_partial_screen"] || 0) +
+      (summary["stanford_public_partial_screen"] || 0);
+
+    dataDoc.data["2"]["ceased_outreach_count"] = ceased;
+    dataDoc.data["2"]["partial_screen_count"] = partial;
+  }
+
   function populateFullACEDTable(jsonData) {
     const siteMap = {
-      "1": "uic-site-1",
-      "2": "stanford-site-2",
-      "3": "cumulative"
+      1: "uic-site-1",
+      2: "stanford-site-2",
+      3: "cumulative",
     };
 
+    // 0. Preprocess Stanford-specific fields if summary present
+    const stanfordSummary = jsonData["stanford_summary_data"];
+    if (stanfordSummary) {
+      const ceasedOutreach =
+        (stanfordSummary["honest_broker_ceased_outreach_count"] || 0) +
+        (stanfordSummary["stanford_public_ceased_outreach_count"] || 0);
+
+      const partialScreen =
+        (stanfordSummary["honest_broker_partial_screen"] || 0) +
+        (stanfordSummary["stanford_public_partial_screen"] || 0);
+
+      // Ensure site "2" (Stanford) exists
+      jsonData["2"] = jsonData["2"] || {};
+      jsonData["2"]["ceased_outreach"] = ceasedOutreach;
+      jsonData["2"]["partial_screen"] = partialScreen;
+    }
+
+    // 1. Compute cumulative from UIC + Stanford
+    const uic = jsonData["1"] || {};
+    const stanford = jsonData["2"] || {};
+    const cumulative = {};
+
+    const allKeys = new Set([...Object.keys(uic), ...Object.keys(stanford)]);
+
+    allKeys.forEach((key) => {
+      const uVal = parseFloat(uic[key]);
+      const sVal = parseFloat(stanford[key]);
+
+      const isValidU = !isNaN(uVal);
+      const isValidS = !isNaN(sVal);
+
+      if (isValidU && isValidS) {
+        cumulative[key] = uVal + sVal;
+      } else if (isValidU) {
+        cumulative[key] = uVal;
+      } else if (isValidS) {
+        cumulative[key] = sVal;
+      } else {
+        cumulative[key] = "-";
+      }
+    });
+
+    jsonData["3"] = cumulative;
+
+    // 2. Fill table values
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
       const siteData = jsonData[siteKey];
       if (!siteData) continue;
@@ -1648,15 +1730,16 @@
         const cleanKey = dataKey.replace(/_count$/, "");
         const elementId = `${sitePrefix}--${cleanKey}`;
 
-        // Select all matching elements (in case there are duplicates)
         const elements = document.querySelectorAll(`#${CSS.escape(elementId)}`);
         if (elements.length === 0) {
           console.warn(`Missing element(s) for ID: ${elementId}`);
           continue;
         }
 
+        const displayValue =
+          value === null || value === undefined || value === "" ? "-" : value;
         elements.forEach((el) => {
-          el.textContent = value;
+          el.textContent = displayValue;
         });
       }
     }
@@ -1664,9 +1747,9 @@
 
   function populateAcedPercentChanges(startData, endData) {
     const siteMap = {
-      "1": "uic-change",
-      "2": "stanford-change",
-      "3": "cumulative-change"
+      1: "uic-change",
+      2: "stanford-change",
+      3: "cumulative-change",
     };
 
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
@@ -1674,90 +1757,105 @@
       const endSite = endData[siteKey];
       if (!startSite || !endSite) continue;
 
-      for (const [dataKey, endVal] of Object.entries(endSite)) {
+      for (const [dataKey, endValRaw] of Object.entries(endSite)) {
         const cleanKey = dataKey.replace(/_count$/, "");
         const elementId = `${sitePrefix}--${cleanKey}`;
 
-        const startVal = parseFloat(startSite[dataKey]) || 0;
-        const endValNum = parseFloat(endVal) || 0;
+        const startValRaw = startSite[dataKey];
 
-        let change = 0;
-        if (startVal === 0 && endValNum > 0) {
-          change = 100;
-        } else if (startVal === 0 && endValNum === 0) {
-          change = 0;
-        } else {
-          change = ((endValNum - startVal) / startVal) * 100;
-        }
+        // Check for missing values
+        const isMissing =
+          startValRaw === undefined ||
+          startValRaw === null ||
+          startValRaw === "" ||
+          endValRaw === undefined ||
+          endValRaw === null ||
+          endValRaw === "";
 
         const el = document.getElementById(elementId);
-        if (el) {
-          el.textContent = `${change.toFixed(1)}%`;
+        if (!el) continue;
+
+        if (isMissing) {
+          el.textContent = "-";
+          continue;
         }
+
+        const startVal = parseFloat(startValRaw);
+        const endVal = parseFloat(endValRaw);
+
+        let change = 0;
+        if (isNaN(startVal) || isNaN(endVal)) {
+          el.textContent = "-";
+          continue;
+        }
+
+        change = endVal - startVal;
+
+        el.textContent = `${change}`;
       }
     }
   }
 
   const percentOfMapping = {
     // Percent of Screened
-    "ineligible": "screened",
-    "eligible_but_declined_to": "screened",
-    "eligible_undecided": "screened",
-    "screened_eligible": "screened",
-    "ehr_mismatch": "screened",
+    ineligible: "screened",
+    eligible_but_declined_to: "screened",
+    eligible_undecided: "screened",
+    screened_eligible: "screened",
+    ehr_mismatch: "screened",
 
     // Percent of Tele-Orientation
-    "appt_declined": "screened_eligible",                      // Appointment declined/ceased
-    "appt_needed_within_week_since_ies": "screened_eligible", // Needed within wk since IES
-    "appt_needed_over_week_since_ies": "screened_eligible",   // Needed over wk since IES
-    "reschedule_no_show": "screened_eligible",
-    "to_schedule": "screened_eligible",
-    "to_attended": "screened_eligible",
+    appt_declined: "screened_eligible", // Appointment declined/ceased
+    appt_needed_within_week_since_ies: "screened_eligible", // Needed within wk since IES
+    appt_needed_over_week_since_ies: "screened_eligible", // Needed over wk since IES
+    reschedule_no_show: "screened_eligible",
+    to_schedule: "screened_eligible",
+    to_attended: "screened_eligible",
 
-    "ineligible_at_to": "to_attended",
-    "declined_icf": "to_attended",
-    "consented": "to_attended",
+    ineligible_at_to: "to_attended",
+    declined_icf: "to_attended",
+    consented: "to_attended",
 
-    "consented_biaffect": "consented",
-    "consented_nda": "consented",
-    "to_declined_to_proceed": "consented",
-    "to_elig_undecided": "consented",
-    "to_elig_pending_md_clearance": "consented",
-    "consesnted_and_eligible": "consented",
+    consented_biaffect: "consented",
+    consented_nda: "consented",
+    to_declined_to_proceed: "consented",
+    to_elig_undecided: "consented",
+    to_elig_pending_md_clearance: "consented",
+    consesnted_and_eligible: "consented",
 
-    "t1_baseline_complete_fully_enrolled": "consesnted_and_eligible",
-    "t1_baseline_incomplete_webneuro_only": "consesnted_and_eligible",
-    "t1_baseline_incomplete_pros_only": "consesnted_and_eligible",
-    "t1_baseline_missing": "consesnted_and_eligible",
+    t1_baseline_complete_fully_enrolled: "consesnted_and_eligible",
+    t1_baseline_incomplete_webneuro_only: "consesnted_and_eligible",
+    t1_baseline_incomplete_pros_only: "consesnted_and_eligible",
+    t1_baseline_missing: "consesnted_and_eligible",
 
-    "t2_baseline_complete_fully_enrolled": "t2_baseline_total_entered",
-    "t2_baseline_incomplete_webneuro_only": "t2_baseline_total_entered",
-    "t2_baseline_incomplete_pros_only": "t2_baseline_total_entered",
-    "t2_baseline_missing": "t2_baseline_total_entered",
+    t2_baseline_complete_fully_enrolled: "t2_baseline_total_entered",
+    t2_baseline_incomplete_webneuro_only: "t2_baseline_total_entered",
+    t2_baseline_incomplete_pros_only: "t2_baseline_total_entered",
+    t2_baseline_missing: "t2_baseline_total_entered",
 
-    "t3_baseline_complete_fully_enrolled": "t3_baseline_total_entered",
-    "t3_baseline_incomplete_webneuro_only": "t3_baseline_total_entered",
-    "t3_baseline_incomplete_pros_only": "t3_baseline_total_entered",
-    "t3_baseline_missing": "t3_baseline_total_entered",
+    t3_baseline_complete_fully_enrolled: "t3_baseline_total_entered",
+    t3_baseline_incomplete_webneuro_only: "t3_baseline_total_entered",
+    t3_baseline_incomplete_pros_only: "t3_baseline_total_entered",
+    t3_baseline_missing: "t3_baseline_total_entered",
 
-    "t4_baseline_complete_fully_enrolled": "t4_baseline_total_entered",
-    "t4_baseline_missing": "t4_baseline_total_entered",
+    t4_baseline_complete_fully_enrolled: "t4_baseline_total_entered",
+    t4_baseline_missing: "t4_baseline_total_entered",
 
-    "t5_baseline_complete_fully_enrolled": "t5_baseline_total_entered",
-    "t5_baseline_missing": "t5_baseline_total_entered",
+    t5_baseline_complete_fully_enrolled: "t5_baseline_total_entered",
+    t5_baseline_missing: "t5_baseline_total_entered",
 
-    "t6_baseline_complete_fully_enrolled": "t6_baseline_total_entered",
-    "t6_baseline_missing": "t6_baseline_total_entered",
+    t6_baseline_complete_fully_enrolled: "t6_baseline_total_entered",
+    t6_baseline_missing: "t6_baseline_total_entered",
 
-    "off_study": "consesnted_and_eligible",
-    "withdrawn": "consesnted_and_eligible"
+    off_study: "consesnted_and_eligible",
+    withdrawn: "consesnted_and_eligible",
   };
 
   function populateAcedPercentages(endData) {
     const siteMap = {
-      "1": "uic-percent",
-      "2": "stanford-percent",
-      "3": "cumulative-percent"
+      1: "uic-percent",
+      2: "stanford-percent",
+      3: "cumulative-percent",
     };
 
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
@@ -1765,8 +1863,33 @@
       if (!siteData) continue;
 
       for (const [metric, denominatorKey] of Object.entries(percentOfMapping)) {
-        const numerator = parseFloat(siteData[`${metric}_count`] || 0);
-        const denominator = parseFloat(siteData[`${denominatorKey}_count`] || 0);
+        const rawNumerator = siteData[`${metric}_count`];
+        const rawDenominator = siteData[`${denominatorKey}_count`];
+
+        const el = document.getElementById(`${sitePrefix}--${metric}`);
+        if (!el) continue;
+
+        // Show "-" if either value is missing/null/empty
+        const isMissing =
+          rawNumerator === undefined ||
+          rawNumerator === null ||
+          rawNumerator === "" ||
+          rawDenominator === undefined ||
+          rawDenominator === null ||
+          rawDenominator === "";
+
+        if (isMissing) {
+          el.textContent = "-";
+          continue;
+        }
+
+        const numerator = parseFloat(rawNumerator);
+        const denominator = parseFloat(rawDenominator);
+
+        if (isNaN(numerator) || isNaN(denominator)) {
+          el.textContent = "-";
+          continue;
+        }
 
         let percent = 0;
         if (denominator === 0 && numerator > 0) {
@@ -1777,11 +1900,277 @@
           percent = (numerator / denominator) * 100;
         }
 
-        const el = document.getElementById(`${sitePrefix}--${metric}`);
-        if (el) {
-          el.textContent = `${percent.toFixed(1)}%`;
-        }
+        el.textContent = `${Math.floor(percent)}%`;
       }
     }
+  }
+
+  function populateAcedTriYearlyTargets(
+    target_value,
+    milestone_date,
+    data = {}
+  ) {
+    // 1. Set milestone date
+    const milestoneDateEl = document.getElementById(
+      "tri-yearly-milestone-date"
+    );
+    if (milestoneDateEl) {
+      milestoneDateEl.textContent = milestone_date || "N/A";
+    }
+
+    // 2. Raw values
+    const rawUIC = data["1"]?.["t1_baseline_complete_fully_enrolled"];
+    const rawStanford = data["2"]?.["t1_baseline_complete_fully_enrolled"];
+    const rawCumulative = data["3"]?.["t1_baseline_complete_fully_enrolled"];
+
+    const isMissingTarget =
+      target_value === undefined ||
+      target_value === null ||
+      target_value === "" ||
+      isNaN(parseFloat(target_value));
+
+    const targetNum = isMissingTarget ? null : parseFloat(target_value);
+    const siteTarget = targetNum ? targetNum / 2 : null;
+
+    // 3. Utility to compute % or return "-"
+    function getPercent(numerator, denominator) {
+      if (
+        numerator === undefined ||
+        numerator === null ||
+        numerator === "" ||
+        denominator === undefined ||
+        denominator === null ||
+        denominator === "" ||
+        isNaN(parseFloat(numerator)) ||
+        isNaN(parseFloat(denominator)) ||
+        denominator === 0
+      )
+        return "-";
+
+      return (
+        ((parseFloat(numerator) / parseFloat(denominator)) * 100).toFixed(1) +
+        "%"
+      );
+    }
+
+    // 4. Fill values or fallback to "-"
+    document.getElementById("uic-site-1--tri_yearly_target").textContent =
+      siteTarget !== null ? siteTarget.toFixed(0) : "-";
+    document.getElementById("uic-percent--tri_yearly_target").textContent =
+      getPercent(rawUIC, siteTarget);
+    document.getElementById("uic-change--tri_yearly_target").textContent = "";
+
+    document.getElementById("stanford-site-2--tri_yearly_target").textContent =
+      siteTarget !== null ? siteTarget.toFixed(0) : "-";
+    document.getElementById("stanford-percent--tri_yearly_target").textContent =
+      getPercent(rawStanford, siteTarget);
+    document.getElementById("stanford-change--tri_yearly_target").textContent =
+      "";
+
+    document.getElementById("cumulative--tri_yearly_target").textContent =
+      targetNum !== null ? targetNum.toFixed(0) : "-";
+    document.getElementById(
+      "cumulative-percent--tri_yearly_target"
+    ).textContent = getPercent(rawCumulative, targetNum);
+    document.getElementById(
+      "cumulative-change--tri_yearly_target"
+    ).textContent = "";
+  }
+
+  async function exportRecruitmentTableToExcel() {
+    const startDate = document.getElementById("startDateSelect").value;
+    const endDate = document.getElementById("endDateSelect").value;
+
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates before exporting.");
+      return;
+    }
+
+    const table = document.getElementById("recruitment-table");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Recruitment Report");
+
+    // ---- HEADER ----
+    const headerRows = table.querySelectorAll("thead tr");
+    const mergedMap = new Set(); // track merged coordinates to avoid overwriting
+
+    headerRows.forEach((tr, rowIndex) => {
+      const row = worksheet.getRow(rowIndex + 1);
+      let col = 1;
+
+      tr.querySelectorAll("th").forEach((th) => {
+        const text = th.textContent.trim();
+        const colspan = parseInt(th.getAttribute("colspan") || 1);
+        const rowspan = parseInt(th.getAttribute("rowspan") || 1);
+        const startRow = rowIndex + 1;
+        const endRow = startRow + rowspan - 1;
+        const startCol = col;
+        const endCol = col + colspan - 1;
+        const cell = row.getCell(col);
+
+        // Only set value if this cell is not part of a previous rowspan merge
+        const mergeKey = `${startRow}:${startCol}`;
+        if (!mergedMap.has(mergeKey)) {
+          cell.value = text;
+        }
+
+        cell.font = { bold: true };
+        cell.alignment = {
+          horizontal: th.classList.contains("align-left") ? "left" : "right",
+          vertical: "middle",
+        };
+
+        // Background color logic
+        if (th.classList.contains("table-dark")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "333333" },
+          };
+          cell.font.color = { argb: "FFFFFF" };
+        } else if (th.classList.contains("bg-secondary")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "D9D9D9" },
+          };
+        } else if (th.classList.contains("bg-danger")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "F8D7DA" },
+          };
+        } else if (th.classList.contains("bg-primary")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "CCE5FF" },
+          };
+        }
+
+        if (colspan > 1 || rowspan > 1) {
+          worksheet.mergeCells(startRow, startCol, endRow, endCol);
+
+          // mark all merged coordinates to skip setting value again
+          for (let r = startRow; r <= endRow; r++) {
+            for (let c = startCol; c <= endCol; c++) {
+              if (!(r === startRow && c === startCol)) {
+                mergedMap.add(`${r}:${c}`);
+              }
+            }
+          }
+        }
+
+        col += colspan;
+      });
+    });
+
+    // ---- BODY ----
+    const bodyRows = table.querySelectorAll("tbody tr");
+    let excelRowIdx = headerRows.length + 1;
+
+    bodyRows.forEach((tr) => {
+      const row = worksheet.getRow(excelRowIdx);
+      const cells = tr.querySelectorAll("td");
+
+      if (cells.length === 1 && cells[0].hasAttribute("colspan")) {
+        const text = cells[0].textContent.trim();
+        const cell = row.getCell(1);
+        cell.value = text;
+        cell.font = { bold: true };
+        cell.alignment = { horizontal: "center" };
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F2F2F2" },
+        };
+        worksheet.mergeCells(excelRowIdx, 1, excelRowIdx, 10);
+      } else {
+        cells.forEach((td, index) => {
+          const cell = row.getCell(index + 1);
+          const rawHTML = td.innerHTML.trim();
+          let value = td.textContent.trim();
+          if (!isNaN(value) && value !== "") value = Number(value);
+          cell.value = value;
+
+          // Alignment
+          const align =
+            td.classList.contains("align-left") || !td.id ? "left" : "right";
+          cell.alignment = { horizontal: align, vertical: "middle" };
+
+          if (td.classList.contains("ps-4")) {
+            cell.alignment = { ...cell.alignment, indent: 1 };
+          }
+
+          // Font
+          if (
+            td.classList.contains("fw-bold") ||
+            td.classList.contains("text-bold")
+          ) {
+            cell.font = { ...cell.font, bold: true };
+          }
+          if (rawHTML.includes("<em>")) {
+            cell.font = { ...cell.font, italic: true };
+          }
+
+          // Highlight
+          if (td.classList.contains("highlight")) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "BADDf1" },
+            };
+            cell.font = { bold: true, size: 18 };
+            cell.alignment = { horizontal: "left", vertical: "middle" };
+          }
+
+          // Row coloring
+          if (td.parentElement.classList.contains("table-secondary")) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "E9ECEF" },
+            };
+            cell.font = { ...cell.font, bold: true };
+          }
+          if (td.parentElement.classList.contains("table-light")) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "F8F9FA" },
+            };
+            cell.font = { ...cell.font, bold: true };
+          }
+        });
+      }
+
+      excelRowIdx++;
+    });
+
+    // ---- BORDERS & WIDTHS ----
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    worksheet.columns.forEach((col) => {
+      col.width = 22;
+    });
+
+    worksheet.views = [{ state: "frozen", ySplit: 2 }]; // Freeze top 2 rows
+
+    // ---- SAVE FILE ----
+    const buffer = await workbook.xlsx.writeBuffer();
+    const fileName = `ACE-D report from ${startDate} to ${endDate}.xlsx`;
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, fileName);
   }
 </script>

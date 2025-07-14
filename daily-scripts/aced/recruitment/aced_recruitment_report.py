@@ -770,5 +770,17 @@ def fetch_aced_recruitment_data():
         if i['eligibility_screener_complete'] != '' and i['screen_icf_oc'] == '1' and i['es_date'] != '':
             stanford_public_partial_screen += 1
 
-    return siteDict
+    fetchedData = {
+        "siteDict": siteDict,
+        "milestone_date": milestone_date,
+        "target_value": target_value,
+        "stanford_summary_data": {
+            "honest_broker_ceased_outreach_count": honest_broker_ceased_outreach_count,
+            "honest_broker_partial_screen": honest_broker_partial_screen,
+            "stanford_public_ceased_outreach_count": stanford_public_ceased_outreach_count,
+            "stanford_public_partial_screen": stanford_public_partial_screen
+        }
+    }
+
+    return fetchedData
     
