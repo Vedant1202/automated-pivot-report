@@ -16,14 +16,7 @@ def fetch_aced_recruitment_data():
         'type': 'flat',
         'csvDelimiter': '',
         'fields[0]': 'record_id',
-        # 'records[0]': '165',
-        # 'records[1]': '274',
-        # 'records[2]': '297',
-        # 'records[3]': '311',
-        # 'records[4]': '1',
-        # 'records[5]': '610',
         'fields[1]': 'aced_site',
-        # 'fields[2]': 'date_invite_1',
         'fields[3]': 'fraud_flag',
         'fields[4]': 'dupe_rec',
         'fields[5]': 'es_inelig_score',
@@ -197,7 +190,6 @@ def fetch_aced_recruitment_data():
 
     for i in response_json:
 
-        # print(record)
         site = str(i['aced_site'])
         sitesCollect[site] += 1
 
@@ -245,18 +237,18 @@ def fetch_aced_recruitment_data():
         if i['to_appt_status'] == '3':
             siteDict[site]['reschedule_no_show_count'] += 1
 
-        if i['es_oc_elig'] == '1' and i['to_appt_status'] == '1' and (i['es_elig_score'] == '1' or i['es_elig_score_v2'] == '1') and i['dupe_rec'] != '2' and i['fraud_flag'] != '2':
+        if i['es_oc_elig'] == '1' and i['to_appt_status'] == '1'and i['to_elig_oc'] < '1' and (i['es_elig_score'] == '1' or i['es_elig_score_v2'] == '1') and i['dupe_rec'] != '2' and i['fraud_flag'] != '2':
             siteDict[site]['to_schedule_count'] += 1
 
         #------TO Attended----------
-        if i['to_elig_oc'] is not None and i['to_appt_status'] != '4' and i['dupe_rec'] != '2' and i['fraud_flag'] != '2':
+        if i['to_elig_oc'] > '0' and i['to_appt_status'] != '4' and i['dupe_rec'] != '2' and i['fraud_flag'] != '2':
             siteDict[site]['to_attended_count'] += 1
 
         if i['to_appt_status'] != '4' and i['dupe_rec'] != '2' and i['fraud_flag'] != '2':
             if i['to_elig_oc'] == '2':
                 siteDict[site]['ineligible_at_to_count'] += 1
 
-            if ['to_elig_oc'] == '4':
+            if i['to_elig_oc'] == '4':
                 siteDict[site]['declined_icf_count'] += 1
 
             if i['to_elig_oc'] == '5':
@@ -283,9 +275,6 @@ def fetch_aced_recruitment_data():
 
         #------T1 Baseline-------
         if i['day1'].strip():
-            # day1_date = datetime.strptime(i['day1'], '%Y-%m-%d').date()
-            # d392_date = datetime.strptime(i['d392'], '%Y-%m-%d').date()
-
             enroll_criteria_met[i['record_id']] = {
                 'record_id': i['record_id'],
                 'aced_site': i.get('aced_site'),
@@ -329,27 +318,19 @@ def fetch_aced_recruitment_data():
         'type': 'flat',
         'csvDelimiter': '',
         'fields[0]': 'record_id',
-        # 'records[0]': '274',
         'fields[1]': 'treatment_survey_baseline_complete',
         'fields[2]': 'webneuro_data_complete',
         'fields[3]': 'aced2_assessment_survey_complete',
         'fields[4]': 'treatment_survey_follow_up_complete',
         'fields[5]': 'treatment_survey_baseline_complete',
-        # 'fields[6]': 'wn_status_1',
         'fields[7]': 't2_oc',
-        # 'fields[8]': 'wn_status_2',
         'fields[9]': 't3_oc',
-        # 'fields[10]': 'wn_status_3',
-        # 'fields[11]': 't4_oc',
-        # 'fields[12]': 't5_oc',
-        # 'fields[13]': 't6_oc',
         'events[0]': 't1_arm_1',
         'events[1]': 't2_arm_1',
         'events[2]': 't3_arm_1',
         'events[3]': 't4_arm_1',
         'events[4]': 't5_arm_1',
         'events[5]': 't6_arm_1',
-        # 'events[6]': 'enroll_arm_1',
         'rawOrLabel': 'raw',
         'rawOrLabelHeaders': 'raw',
         'exportCheckboxLabel': 'false',
@@ -367,14 +348,13 @@ def fetch_aced_recruitment_data():
 
     print("Received Data1")
 
-    # print(enroll_criteria_met)
+
     #----------Calculate Baseline Data------------
     for record in response_json1:
 
         if record['record_id'] in enroll_criteria_met:
             site = enroll_criteria_met[record['record_id']]['aced_site']
             to_elig_oc = enroll_criteria_met[record['record_id']]['to_elig_oc']
-            # print(f"Processing record {record['record_id']} for elig_oc {to_elig_oc} ")
             webneuro_schedule_complete = enroll_criteria_met[record['record_id']]['webneuro_schedule_complete']
             dropout_timepoint = enroll_criteria_met[record['record_id']]['dropout_timepoint']
             wn_status_1 = enroll_criteria_met[record['record_id']]['wn_status_1']
@@ -470,13 +450,10 @@ def fetch_aced_recruitment_data():
                     siteDict[site]['t1_baseline_prewindow_count'] += 1
 
             if to_icf_oc == '1': # and dropout_type == '':
-                # if (day1_date - today).days <= 0 and (d7_date - today).days >= 0 and (record['webneuro_data_complete'] == '0' or record['aced2_assessment_survey_complete'] == '0' or record['treatment_survey_follow_up_complete'] == '0'):
-                # print(f"Processing record {record['record_id']} webneuro_schedule_complete: {webneuro_schedule_complete}, aced2_assessment_survey_complete: {record['aced2_assessment_survey_complete']}, treatment_survey_follow_up_complete: {record['treatment_survey_follow_up_complete']}")
                 if day1_date <= today <= d7_date and (record['webneuro_data_complete'] == '0' or record['aced2_assessment_survey_complete'] == '0' or record['treatment_survey_baseline_complete'] == '0'):
-                    # print(f"Processing record {record['record_id']}")
                     siteDict[site]['t1_baseline_inwindow_count'] += 1
 
-                if record['webneuro_data_complete'] == '2' and record['aced2_assessment_survey_complete'] == '2' and record['treatment_survey_follow_up_complete'] == '2':
+                if record['webneuro_data_complete'] == '2' and record['aced2_assessment_survey_complete'] == '2' and record['treatment_survey_baseline_complete'] == '2':
                     siteDict[site]['t1_baseline_complete_fully_enrolled_count'] += 1
 
                 if (d7_date < today) and t1_oc == '2' and wn_status_1 == '3':
@@ -644,7 +621,6 @@ def fetch_aced_recruitment_data():
         site = str(i['aced_site'])
         
         if 'date_invite_1' in record and record['date_invite_1'].strip():
-            # Convert the string date to a date object
             invite_date = datetime.strptime(record['date_invite_1'], '%Y-%m-%d').date()
 
             # ------------------invitation sent---------------
@@ -654,13 +630,10 @@ def fetch_aced_recruitment_data():
 
             if 'can_call' in record and record['can_call'].strip():
                 can_call_date = datetime.strptime(record['can_call'], '%Y-%m-%d').date()
-
-                    # call_date > today means its status is wait 
                 if can_call_date > today and record['eligibility_screener_complete'] != '2':
                     siteDict[site]['two_week_wait_count'] += 1
 
                 # --------------calling in progress----------------
-                # if record['redcap_event_name'] != ' ':
                 if record['redcap_event_name'] != ' ':
                     if record['vol_excl'] == '1' or record['invite_yn'] == '2' or ( record['screen_icf_oc'] != '3' and record['eligibility_screener_complete'] == '2'):
                         recruit_oc_know_var = '1'
