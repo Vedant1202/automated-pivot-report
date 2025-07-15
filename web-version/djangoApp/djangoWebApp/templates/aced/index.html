@@ -154,15 +154,29 @@
             Recruitment Report
           </button>
         </li>
-        <li class="nav-item">
-          <a
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="mini-recruitment-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#mini-recruitment"
+            type="button"
+            role="tab"
+          >
+            Minfied Recruitment Report
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
             class="nav-link"
             id="exclusions-refusal-tab"
             data-bs-toggle="tab"
-            href="#exclusions-refusal"
+            data-bs-target="#exclusions-refusal"
+            type="button"
             role="tab"
-            >Exclusions & Refusals Summary</a
           >
+            Exclusions & Refusals Report
+          </button>
         </li>
         <!-- <li class="nav-item" role="presentation">
         <button class="nav-link" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#detailed" type="button"
@@ -1425,12 +1439,175 @@
           </div>
         </div>
       </div>
+
+      <div class="tab-content" id="miniRecruitmentTabContent">
+        <div class="tab-pane fade" id="mini-recruitment" role="tabpanel">
+          <!-- This wraps your existing summary report content -->
+          <div class="container">
+            <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
+            <div class="row my-3">
+              <div class="col">
+                <label for="startDateSelect">Compare data from:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDateSelectMini"
+                />
+              </div>
+              <div class="col">
+                <label for="endDateSelect">to:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDateSelectMini"
+                />
+              </div>
+              <div class="col d-flex align-items-end">
+                <button
+                  id="show-results-mini-btn"
+                  class="btn btn-primary"
+                  onclick="fetchAcedRecruitmentReportMiniVersion()"
+                >
+                  <span id="show-results-mini-text"
+                    >Load latest minified ACE-D recruitment data</span
+                  >
+                  <span
+                    id="show-results-mini-spinner"
+                    class="spinner-border spinner-border-sm text-white ms-2"
+                    role="status"
+                    style="display: none"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </span>
+                </button>
+                <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
+                <!-- <button
+                  class="btn btn-secondary-outline ms-2"
+                  onclick="populateStaticData()"
+                >
+                  Populate Static Data
+                </button> -->
+                <button
+                  class="btn btn-warning ms-2"
+                  id="export-btn"
+                  onclick="exportMiniRecruitmentTableToExcel()"
+                >
+                  Download to Excel
+                </button>
+              </div>
+            </div>
+
+            <table
+              class="table table-bordered table-sm text-center align-middle"
+              id="mini-recruitment-table"
+            >
+              <thead>
+                <tr class="table-light fw-bold text-center align-middle">
+                  <th class="text-start">Status</th>
+                  <th colspan="2" class="table-light">Cumulative</th>
+                  <th colspan="2" style="background-color: #fff3cd">
+                    Stanford
+                  </th>
+                  <th colspan="2" style="background-color: #e2e3f3">UIC</th>
+                </tr>
+                <tr class="table-light text-center">
+                  <th></th>
+                  <th>Total</th>
+                  <th>Change</th>
+                  <th>Total</th>
+                  <th>Change</th>
+                  <th>Total</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-start">Screened</td>
+                  <td id="cumulative--screened_eligible_count-minified"></td>
+                  <td
+                    id="cumulative-change--screened_eligible_count-minified"
+                  ></td>
+                  <td id="stanford--screened_eligible_count-minified"></td>
+                  <td
+                    id="stanford-change--screened_eligible_count-minified"
+                  ></td>
+                  <td id="uic--screened_eligible_count-minified"></td>
+                  <td id="uic-change--screened_eligible_count-minified"></td>
+                </tr>
+                <tr>
+                  <td class="text-start">Consented</td>
+                  <td id="cumulative--consented_count-minified"></td>
+                  <td id="cumulative-change--consented_count-minified"></td>
+                  <td id="stanford--consented_count-minified"></td>
+                  <td id="stanford-change--consented_count-minified"></td>
+                  <td id="uic--consented_count-minified"></td>
+                  <td id="uic-change--consented_count-minified"></td>
+                </tr>
+                <tr>
+                  <td class="text-start ps-4">Agreed BiAffect, w/ iPhone</td>
+                  <td id="cumulative--consented_biaffect_count-minified"></td>
+                  <td
+                    id="cumulative-change--consented_biaffect_count-minified"
+                  ></td>
+                  <td id="stanford--consented_biaffect_count-minified"></td>
+                  <td
+                    id="stanford-change--consented_biaffect_count-minified"
+                  ></td>
+                  <td id="uic--consented_biaffect_count-minified"></td>
+                  <td id="uic-change--consented_biaffect_count-minified"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td class="text-start">
+                    T1 Complete <em>- Fully enrolled</em>
+                  </td>
+                  <td
+                    id="cumulative--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="cumulative-change--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford-change--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic-change--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                </tr>
+                <tr>
+                  <td class="text-start">T6 Complete</td>
+                  <td
+                    id="cumulative--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="cumulative-change--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford-change--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic-change--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <div class="tab-content" id="exclusionsRefusalsTabContent">
-        <div
-          class="tab-pane fade show active"
-          id="exclusions-refusal"
-          role="tabpanel"
-        >
+        <div class="tab-pane fade" id="exclusions-refusal" role="tabpanel">
           <!-- This wraps your existing summary report content -->
           <div class="container">
             <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
@@ -1923,45 +2100,44 @@
     };
 
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
-      const startSite = startData[siteKey];
-      const endSite = endData[siteKey];
-      if (!startSite || !endSite) continue;
+      for (const key in endData["1"]) {
+        if (!key.endsWith("_count")) continue;
 
-      for (const [dataKey, endValRaw] of Object.entries(endSite)) {
-        const cleanKey = dataKey.replace(/_count$/, "");
+        const cleanKey = key.replace(/_count$/, "");
         const elementId = `${sitePrefix}--${cleanKey}`;
-
-        const startValRaw = startSite[dataKey];
-
-        // Check for missing values
-        const isMissing =
-          startValRaw === undefined ||
-          startValRaw === null ||
-          startValRaw === "" ||
-          endValRaw === undefined ||
-          endValRaw === null ||
-          endValRaw === "";
-
         const el = document.getElementById(elementId);
-        if (!el) continue;
 
-        if (isMissing) {
-          el.textContent = "-";
+        if (!el) {
+          console.warn(`❌ Missing element for ID: ${elementId}`);
           continue;
         }
 
-        const startVal = parseFloat(startValRaw);
-        const endVal = parseFloat(endValRaw);
+        let diff = "-";
 
-        let change = 0;
-        if (isNaN(startVal) || isNaN(endVal)) {
-          el.textContent = "-";
-          continue;
+        if (siteKey === "3") {
+          // Cumulative = UIC + Stanford change
+          const uStart = parseFloat(startData["1"]?.[key] ?? 0);
+          const uEnd = parseFloat(endData["1"]?.[key] ?? 0);
+          const sStart = parseFloat(startData["2"]?.[key] ?? 0);
+          const sEnd = parseFloat(endData["2"]?.[key] ?? 0);
+
+          const uDiff = !isNaN(uStart) && !isNaN(uEnd) ? uEnd - uStart : 0;
+          const sDiff = !isNaN(sStart) && !isNaN(sEnd) ? sEnd - sStart : 0;
+
+          diff = uDiff + sDiff;
+        } else {
+          const startVal = parseFloat(startData[siteKey]?.[key]);
+          const endVal = parseFloat(endData[siteKey]?.[key]);
+
+          if (!isNaN(startVal) && !isNaN(endVal)) {
+            diff = endVal - startVal;
+          } else {
+            diff = "-";
+          }
         }
 
-        change = endVal - startVal;
-
-        el.textContent = `${change}`;
+        el.textContent = diff === "-" ? "-" : `${diff}`;
+        console.log(`✅ Filled ${elementId} → ${diff}`);
       }
     }
   }
@@ -2387,10 +2563,349 @@
 
     // ---- SAVE FILE ----
     const buffer = await workbook.xlsx.writeBuffer();
-    const fileName = `ACE-D report from ${startDate} to ${endDate}.xlsx`;
+    const fileName = `ACE-D Aim-2 report from ${startDate} to ${endDate}.xlsx`;
     const blob = new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
+    saveAs(blob, fileName);
+  }
+</script>
+
+<!-- For mini recruitment report -->
+<script>
+  async function fetchAcedRecruitmentReportMiniVersion() {
+    const startDateRaw = document.getElementById("startDateSelectMini").value;
+    const endDateRaw = document.getElementById("endDateSelectMini").value;
+
+    if (!startDateRaw || !endDateRaw) {
+      alert("Please select both Start Date and End Date.");
+      return;
+    }
+
+    if (new Date(startDateRaw) >= new Date(endDateRaw)) {
+      alert("Start Date must be earlier than End Date.");
+      return;
+    }
+
+    function formatToMMDDYYYY(dateStr) {
+      const [yyyy, mm, dd] = dateStr.split("-");
+      return `${mm}-${dd}-${yyyy}`;
+    }
+
+    const startFormatted = formatToMMDDYYYY(startDateRaw);
+    const endFormatted = formatToMMDDYYYY(endDateRaw);
+
+    const btn = document.getElementById("show-results-mini-btn");
+    const btnText = document.getElementById("show-results-mini-text");
+    const spinner = document.getElementById("show-results-mini-spinner");
+
+    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`;
+
+    try {
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!data || !data.startDateDoc || !data.endDateDoc) {
+        alert("Data for the selected dates is not available.");
+        return;
+      }
+
+      // Merge Stanford summary into both datasets
+      mergeStanfordSummaryIntoData(data.endDateDoc);
+      mergeStanfordSummaryIntoData(data.startDateDoc);
+
+      console.log(data);
+      // Fill mini table
+      populateMiniACEDTable(data.endDateDoc.data);
+      populateMiniAcedPercentChanges(
+        data.startDateDoc.data,
+        data.endDateDoc.data
+      );
+    } catch (error) {
+      alert("Error fetching ACED data. Try again or contact support.");
+      console.error("Error fetching ACED summaries:", error);
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "Load latest minified ACE-D recruitment data";
+    }
+  }
+
+  function populateMiniACEDTable(jsonData) {
+    const siteMap = {
+      1: "uic",
+      2: "stanford",
+      3: "cumulative",
+    };
+
+    const uic = jsonData["1"] || {};
+    const stanford = jsonData["2"] || {};
+    const cumulative = {};
+
+    const allKeys = new Set([...Object.keys(uic), ...Object.keys(stanford)]);
+    allKeys.forEach((key) => {
+      const uVal = parseFloat(uic[key]);
+      const sVal = parseFloat(stanford[key]);
+
+      const isValidU = !isNaN(uVal);
+      const isValidS = !isNaN(sVal);
+
+      if (isValidU && isValidS) {
+        cumulative[key] = uVal + sVal;
+      } else if (isValidU) {
+        cumulative[key] = uVal;
+      } else if (isValidS) {
+        cumulative[key] = sVal;
+      } else {
+        cumulative[key] = "-";
+      }
+    });
+
+    jsonData["3"] = cumulative;
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      const siteData = jsonData[siteKey];
+      if (!siteData) {
+        console.warn(`No data for site ${siteKey} (${sitePrefix})`);
+        continue;
+      }
+
+      for (const [dataKey, value] of Object.entries(siteData)) {
+        if (!dataKey.endsWith("_count")) continue;
+
+        // Do not strip _count here
+        const elementId = `${sitePrefix}--${dataKey}-minified`;
+        const el = document.getElementById(elementId);
+
+        if (el) {
+          const displayValue =
+            value === null || value === undefined || value === "" ? "-" : value;
+          el.textContent = displayValue;
+          // console.log(`✅ Filled: ${elementId} → ${displayValue}`);
+        } else {
+          // console.warn(`❌ Missing element for ID: ${elementId}`);
+        }
+      }
+    }
+  }
+
+  function populateMiniAcedPercentChanges(startData, endData) {
+    const siteMap = {
+      1: "uic-change",
+      2: "stanford-change",
+      3: "cumulative-change",
+    };
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      for (const key in endData["1"]) {
+        if (!key.endsWith("_count")) continue;
+
+        let diff;
+        let elementId = `${sitePrefix}--${key}-minified`;
+
+        if (siteKey === "3") {
+          // cumulative = uic + stanford change
+          const uStart = parseFloat(startData["1"]?.[key] ?? 0);
+          const uEnd = parseFloat(endData["1"]?.[key] ?? 0);
+          const sStart = parseFloat(startData["2"]?.[key] ?? 0);
+          const sEnd = parseFloat(endData["2"]?.[key] ?? 0);
+
+          const uDiff = !isNaN(uStart) && !isNaN(uEnd) ? uEnd - uStart : 0;
+          const sDiff = !isNaN(sStart) && !isNaN(sEnd) ? sEnd - sStart : 0;
+          diff = uDiff + sDiff;
+        } else {
+          const startVal = parseFloat(startData[siteKey]?.[key]);
+          const endVal = parseFloat(endData[siteKey]?.[key]);
+
+          if (isNaN(startVal) || isNaN(endVal)) {
+            console.warn(`⚠️ Invalid data for ${elementId}`);
+            const el = document.getElementById(elementId);
+            if (el) el.textContent = "-";
+            continue;
+          }
+
+          diff = endVal - startVal;
+        }
+
+        const el = document.getElementById(elementId);
+        if (el) {
+          el.textContent = `${diff}`;
+          // console.log(`✅ Filled ${elementId} → ${diff}`);
+        } else {
+          // console.warn(`❌ Missing element for ID: ${elementId}`);
+        }
+      }
+    }
+  }
+
+  async function exportMiniRecruitmentTableToExcel() {
+    const startDate = document.getElementById("startDateSelectMini").value;
+    const endDate = document.getElementById("endDateSelectMini").value;
+
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates before exporting.");
+      return;
+    }
+
+    const table = document.getElementById("mini-recruitment-table");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Mini Recruitment Report");
+
+    // ---- TITLE ROW ----
+    const title = `ACE-D (Aim-2) Minified Recruitment Report from ${startDate} to ${endDate}`;
+    const titleRow = worksheet.getRow(1);
+    titleRow.getCell(1).value = title;
+    titleRow.getCell(1).font = { size: 16, bold: true };
+    titleRow.getCell(1).alignment = {
+      horizontal: "center",
+      vertical: "middle",
+    };
+    worksheet.mergeCells(1, 1, 1, 7);
+
+    // ---- HEADER ROWS ----
+    const headerRows = table.querySelectorAll("thead tr");
+    const mergedMap = new Set();
+
+    headerRows.forEach((tr, rowIndex) => {
+      const row = worksheet.getRow(rowIndex + 2);
+      let col = 1;
+
+      tr.querySelectorAll("th").forEach((th) => {
+        const text = th.textContent.trim();
+        const colspan = parseInt(th.getAttribute("colspan") || 1);
+        const rowspan = parseInt(th.getAttribute("rowspan") || 1);
+        const startRow = rowIndex + 2;
+        const endRow = startRow + rowspan - 1;
+        const startCol = col;
+        const endCol = col + colspan - 1;
+        const cell = row.getCell(col);
+
+        const mergeKey = `${startRow}:${startCol}`;
+        if (!mergedMap.has(mergeKey)) {
+          cell.value = text;
+        }
+
+        cell.font = { bold: true };
+        cell.alignment = {
+          horizontal: th.classList.contains("text-start") ? "left" : "center",
+          vertical: "middle",
+        };
+
+        if (th.style.backgroundColor === "rgb(255, 243, 205)") {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "FFF3CD" },
+          };
+        } else if (th.style.backgroundColor === "rgb(226, 227, 243)") {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "E2E3F3" },
+          };
+        }
+
+        if (colspan > 1 || rowspan > 1) {
+          worksheet.mergeCells(startRow, startCol, endRow, endCol);
+          for (let r = startRow; r <= endRow; r++) {
+            for (let c = startCol; c <= endCol; c++) {
+              if (!(r === startRow && c === startCol)) {
+                mergedMap.add(`${r}:${c}`);
+              }
+            }
+          }
+        }
+
+        col += colspan;
+      });
+    });
+
+    // ---- BODY ----
+    const bodyRows = table.querySelectorAll("tbody tr");
+    let excelRowIdx = headerRows.length + 2;
+
+    bodyRows.forEach((tr) => {
+      const row = worksheet.getRow(excelRowIdx);
+      const cells = tr.querySelectorAll("td");
+
+      cells.forEach((td, index) => {
+        const cell = row.getCell(index + 1);
+        const value = td.textContent.trim();
+        const rawHTML = td.innerHTML.trim();
+
+        if (!isNaN(value) && value !== "") {
+          cell.value = Number(value);
+        } else {
+          cell.value = value;
+        }
+
+        // Alignments
+        if (index === 0) {
+          cell.alignment = { horizontal: "left", vertical: "middle" };
+        } else {
+          cell.alignment = { horizontal: "center", vertical: "middle" };
+        }
+
+        // Styling
+        if (td.classList.contains("fw-bold")) {
+          cell.font = { ...cell.font, bold: true };
+        }
+
+        if (td.classList.contains("ps-4")) {
+          cell.alignment = { ...cell.alignment, indent: 1 };
+        }
+
+        if (rawHTML.includes("<em>")) {
+          cell.font = { ...cell.font, italic: true };
+        }
+
+        const isT1Row =
+          cells[0] &&
+          cells[0].textContent.trim().toLowerCase() ===
+            "t1 complete - fully enrolled";
+
+        if (isT1Row) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "c9e8be" },
+          };
+          cell.font = { ...cell.font, bold: true };
+        }
+      });
+
+      excelRowIdx++;
+    });
+
+    // ---- BORDER & WIDTH ----
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    worksheet.columns.forEach((col) => {
+      col.width = 22;
+    });
+
+    worksheet.views = [{ state: "frozen", ySplit: 2 }];
+
+    // ---- SAVE ----
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const fileName = `ACE-D Aim-2 Minified Report from ${startDate} to ${endDate}.xlsx`;
     saveAs(blob, fileName);
   }
 </script>
@@ -2494,166 +3009,169 @@
     }
   }
 
-async function exportExclusionRefusalToExcel() {
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet("Exclusions & Refusals");
+  async function exportExclusionRefusalToExcel() {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Exclusions & Refusals");
 
-  const exclusionsTable = document.getElementById("exclusions-table");
-  const refusalsTable = document.getElementById("refusals-table");
+    const exclusionsTable = document.getElementById("exclusions-table");
+    const refusalsTable = document.getElementById("refusals-table");
 
-  let currentRow = 1;
+    let currentRow = 1;
 
-  function exportStyledTable(table, startRow) {
-    const headerRows = table.querySelectorAll("thead tr");
-    const bodyRows = table.querySelectorAll("tbody tr");
+    function exportStyledTable(table, startRow) {
+      const headerRows = table.querySelectorAll("thead tr");
+      const bodyRows = table.querySelectorAll("tbody tr");
 
-    const mergedMap = new Set();
-    let rowIdx = startRow;
+      const mergedMap = new Set();
+      let rowIdx = startRow;
 
-    // HEADERS
-    headerRows.forEach((tr, rowIndex) => {
-      const row = worksheet.getRow(rowIdx);
-      let col = 1;
-      tr.querySelectorAll("th").forEach((th) => {
-        const text = th.textContent.trim();
-        const colspan = parseInt(th.getAttribute("colspan") || 1);
-        const rowspan = parseInt(th.getAttribute("rowspan") || 1);
-        const startRow = rowIdx;
-        const endRow = startRow + rowspan - 1;
-        const startCol = col;
-        const endCol = col + colspan - 1;
-        const cell = row.getCell(startCol);
+      // HEADERS
+      headerRows.forEach((tr, rowIndex) => {
+        const row = worksheet.getRow(rowIdx);
+        let col = 1;
+        tr.querySelectorAll("th").forEach((th) => {
+          const text = th.textContent.trim();
+          const colspan = parseInt(th.getAttribute("colspan") || 1);
+          const rowspan = parseInt(th.getAttribute("rowspan") || 1);
+          const startRow = rowIdx;
+          const endRow = startRow + rowspan - 1;
+          const startCol = col;
+          const endCol = col + colspan - 1;
+          const cell = row.getCell(startCol);
 
-        const mergeKey = `${startRow}:${startCol}`;
-        if (!mergedMap.has(mergeKey)) cell.value = text;
+          const mergeKey = `${startRow}:${startCol}`;
+          if (!mergedMap.has(mergeKey)) cell.value = text;
 
-        cell.font = { bold: true, color: { argb: "FFFFFF" } };
-        cell.alignment = {
-          horizontal: th.classList.contains("align-left") ? "left" : "center",
-          vertical: "middle",
-        };
-        cell.fill = {
-          type: "pattern",
-          pattern: "solid",
-          fgColor: { argb: "333333" },
-        };
-
-        if (colspan > 1 || rowspan > 1) {
-          worksheet.mergeCells(startRow, startCol, endRow, endCol);
-          for (let r = startRow; r <= endRow; r++) {
-            for (let c = startCol; c <= endCol; c++) {
-              if (!(r === startRow && c === startCol)) {
-                mergedMap.add(`${r}:${c}`);
-              }
-            }
-          }
-        }
-
-        col += colspan;
-      });
-      row.commit();
-      rowIdx++;
-    });
-
-    // BODY
-    bodyRows.forEach((tr) => {
-      const row = worksheet.getRow(rowIdx);
-      const cells = tr.querySelectorAll("td");
-
-      cells.forEach((td, index) => {
-        const cell = row.getCell(index + 1);
-        let value = td.textContent.trim();
-        if (!isNaN(value) && value !== "") value = Number(value);
-        cell.value = value === "-" ? "" : value;
-
-        cell.alignment = {
-          horizontal: index === 0 ? "left" : "right",
-          vertical: "middle",
-        };
-
-        const isBold =
-          td.classList.contains("fw-bold") ||
-          td.parentElement.classList.contains("fw-bold");
-        const isSecondary =
-          td.classList.contains("table-secondary") ||
-          td.parentElement.classList.contains("table-secondary");
-
-        if (isBold || isSecondary) {
-          cell.font = { bold: true };
+          cell.font = { bold: true, color: { argb: "FFFFFF" } };
+          cell.alignment = {
+            horizontal: th.classList.contains("align-left") ? "left" : "center",
+            vertical: "middle",
+          };
           cell.fill = {
             type: "pattern",
             pattern: "solid",
-            fgColor: { argb: "E9ECEF" },
+            fgColor: { argb: "333333" },
           };
-        }
+
+          if (colspan > 1 || rowspan > 1) {
+            worksheet.mergeCells(startRow, startCol, endRow, endCol);
+            for (let r = startRow; r <= endRow; r++) {
+              for (let c = startCol; c <= endCol; c++) {
+                if (!(r === startRow && c === startCol)) {
+                  mergedMap.add(`${r}:${c}`);
+                }
+              }
+            }
+          }
+
+          col += colspan;
+        });
+        row.commit();
+        rowIdx++;
       });
 
-      row.commit();
-      rowIdx++;
-    });
+      // BODY
+      bodyRows.forEach((tr) => {
+        const row = worksheet.getRow(rowIdx);
+        const cells = tr.querySelectorAll("td");
 
-    return rowIdx;
-  }
+        cells.forEach((td, index) => {
+          const cell = row.getCell(index + 1);
+          let value = td.textContent.trim();
+          if (!isNaN(value) && value !== "") value = Number(value);
+          cell.value = value === "-" ? "" : value;
 
-  // Export both tables with 1 empty row in between
-  currentRow = exportStyledTable(exclusionsTable, currentRow);
-  currentRow += 1;
-  exportStyledTable(refusalsTable, currentRow);
+          cell.alignment = {
+            horizontal: index === 0 ? "left" : "right",
+            vertical: "middle",
+          };
 
-  // Column width and borders
-  worksheet.columns.forEach((col) => {
-    col.width = 28;
-  });
+          const isBold =
+            td.classList.contains("fw-bold") ||
+            td.parentElement.classList.contains("fw-bold");
+          const isSecondary =
+            td.classList.contains("table-secondary") ||
+            td.parentElement.classList.contains("table-secondary");
 
-  worksheet.eachRow((row) => {
-    row.eachCell((cell) => {
-      cell.border = {
-        top: { style: "thin" },
-        bottom: { style: "thin" },
-        left: { style: "thin" },
-        right: { style: "thin" },
-      };
-    });
-  });
+          if (isBold || isSecondary) {
+            cell.font = { bold: true };
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "E9ECEF" },
+            };
+          }
+        });
 
-  // ---- HARDCODE B2, C2, D2 HEADERS ----
-  const row2 = worksheet.getRow(2);
+        row.commit();
+        rowIdx++;
+      });
 
-  const b2 = row2.getCell(2); // B2
-  const c2 = row2.getCell(3); // C2
-  const d2 = row2.getCell(4); // D2
-
-  b2.value = "Prior to screening";
-  c2.value = "Screening";
-  d2.value = "Tele-Orientation";
-
-  // Copy formatting from C2 → D2
-  d2.font = { ...c2.font };
-  d2.alignment = { ...c2.alignment };
-  if (c2.fill) d2.fill = { ...c2.fill };
-
-  // Format date for filename
-  const today = new Date();
-  const day = today.getDate();
-  const suffix = (d) => {
-    if (d >= 11 && d <= 13) return "th";
-    switch (d % 10) {
-      case 1: return "st";
-      case 2: return "nd";
-      case 3: return "rd";
-      default: return "th";
+      return rowIdx;
     }
-  };
-  const month = today.toLocaleString("default", { month: "long" });
-  const year = today.getFullYear();
-  const dateStr = `${day}${suffix(day)} ${month}, ${year}`;
-  const fileName = `ACED AIM-2 Exclusions Refusals Report - ${dateStr}.xlsx`;
 
-  const buffer = await workbook.xlsx.writeBuffer();
-  const blob = new Blob([buffer], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  });
-  saveAs(blob, fileName);
-}
+    // Export both tables with 1 empty row in between
+    currentRow = exportStyledTable(exclusionsTable, currentRow);
+    currentRow += 1;
+    exportStyledTable(refusalsTable, currentRow);
 
+    // Column width and borders
+    worksheet.columns.forEach((col) => {
+      col.width = 28;
+    });
+
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // ---- HARDCODE B2, C2, D2 HEADERS ----
+    const row2 = worksheet.getRow(2);
+
+    const b2 = row2.getCell(2); // B2
+    const c2 = row2.getCell(3); // C2
+    const d2 = row2.getCell(4); // D2
+
+    b2.value = "Prior to screening";
+    c2.value = "Screening";
+    d2.value = "Tele-Orientation";
+
+    // Copy formatting from C2 → D2
+    d2.font = { ...c2.font };
+    d2.alignment = { ...c2.alignment };
+    if (c2.fill) d2.fill = { ...c2.fill };
+
+    // Format date for filename
+    const today = new Date();
+    const day = today.getDate();
+    const suffix = (d) => {
+      if (d >= 11 && d <= 13) return "th";
+      switch (d % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+    const month = today.toLocaleString("default", { month: "long" });
+    const year = today.getFullYear();
+    const dateStr = `${day}${suffix(day)} ${month}, ${year}`;
+    const fileName = `ACED AIM-2 Exclusions Refusals Report - ${dateStr}.xlsx`;
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, fileName);
+  }
 </script>
