@@ -17,6 +17,9 @@ from ignite_detailed_list import fetch_redcap_staff_report
 from ignite_self_harm import process_self_harm_data
 from ignite_intervention_report import fetch_ignite_intervention_report
 
+## ACED
+from aced_scripts.aced_exclusions_refusals import getExclusionsRefusalsData
+
 ## For scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.utils.timezone import now
@@ -142,6 +145,19 @@ def get_selfharm_summary(request):
     """
     try:
         summary_data = process_self_harm_data()
+        return JsonResponse(summary_data, safe=False)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+    
+@csrf_exempt
+@api_view(['GET'])
+@login_required
+def get_aced_exclusions_refusals_data(request):
+    """
+        GET endpoint to return the exclusions refusals for ACED REDCap summary report.
+    """
+    try:
+        summary_data = getExclusionsRefusalsData()
         return JsonResponse(summary_data, safe=False)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
