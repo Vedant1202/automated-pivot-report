@@ -188,7 +188,7 @@ def fetch_aced_recruitment_data():
 
     enroll_criteria_met = {}
 
-    for i in response_json:
+    for i in (record for record in response_json if record['record_id'] != '36'):
 
         site = str(i['aced_site'])
         sitesCollect[site] += 1
@@ -350,7 +350,7 @@ def fetch_aced_recruitment_data():
 
 
     #----------Calculate Baseline Data------------
-    for record in response_json1:
+    for i in (record for record in response_json1 if record['record_id'] != '36'):
 
         if record['record_id'] in enroll_criteria_met:
             site = enroll_criteria_met[record['record_id']]['aced_site']
@@ -488,7 +488,7 @@ def fetch_aced_recruitment_data():
                 if (d28 < today) and t2_oc == '3':
                     siteDict[site]['t2_baseline_missing_count'] += 1
                 
-                if (d28 < today) and t2_oc == '1':
+                if (d15_date < today):
                     siteDict[site]['t2_baseline_total_entered_count'] += 1
 
 
@@ -514,7 +514,7 @@ def fetch_aced_recruitment_data():
                 if (d84 < today) and t3_oc == '3':
                     siteDict[site]['t3_baseline_missing_count'] += 1
 
-                if (d84 < today) and t3_oc == '1':
+                if (d57 < today) :
                     siteDict[site]['t3_baseline_total_entered_count'] += 1
 
         #---------T4 Baseline Data----------
@@ -533,7 +533,7 @@ def fetch_aced_recruitment_data():
                 if (d210 < today) and t4_oc == '3':
                     siteDict[site]['t4_baseline_missing_count'] += 1
 
-                if (d210 < today) and t4_oc == '1':
+                if (d183 < today) and t4_oc == '1':
                     siteDict[site]['t4_baseline_total_entered_count'] += 1
 
         #---------T5 Baseline Data----------
@@ -552,7 +552,7 @@ def fetch_aced_recruitment_data():
                 if (d301 < today) and t5_oc == '3':
                     siteDict[site]['t5_baseline_missing_count'] += 1
 
-                if (d301 < today) and t5_oc == '3':
+                if (d274 < today) and t5_oc == '3':
                     siteDict[site]['t5_baseline_total_entered_count'] += 1
 
         #---------T6 Baseline Data----------
@@ -571,11 +571,10 @@ def fetch_aced_recruitment_data():
                 if (d392_date < today) and t6_oc == '3':
                     siteDict[site]['t6_baseline_missing_count'] += 1
 
-                if (d392_date < today) and t6_oc == '1':
+                if (d365 < today) and t6_oc == '1':
                     siteDict[site]['t6_baseline_total_entered_count'] += 1
 
             
-
 
     #----------Call 3 for REcruitment Data UIC---------
     datacall2 = {
@@ -597,7 +596,7 @@ def fetch_aced_recruitment_data():
         'fields[8]': 'twilio_oc',
         'fields[9]': 'aced_site',
         'events[0]': 'enroll_arm_1',
-        'events[1]': 't2_arm_1',
+        # 'events[1]': 't2_arm_1',
         'rawOrLabel': 'raw',
         'rawOrLabelHeaders': 'raw',
         'exportCheckboxLabel': 'false',
@@ -615,10 +614,10 @@ def fetch_aced_recruitment_data():
 
     print("Received Data2")
     valid_var = ' '
-    for record in response_json2:
+    for record in (r for r in response_json2 if r['record_id'] != '36'):
 
         # print(record)
-        site = str(i['aced_site'])
+        site = str(record.get('aced_site') or '1')
         
         if 'date_invite_1' in record and record['date_invite_1'].strip():
             invite_date = datetime.strptime(record['date_invite_1'], '%Y-%m-%d').date()

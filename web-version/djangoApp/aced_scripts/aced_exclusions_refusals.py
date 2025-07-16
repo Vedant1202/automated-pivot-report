@@ -111,7 +111,7 @@ def getExclusionsRefusalsData():
 
 
     #Exclusions
-    for i in response_json:
+    for i in (record for record in response_json if record['record_id'] != '36'):
         if i['vol_excl2'] != '':
             if i['vol_excl'] == '1':
                 pts_not_fluent_in_english += 1
@@ -131,7 +131,7 @@ def getExclusionsRefusalsData():
                 pts_other_exclusion += 1
         
 
-    for i in response_json:
+    for i in (record for record in response_json if record['record_id'] != '36'):
         if i['es_english'] == '2':
             screening_not_fluent_in_english += 1 
         
@@ -175,7 +175,7 @@ def getExclusionsRefusalsData():
             screening_impediment += 1
 
 
-    for i in response_json:
+    for i in (record for record in response_json if record['record_id'] != '36'):
         if i['to_inelig_why'] == '1':
             to_not_fluent_in_english += 1
 
@@ -201,7 +201,7 @@ def getExclusionsRefusalsData():
             to_other_exclusion += 1
 
     #Refusals
-    for i in response_json:
+    for i in (record for record in response_json if record['record_id'] != '36'):
         if i['invite_yn']== '2' or  i['screen_icf_oc'] == '2' or i['decline_ies'] == '1':
             screening_not_interested += 1
 
@@ -220,7 +220,7 @@ def getExclusionsRefusalsData():
         if i['decline_ies'] == '7':
             screening_decline_to_state += 1
 
-    for i in response_json:
+    for i in (record for record in response_json if record['record_id'] != '36'):
         if i['why_decline_to'] == '1' or i['to_appt_decline'] == '1':
             to_not_interested += 1
 
