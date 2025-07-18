@@ -1,0 +1,68 @@
+Received Data
+Received Data1
+Received Data2
+Received Data3
+Received Data3
+Data saved for 07-14-2025
+Received Data
+Received Data1
+Received Data2
+Received Data3
+Received Data3
+Data saved for 07-15-2025
+Received Data
+Received Data1
+Received Data2
+Received Data3
+Received Data3
+Data saved for 07-16-2025
+Received Data
+Received Data1
+Received Data2
+Received Data3
+Received Data3
+Traceback (most recent call last):
+  File "C:\inetpub\wwwroot\Report\vitoux_report\automated-pivot-report-main\daily-scripts\aced\recruitment\execute.py", line 25, in <module>
+    save_to_mongo(siteDict)
+  File "C:\inetpub\wwwroot\Report\vitoux_report\automated-pivot-report-main\daily-scripts\aced\recruitment\execute.py", line 20, in save_to_mongo
+    collection.insert_one(document)
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\collection.py", line 891, in insert_one
+    self._insert_one(
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\collection.py", line 831, in _insert_one
+    self._database.client._retryable_write(
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1896, in _retryable_write
+    return self._retry_with_session(retryable, func, s, bulk, operation, operation_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1782, in _retry_with_session
+    return self._retry_internal(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1828, in _retry_internal
+    ).run()
+      ^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2565, in run
+    return self._read() if self._is_read else self._write()
+                                              ^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2673, in _write
+    self._server = self._get_server()
+                   ^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 2656, in _get_server
+    return self._client._select_server(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\mongo_client.py", line 1647, in _select_server
+    server = topology.select_server(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\topology.py", line 400, in select_server
+    server = self._select_server(
+             ^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\topology.py", line 378, in _select_server
+    servers = self.select_servers(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\topology.py", line 285, in select_servers
+    server_descriptions = self._select_servers_loop(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\inetpub\wwwroot\Report\env\Lib\site-packages\pymongo\synchronous\topology.py", line 335, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6878ad8ab9849ba1f946f902, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
