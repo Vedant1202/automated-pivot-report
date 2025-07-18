@@ -30,6 +30,10 @@
         margin: 20px;
       }
 
+      .bg-green-light {
+        background-color: #c9e8be !important;
+      }
+
       .table th,
       .table td {
         text-align: right;
@@ -45,6 +49,11 @@
 
       .align-left {
         text-align: left !important;
+      }
+
+      #exclusions-table td:not(:first-child),
+      #refusals-table td:not(:first-child) {
+        text-align: right !important;
       }
 
       .text-bold {
@@ -128,19 +137,45 @@
       </div>
     </nav>
     <div class="container">
-      <h2 class="text-center title-page my-3">ACE-D Recruitment Report</h2>
+      <h2 class="text-center title-page my-3">
+        ACE-D (AIM-2) Automated Report
+      </h2>
 
-      <ul class="nav nav-tabs mt-5" id="igniteTab" role="tablist">
+      <ul class="nav nav-tabs mt-5" id="recruitmentTab" role="tablist">
         <li class="nav-item" role="presentation">
           <button
             class="nav-link active"
-            id="summary-tab"
+            id="recruitment-tab"
             data-bs-toggle="tab"
-            data-bs-target="#summary"
+            data-bs-target="#recruitment"
             type="button"
             role="tab"
           >
-            Summary Report
+            Recruitment Report
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="mini-recruitment-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#mini-recruitment"
+            type="button"
+            role="tab"
+          >
+            Minfied Recruitment Report
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="exclusions-refusal-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#exclusions-refusal"
+            type="button"
+            role="tab"
+          >
+            Exclusions & Refusals Report
           </button>
         </li>
         <!-- <li class="nav-item" role="presentation">
@@ -157,8 +192,8 @@
       </li> -->
       </ul>
 
-      <div class="tab-content" id="igniteTabContent">
-        <div class="tab-pane fade show active" id="summary" role="tabpanel">
+      <div class="tab-content" id="recruitmentTabContent">
+        <div class="tab-pane fade show active" id="recruitment" role="tabpanel">
           <!-- This wraps your existing summary report content -->
           <div class="container">
             <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
@@ -190,13 +225,17 @@
                   </span>
                 </button>
                 <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
-                <button
+                <!-- <button
                   class="btn btn-secondary-outline ms-2"
                   onclick="populateStaticData()"
                 >
                   Populate Static Data
-                </button>
-                <button class="btn btn-warning ms-2" id="export-btn">
+                </button> -->
+                <button
+                  class="btn btn-warning ms-2"
+                  id="export-btn"
+                  onclick="exportRecruitmentTableToExcel()"
+                >
                   Download to Excel
                 </button>
               </div>
@@ -208,7 +247,9 @@
             >
               <thead class="table-dark">
                 <tr>
-                  <th class="align-left" rowspan="2">Recruitment Invitations</th>
+                  <th class="align-left" rowspan="2">
+                    Recruitment Invitations
+                  </th>
                   <th colspan="3" class="bg-secondary">Cumulative</th>
                   <th colspan="3" class="bg-danger">Stanford</th>
                   <th colspan="3" class="bg-primary">UIC</th>
@@ -216,13 +257,13 @@
                 <tr>
                   <th>Total</th>
                   <th>%</th>
-                  <th>Change %</th>
+                  <th>Change</th>
                   <th>Total</th>
                   <th>%</th>
-                  <th>Change %</th>
+                  <th>Change</th>
                   <th>Total</th>
                   <th>%</th>
-                  <th>Change %</th>
+                  <th>Change</th>
                 </tr>
               </thead>
               <tbody>
@@ -508,15 +549,15 @@
 
                 <tr>
                   <td class="fw-bold">TO Scheduled</td>
-                  <td id="cumulative--to_scheduled"></td>
-                  <td id="cumulative-percent--to_scheduled"></td>
-                  <td id="cumulative-change--to_scheduled"></td>
-                  <td id="stanford-site-2--to_scheduled"></td>
-                  <td id="stanford-percent--to_scheduled"></td>
-                  <td id="stanford-change--to_scheduled"></td>
-                  <td id="uic-site-1--to_scheduled"></td>
-                  <td id="uic-percent--to_scheduled"></td>
-                  <td id="uic-change--to_scheduled"></td>
+                  <td id="cumulative--to_schedule"></td>
+                  <td id="cumulative-percent--to_schedule"></td>
+                  <td id="cumulative-change--to_schedule"></td>
+                  <td id="stanford-site-2--to_schedule"></td>
+                  <td id="stanford-percent--to_schedule"></td>
+                  <td id="stanford-change--to_schedule"></td>
+                  <td id="uic-site-1--to_schedule"></td>
+                  <td id="uic-percent--to_schedule"></td>
+                  <td id="uic-change--to_schedule"></td>
                 </tr>
 
                 <tr class="table-secondary fw-bold">
@@ -678,29 +719,46 @@
                   <td id="uic-percent--t1_baseline_inwindow"></td>
                   <td id="uic-change--t1_baseline_inwindow"></td>
                 </tr>
-                <tr class="fw-bold">
-                  <td><em>T1 Complete - Fully enrolled</em></td>
-                  <td id="cumulative--t1_baseline_complete_fully_enrolled"></td>
+                <tr class="fw-bold bg-green">
+                  <td class="bg-green-light">
+                    <em>T1 Complete - Fully enrolled</em>
+                  </td>
                   <td
+                    class="bg-green-light"
+                    id="cumulative--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    class="bg-green-light"
                     id="cumulative-percent--t1_baseline_complete_fully_enrolled"
                   ></td>
                   <td
+                    class="bg-green-light"
                     id="cumulative-change--t1_baseline_complete_fully_enrolled"
                   ></td>
                   <td
+                    class="bg-green-light"
                     id="stanford-site-2--t1_baseline_complete_fully_enrolled"
                   ></td>
                   <td
+                    class="bg-green-light"
                     id="stanford-percent--t1_baseline_complete_fully_enrolled"
                   ></td>
                   <td
+                    class="bg-green-light"
                     id="stanford-change--t1_baseline_complete_fully_enrolled"
                   ></td>
-                  <td id="uic-site-1--t1_baseline_complete_fully_enrolled"></td>
                   <td
+                    class="bg-green-light"
+                    id="uic-site-1--t1_baseline_complete_fully_enrolled"
+                  ></td>
+                  <td
+                    class="bg-green-light"
                     id="uic-percent--t1_baseline_complete_fully_enrolled"
                   ></td>
-                  <td id="uic-change--t1_baseline_complete_fully_enrolled"></td>
+                  <td
+                    class="bg-green-light"
+                    id="uic-change--t1_baseline_complete_fully_enrolled"
+                  ></td>
                 </tr>
                 <tr>
                   <td>T1 incomplete (WebNeuro only)</td>
@@ -768,10 +826,19 @@
                 </tr>
 
                 <tr class="text-primary fw-bold">
-                  <td colspan="10">Tri‑yearly Target: 8/1/25</td>
-                </tr>
-                <tr class="text-primary">
-                  <td colspan="10">of target</td>
+                  <td>
+                    <em>Tri‑yearly Target: </em>
+                    <span id="tri-yearly-milestone-date">n/a</span>
+                  </td>
+                  <td id="cumulative--tri_yearly_target"></td>
+                  <td id="cumulative-percent--tri_yearly_target"></td>
+                  <td id="cumulative-change--tri_yearly_target"></td>
+                  <td id="stanford-site-2--tri_yearly_target"></td>
+                  <td id="stanford-percent--tri_yearly_target"></td>
+                  <td id="stanford-change--tri_yearly_target"></td>
+                  <td id="uic-site-1--tri_yearly_target"></td>
+                  <td id="uic-percent--tri_yearly_target"></td>
+                  <td id="uic-change--tri_yearly_target"></td>
                 </tr>
 
                 <tr class="table-light fw-bold">
@@ -1372,6 +1439,431 @@
           </div>
         </div>
       </div>
+
+      <div class="tab-content" id="miniRecruitmentTabContent">
+        <div class="tab-pane fade" id="mini-recruitment" role="tabpanel">
+          <!-- This wraps your existing summary report content -->
+          <div class="container">
+            <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
+            <div class="row my-3">
+              <div class="col">
+                <label for="startDateSelect">Compare data from:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="startDateSelectMini"
+                />
+              </div>
+              <div class="col">
+                <label for="endDateSelect">to:</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="endDateSelectMini"
+                />
+              </div>
+              <div class="col d-flex align-items-end">
+                <button
+                  id="show-results-mini-btn"
+                  class="btn btn-primary"
+                  onclick="fetchAcedRecruitmentReportMiniVersion()"
+                >
+                  <span id="show-results-mini-text"
+                    >Load latest minified ACE-D recruitment data</span
+                  >
+                  <span
+                    id="show-results-mini-spinner"
+                    class="spinner-border spinner-border-sm text-white ms-2"
+                    role="status"
+                    style="display: none"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </span>
+                </button>
+                <!-- <button class="btn btn-warning ms-2" onclick="exportToExcel()">id="export-btn" -->
+                <!-- <button
+                  class="btn btn-secondary-outline ms-2"
+                  onclick="populateStaticData()"
+                >
+                  Populate Static Data
+                </button> -->
+                <button
+                  class="btn btn-warning ms-2"
+                  id="export-btn"
+                  onclick="exportMiniRecruitmentTableToExcel()"
+                >
+                  Download to Excel
+                </button>
+              </div>
+            </div>
+
+            <table
+              class="table table-bordered table-sm text-center align-middle"
+              id="mini-recruitment-table"
+            >
+              <thead>
+                <tr class="table-light fw-bold text-center align-middle">
+                  <th class="text-start">Status</th>
+                  <th colspan="2" class="table-light">Cumulative</th>
+                  <th colspan="2" style="background-color: #fff3cd">
+                    Stanford
+                  </th>
+                  <th colspan="2" style="background-color: #e2e3f3">UIC</th>
+                </tr>
+                <tr class="table-light text-center">
+                  <th></th>
+                  <th>Total</th>
+                  <th>Change</th>
+                  <th>Total</th>
+                  <th>Change</th>
+                  <th>Total</th>
+                  <th>Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-start">Screened</td>
+                  <td id="cumulative--screened_eligible_count-minified"></td>
+                  <td
+                    id="cumulative-change--screened_eligible_count-minified"
+                  ></td>
+                  <td id="stanford--screened_eligible_count-minified"></td>
+                  <td
+                    id="stanford-change--screened_eligible_count-minified"
+                  ></td>
+                  <td id="uic--screened_eligible_count-minified"></td>
+                  <td id="uic-change--screened_eligible_count-minified"></td>
+                </tr>
+                <tr>
+                  <td class="text-start">Consented</td>
+                  <td id="cumulative--consented_count-minified"></td>
+                  <td id="cumulative-change--consented_count-minified"></td>
+                  <td id="stanford--consented_count-minified"></td>
+                  <td id="stanford-change--consented_count-minified"></td>
+                  <td id="uic--consented_count-minified"></td>
+                  <td id="uic-change--consented_count-minified"></td>
+                </tr>
+                <tr>
+                  <td class="text-start ps-4">Agreed BiAffect, w/ iPhone</td>
+                  <td id="cumulative--consented_biaffect_count-minified"></td>
+                  <td
+                    id="cumulative-change--consented_biaffect_count-minified"
+                  ></td>
+                  <td id="stanford--consented_biaffect_count-minified"></td>
+                  <td
+                    id="stanford-change--consented_biaffect_count-minified"
+                  ></td>
+                  <td id="uic--consented_biaffect_count-minified"></td>
+                  <td id="uic-change--consented_biaffect_count-minified"></td>
+                </tr>
+                <tr class="fw-bold">
+                  <td class="text-start">
+                    T1 Complete <em>- Fully enrolled</em>
+                  </td>
+                  <td
+                    id="cumulative--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="cumulative-change--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford-change--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic-change--t1_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                </tr>
+                <tr>
+                  <td class="text-start">T6 Complete</td>
+                  <td
+                    id="cumulative--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="cumulative-change--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="stanford-change--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                  <td
+                    id="uic-change--t6_baseline_complete_fully_enrolled_count-minified"
+                  ></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="exclusionsRefusalsTabContent">
+        <div class="tab-pane fade" id="exclusions-refusal" role="tabpanel">
+          <!-- This wraps your existing summary report content -->
+          <div class="container">
+            <!-- EXISTING CONTENT (summary table and date selector) GOES HERE -->
+            <div class="row my-3">
+              <div class="col d-flex align-items-end">
+                <button
+                  id="fetch-exclusion-refusal-btn"
+                  class="btn btn-primary"
+                  onclick="fetchExclusionRefusalData()"
+                >
+                  <span id="fetch-exclusion-refusal-text"
+                    >Load latest ACE-D exclusions & refusals data</span
+                  >
+                  <span
+                    id="fetch-exclusion-refusal-spinner"
+                    class="spinner-border spinner-border-sm text-white ms-2"
+                    role="status"
+                    style="display: none"
+                  >
+                    <span class="visually-hidden">Loading...</span>
+                  </span>
+                </button>
+                <button
+                  class="btn btn-warning ms-2"
+                  id="export-btn"
+                  onclick="exportExclusionRefusalToExcel()"
+                >
+                  Download to Excel
+                </button>
+              </div>
+            </div>
+
+            <table
+              class="table table-bordered table-sm align-middle text-center"
+              id="exclusions-table"
+            >
+              <thead class="table-dark">
+                <tr>
+                  <th class="align-left" rowspan="2">Exclusions</th>
+                  <!-- <th class="align-left" colspan="3">Phase</th> -->
+                </tr>
+                <tr>
+                  <th>Prior to screening</th>
+                  <th>Screening</th>
+                  <th>Tele-Orientation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Not fluent in English</td>
+                  <td id="exclusion--prior--not_fluent_in_english"></td>
+                  <td id="exclusion--screening--not_fluent_in_english"></td>
+                  <td id="exclusion--tele--not_fluent_in_english"></td>
+                </tr>
+
+                <tr>
+                  <td>Age &lt;18 or &gt;65</td>
+                  <td id="exclusion--prior--age_under_18_or_over_65"></td>
+                  <td id="exclusion--screening--age_under_18_or_over_65"></td>
+                  <td id="exclusion--tele--age_under_18_or_over_65"></td>
+                </tr>
+
+                <tr>
+                  <td>No computer/internet access</td>
+                  <td id="exclusion--prior--no_computer_internet_access"></td>
+                  <td
+                    id="exclusion--screening--no_computer_internet_access"
+                  ></td>
+                  <td id="exclusion--tele--no_computer_internet_access"></td>
+                </tr>
+
+                <tr>
+                  <td>PHQ-9 &lt;10</td>
+                  <td></td>
+                  <td id="exclusion--screening--phq9_under_10"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Suicidality with active plan</td>
+                  <td></td>
+                  <td
+                    id="exclusion--screening--suicidality_with_active_plan"
+                  ></td>
+                  <td id="exclusion--tele--suicidality_with_active_plan"></td>
+                </tr>
+
+                <tr>
+                  <td>Eating disorders (current)</td>
+                  <td></td>
+                  <td id="exclusion--screening--eating_disorder"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Bipolar disorder (current or lifetime)</td>
+                  <td></td>
+                  <td id="exclusion--screening--bipolar_disorder"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>OCD (current or lifetime)</td>
+                  <td></td>
+                  <td id="exclusion--screening--ocd"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>PTSD (current)</td>
+                  <td></td>
+                  <td id="exclusion--screening--ptsd"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Psychosis (current or lifetime)</td>
+                  <td></td>
+                  <td id="exclusion--screening--psychosis"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Alcohol or substance use disorders (current)</td>
+                  <td></td>
+                  <td
+                    id="exclusion--screening--alcohol_or_substance_abuse_disorder"
+                  ></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>ADHD disorder (current or lifetime)</td>
+                  <td></td>
+                  <td id="exclusion--screening--adhd_disorder"></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Neurological condition or brain injury (current)</td>
+                  <td></td>
+                  <td
+                    id="exclusion--screening--neurological_condition_or_brain_injury"
+                  ></td>
+                  <td></td>
+                </tr>
+
+                <tr>
+                  <td>Impediment to vision, hearing, or hand movement</td>
+                  <td
+                    id="exclusion--prior--impairment_to_vision_hearing_or_hand_movement"
+                  ></td>
+                  <td
+                    id="exclusion--screening--impairment_to_vision_hearing_or_hand_movement"
+                  ></td>
+                  <td
+                    id="exclusion--tele--impairment_to_vision_hearing_or_hand_movement"
+                  ></td>
+                </tr>
+
+                <tr>
+                  <td>No major depressive disorder</td>
+                  <td></td>
+                  <td></td>
+                  <td id="exclusion--tele--no_major_depressive_disorder"></td>
+                </tr>
+
+                <tr>
+                  <td>Deceased</td>
+                  <td id="exclusion--prior--deceased"></td>
+                  <td></td>
+                  <td id="exclusion--tele--deceased"></td>
+                </tr>
+
+                <tr>
+                  <td>Other exclusion</td>
+                  <td id="exclusion--prior--other_exclusion"></td>
+                  <td></td>
+                  <td id="exclusion--tele--other_exclusion"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td class="table-secondary">Exclusion Totals:</td>
+                  <td class="table-secondary" id="exclusion--prior--total"></td>
+                  <td
+                    class="table-secondary"
+                    id="exclusion--screening--total"
+                  ></td>
+                  <td class="table-secondary" id="exclusion--tele--total"></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <table
+              class="table table-bordered table-sm align-middle text-center mt-5"
+              id="refusals-table"
+            >
+              <thead class="table-dark">
+                <tr>
+                  <th class="align-left">Refusals</th>
+                  <th>Screening</th>
+                  <th>Tele-Orientation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Not interested</td>
+                  <td id="refusal--screening--not_interested"></td>
+                  <td id="refusal--tele--not_interested"></td>
+                </tr>
+
+                <tr>
+                  <td>Too busy</td>
+                  <td id="refusal--screening--too_busy"></td>
+                  <td id="refusal--tele--too_busy"></td>
+                </tr>
+
+                <tr>
+                  <td>Dislike technology applications</td>
+                  <td
+                    id="refusal--screening--dislike_technology_applications"
+                  ></td>
+                  <td id="refusal--tele--dislike_technology_applications"></td>
+                </tr>
+
+                <tr>
+                  <td>Concerned about privacy or confidentiality</td>
+                  <td id="refusal--screening--concerned_about_privacy"></td>
+                  <td id="refusal--tele--concerned_about_privacy"></td>
+                </tr>
+
+                <tr>
+                  <td>Other...</td>
+                  <td id="refusal--screening--other"></td>
+                  <td id="refusal--tele--other"></td>
+                </tr>
+
+                <tr>
+                  <td>Decline to state</td>
+                  <td id="refusal--screening--decline_to_state"></td>
+                  <td id="refusal--tele--decline_to_state"></td>
+                </tr>
+
+                <tr class="fw-bold">
+                  <td class="table-secondary">Refusal Totals:</td>
+                  <td
+                    class="table-secondary"
+                    id="refusal--screening--total"
+                  ></td>
+                  <td class="table-secondary" id="refusal--tele--total"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
@@ -1382,197 +1874,11 @@
   }
 </style>
 
-<script>
+<script setup>
   const serverUrl = "http://localhost:5010";
-
-  function populateACEDTable(data) {
-    const siteName = "UIC Site 1";
-    const siteIdPrefix = "uic-site-1";
-
-    if (!data[siteName]) {
-      console.error(`Site "${siteName}" not found in data`);
-      return;
-    }
-
-    const siteData = data[siteName];
-
-    // Helper to safely set text
-    function setCellValue(id, value) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.textContent = value;
-      } else {
-        console.warn(`Element with id "${id}" not found.`);
-      }
-    }
-
-    // Populate values from siteData
-    for (const [key, value] of Object.entries(siteData)) {
-      // Normalize key → remove _count suffix for consistency with IDs
-      const normalizedKey = key.replace(/_count$/, "");
-      const id = `${siteIdPrefix}--${normalizedKey}`;
-      setCellValue(id, value);
-    }
-  }
-
-  const staticData = {
-    "UIC Site 1": {
-      ineligible_prior_to_screen_count: 16,
-      declined_to_screen_count: 58,
-      ineligible_count: 127,
-      eligible_but_declined_to_count: 1,
-      eligible_undecided_count: 0,
-      screened_eligible_count: 42,
-      ehr_mismatch_count: 0,
-      appt_declined_count: 1,
-      appt_needed_within_week_since_ies_count: 10,
-      appt_needed_over_week_since_ies_count: 4,
-      reschedule_no_show_count: 2,
-      to_schedule_count: 26,
-      to_attended_count: 244,
-      ineligible_at_to_count: 2,
-      declined_icf_count: 0,
-      to_declined_to_proceed_count: 0,
-      to_elig_undecided_count: 0,
-      to_elig_pending_md_clearance_count: 0,
-      consented_count: 21,
-      consented_biaffect_count: 11,
-      consented_nda_count: 19,
-      consesnted_and_eligible_count: 19,
-      t1_baseline_prewindow_count: 0,
-      t1_baseline_inwindow_count: 1,
-      t1_baseline_complete_fully_enrolled_count: 0,
-      t1_baseline_incomplete_webneuro_only_count: 0,
-      t1_baseline_incomplete_pros_only_count: 0,
-      t1_baseline_missing_count: 0,
-      t2_baseline_prewindow_count: 0,
-      t2_baseline_inwindow_count: 0,
-      t2_baseline_complete_fully_enrolled_count: 0,
-      t2_baseline_incomplete_webneuro_only_count: 0,
-      t2_baseline_incomplete_pros_only_count: 0,
-      t2_baseline_missing_count: 0,
-      t2_baseline_total_entered_count: 0,
-      t3_baseline_prewindow_count: 0,
-      t3_baseline_inwindow_count: 0,
-      t3_baseline_complete_fully_enrolled_count: 0,
-      t3_baseline_incomplete_webneuro_only_count: 0,
-      t3_baseline_incomplete_pros_only_count: 0,
-      t3_baseline_total_entered_count: 0,
-      t4_baseline_prewindow_count: 0,
-      t4_baseline_inwindow_count: 0,
-      t4_baseline_complete_fully_enrolled_count: 0,
-      t4_baseline_missing_count: 0,
-      t4_baseline_total_entered_count: 0,
-      t5_baseline_prewindow_count: 0,
-      t5_baseline_inwindow_count: 0,
-      t5_baseline_complete_fully_enrolled_count: 0,
-      t5_baseline_missing_count: 0,
-      t5_baseline_total_entered_count: 0,
-      t6_baseline_prewindow_count: 0,
-      t6_baseline_inwindow_count: 0,
-      t6_baseline_complete_fully_enrolled_count: 0,
-      t6_baseline_missing_count: 0,
-      t6_baseline_total_entered_count: 0,
-      off_study_count: 0,
-      withdraw_t1_count: 0,
-      withdraw_t2_count: 0,
-      withdraw_t3_count: 0,
-      withdraw_t4_count: 0,
-      withdraw_t5_count: 0,
-      withdraw_t6_count: 0,
-      invite_sent_count: 1919,
-      two_week_wait_count: 360,
-      calling_in_progress_count: 1217,
-      ceased_outreach_count: 126,
-      requested_call_count: 1,
-      partial_screen_count: 29,
-    },
-    "UIC Site 1 - Invitations Sent": 1919,
-    "UIC Site 1 - Two Week Wait": 360,
-    "UIC Site 1 - Calling in Progress": 1217,
-    "UIC Site 1 - Ceased Outreach": 126,
-    "UIC Site 1 - Requested Call": 1,
-    "UIC Site 1 - Partial Screen": 29,
-    "UIC Site 1 - Ineligible Prior to Screen": 16,
-    "UIC Site 1 - Declined to Screen": 58,
-    "UIC Site 1 - Ineligible Count": 127,
-    "UIC Site 1 - Eligible but Declined TO": 1,
-    "UIC Site 1 - Eligible Undecided": 0,
-    "UIC Site 1 - Screened Eligible": 42,
-    "UIC Site 1 - EHR Mismatch": 0,
-    "UIC Site 1 - Appointment Declined": 1,
-    "UIC Site 1 - Appointment Needed Within Week Since IES": 10,
-    "UIC Site 1 - Appointment Needed Over Week Since IES": 4,
-    "UIC Site 1 - Reschedule No Show": 2,
-    "UIC Site 1 - To Schedule": 26,
-    "UIC Site 1 - To Attended": 244,
-    "UIC Site 1 - Ineligible at TO": 2,
-    "UIC Site 1 - Declined ICF": 0,
-    "UIC Site 1 - Declined to Proceed at TO": 0,
-    "UIC Site 1 - Eligible Undecided at TO": 0,
-    "UIC Site 1 - Eligible Pending MD Clearance at TO": 0,
-    "UIC Site 1 - Consented": 21,
-    "UIC Site 1 - Consented Biaffect": 11,
-    "UIC Site 1 - Consented NDA": 19,
-    "UIC Site 1 - Consented and Eligible": 19,
-    "T1 Baseline Prewindow": 0,
-    "T1 Baseline Inwindow": 1,
-    "T1 Baseline Complete Fully Enrolled": 0,
-    "T1 Baseline Incomplete Webneuro Only": 0,
-    "T1 Baseline Incomplete Pros Only": 0,
-    "T1 Baseline Missing": 0,
-    "T2 Baseline Prewindow": 0,
-    "T2 Baseline Inwindow": 0,
-    "T2 Baseline Complete Fully Enrolled": 0,
-    "T2 Baseline Incomplete Webneuro Only": 0,
-    "T2 Baseline Incomplete Pros Only": 0,
-    "T2 Baseline Missing": 0,
-    "T2 Baseline Total Entered": 0,
-    "T3 Baseline Prewindow": 0,
-    "T3 Baseline Inwindow": 0,
-    "T3 Baseline Complete Fully Enrolled": 0,
-    "T3 Baseline Incomplete Webneuro Only": 0,
-    "T3 Baseline Incomplete Pros Only": 0,
-    "T3 Baseline Missing": 0,
-    "T3 Baseline Total Entered": 0,
-    "T4 Baseline Prewindow": 0,
-    "T4 Baseline Inwindow": 0,
-    "T4 Baseline Complete Fully Enrolled": 0,
-    "T4 Baseline Missing": 0,
-    "T4 Baseline Total Entered": 0,
-    "T5 Baseline Prewindow": 0,
-    "T5 Baseline Inwindow": 0,
-    "T5 Baseline Complete Fully Enrolled": 0,
-    "T5 Baseline Missing": 0,
-    "T5 Baseline Total Entered": 0,
-    "T6 Baseline Prewindow": 0,
-    "T6 Baseline Inwindow": 0,
-    "T6 Baseline Complete Fully Enrolled": 0,
-    "T6 Baseline Missing": 0,
-    "T6 Baseline Total Entered": 0,
-    "Off Study": 0,
-    "Withdraw T1": 0,
-    "Withdraw T2": 0,
-    "Withdraw T3": 0,
-    "Withdraw T4": 0,
-    "Withdraw T5": 0,
-    "Withdraw T6": 0,
-  };
-
-  function populateStaticData() {
-    populateACEDTable(staticData);
-  }
-
-  function clearAllACEDFields() {
-    const allSiteCells = document.querySelectorAll('[id*="--"]');
-    allSiteCells.forEach((cell) => (cell.textContent = ""));
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    clearAllACEDFields();
-  });
 </script>
 
+<!-- For Recruitment -->
 <script>
   // ACE-D Actual fetching
 
@@ -1602,8 +1908,8 @@
     const btnText = document.getElementById("show-results-text");
     const spinner = document.getElementById("show-results-spinner");
 
-    // const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`; //uncomment this
-    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${startFormatted}`;
+    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`; //uncomment this
+    // const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${startFormatted}`;
 
     try {
       btn.disabled = true;
@@ -1619,27 +1925,150 @@
       }
 
       // Populate values and changes
+      mergeStanfordSummaryIntoData(data.endDateDoc);
+      mergeStanfordSummaryIntoData(data.startDateDoc);
+
       populateFullACEDTable(data.endDateDoc.data);
       populateAcedPercentChanges(data.startDateDoc.data, data.endDateDoc.data);
       populateAcedPercentages(data.endDateDoc.data);
-
+      populateAcedTriYearlyTargets(
+        data.endDateDoc.target_value,
+        data.endDateDoc.milestone_date,
+        data.endDateDoc.data
+      );
     } catch (error) {
       alert("Error fetching ACED data. Try again or contact support.");
       console.error("Error fetching ACED summaries:", error);
     } finally {
       btn.disabled = false;
       spinner.style.display = "none";
-      btnText.textContent = "Show Results";
+      btnText.textContent = "Load latest ACE-D recruitment data";
     }
+  }
+
+  function mergeStanfordSummaryIntoData(dataDoc) {
+    const summary = dataDoc.stanford_summary_data;
+    if (!summary || !dataDoc.data["2"]) return;
+
+    const ceased =
+      (summary["honest_broker_ceased_outreach_count"] || 0) +
+      (summary["stanford_public_ceased_outreach_count"] || 0);
+    const partial =
+      (summary["honest_broker_partial_screen"] || 0) +
+      (summary["stanford_public_partial_screen"] || 0);
+
+    dataDoc.data["2"]["ceased_outreach_count"] = ceased;
+    dataDoc.data["2"]["partial_screen_count"] = partial;
   }
 
   function populateFullACEDTable(jsonData) {
     const siteMap = {
-      "1": "uic-site-1",
-      "2": "stanford-site-2",
-      "3": "cumulative"
+      1: "uic-site-1",
+      2: "stanford-site-2",
+      3: "cumulative",
     };
 
+    // Add derived metrics
+    const derivedMetricsMap = {
+      screened: [
+        "ineligible_count",
+        "eligible_but_declined_to_count",
+        "eligible_undecided_count",
+        "screened_eligible_count",
+      ],
+      not_screened: [
+        "ineligible_prior_to_screen_count",
+        "declined_to_screen_count",
+      ],
+    };
+
+    // 0. Inject derived metrics into each site
+    for (const siteKey of ["1", "2"]) {
+      const site = jsonData[siteKey];
+      if (!site) continue;
+
+      for (const [derivedKey, sourceKeys] of Object.entries(
+        derivedMetricsMap
+      )) {
+        let sum = 0;
+        let hasAny = false;
+
+        for (const key of sourceKeys) {
+          const val = parseFloat(site[key]);
+          if (!isNaN(val)) {
+            sum += val;
+            hasAny = true;
+          }
+        }
+
+        if (hasAny) {
+          site[`${derivedKey}_count`] = sum;
+        }
+      }
+    }
+
+    // 1. Preprocess Stanford-specific summary data if present
+    const stanfordSummary = jsonData["stanford_summary_data"];
+    if (stanfordSummary) {
+      const ceasedOutreach =
+        (stanfordSummary["honest_broker_ceased_outreach_count"] || 0) +
+        (stanfordSummary["stanford_public_ceased_outreach_count"] || 0);
+
+      const partialScreen =
+        (stanfordSummary["honest_broker_partial_screen"] || 0) +
+        (stanfordSummary["stanford_public_partial_screen"] || 0);
+
+      jsonData["2"] = jsonData["2"] || {};
+      jsonData["2"]["ceased_outreach"] = ceasedOutreach;
+      jsonData["2"]["partial_screen"] = partialScreen;
+    }
+
+    // 2. Compute cumulative values from UIC + Stanford
+    const uic = jsonData["1"] || {};
+    const stanford = jsonData["2"] || {};
+    const cumulative = {};
+
+    const allKeys = new Set([...Object.keys(uic), ...Object.keys(stanford)]);
+
+    allKeys.forEach((key) => {
+      const uVal = parseFloat(uic[key]);
+      const sVal = parseFloat(stanford[key]);
+
+      const isValidU = !isNaN(uVal);
+      const isValidS = !isNaN(sVal);
+
+      if (isValidU && isValidS) {
+        cumulative[key] = uVal + sVal;
+      } else if (isValidU) {
+        cumulative[key] = uVal;
+      } else if (isValidS) {
+        cumulative[key] = sVal;
+      } else {
+        cumulative[key] = "-";
+      }
+    });
+
+    // Add derived metrics to cumulative too
+    for (const [derivedKey, sourceKeys] of Object.entries(derivedMetricsMap)) {
+      let sum = 0;
+      let hasAny = false;
+
+      for (const key of sourceKeys) {
+        const val = parseFloat(cumulative[key]);
+        if (!isNaN(val)) {
+          sum += val;
+          hasAny = true;
+        }
+      }
+
+      if (hasAny) {
+        cumulative[`${derivedKey}_count`] = sum;
+      }
+    }
+
+    jsonData["3"] = cumulative;
+
+    // 3. Fill table values
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
       const siteData = jsonData[siteKey];
       if (!siteData) continue;
@@ -1648,15 +2077,16 @@
         const cleanKey = dataKey.replace(/_count$/, "");
         const elementId = `${sitePrefix}--${cleanKey}`;
 
-        // Select all matching elements (in case there are duplicates)
         const elements = document.querySelectorAll(`#${CSS.escape(elementId)}`);
         if (elements.length === 0) {
           console.warn(`Missing element(s) for ID: ${elementId}`);
           continue;
         }
 
+        const displayValue =
+          value === null || value === undefined || value === "" ? "-" : value;
         elements.forEach((el) => {
-          el.textContent = value;
+          el.textContent = displayValue;
         });
       }
     }
@@ -1664,100 +2094,114 @@
 
   function populateAcedPercentChanges(startData, endData) {
     const siteMap = {
-      "1": "uic-change",
-      "2": "stanford-change",
-      "3": "cumulative-change"
+      1: "uic-change",
+      2: "stanford-change",
+      3: "cumulative-change",
     };
 
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
-      const startSite = startData[siteKey];
-      const endSite = endData[siteKey];
-      if (!startSite || !endSite) continue;
+      for (const key in endData["1"]) {
+        if (!key.endsWith("_count")) continue;
 
-      for (const [dataKey, endVal] of Object.entries(endSite)) {
-        const cleanKey = dataKey.replace(/_count$/, "");
+        const cleanKey = key.replace(/_count$/, "");
         const elementId = `${sitePrefix}--${cleanKey}`;
-
-        const startVal = parseFloat(startSite[dataKey]) || 0;
-        const endValNum = parseFloat(endVal) || 0;
-
-        let change = 0;
-        if (startVal === 0 && endValNum > 0) {
-          change = 100;
-        } else if (startVal === 0 && endValNum === 0) {
-          change = 0;
-        } else {
-          change = ((endValNum - startVal) / startVal) * 100;
-        }
-
         const el = document.getElementById(elementId);
-        if (el) {
-          el.textContent = `${change.toFixed(1)}%`;
+
+        if (!el) {
+          console.warn(`❌ Missing element for ID: ${elementId}`);
+          continue;
         }
+
+        let diff = "-";
+
+        if (siteKey === "3") {
+          // Cumulative = UIC + Stanford change
+          const uStart = parseFloat(startData["1"]?.[key] ?? 0);
+          const uEnd = parseFloat(endData["1"]?.[key] ?? 0);
+          const sStart = parseFloat(startData["2"]?.[key] ?? 0);
+          const sEnd = parseFloat(endData["2"]?.[key] ?? 0);
+
+          const uDiff = !isNaN(uStart) && !isNaN(uEnd) ? uEnd - uStart : 0;
+          const sDiff = !isNaN(sStart) && !isNaN(sEnd) ? sEnd - sStart : 0;
+
+          diff = uDiff + sDiff;
+        } else {
+          const startVal = parseFloat(startData[siteKey]?.[key]);
+          const endVal = parseFloat(endData[siteKey]?.[key]);
+
+          if (!isNaN(startVal) && !isNaN(endVal)) {
+            diff = endVal - startVal;
+          } else {
+            diff = "-";
+          }
+        }
+
+        el.textContent = diff === "-" ? "-" : `${diff}`;
+        console.log(`✅ Filled ${elementId} → ${diff}`);
       }
     }
   }
 
   const percentOfMapping = {
     // Percent of Screened
-    "ineligible": "screened",
-    "eligible_but_declined_to": "screened",
-    "eligible_undecided": "screened",
-    "screened_eligible": "screened",
-    "ehr_mismatch": "screened",
+    ineligible: "screened",
+    eligible_but_declined_to: "screened",
+    eligible_undecided: "screened",
+    screened_eligible: "screened",
+    ehr_mismatch: "screened",
 
     // Percent of Tele-Orientation
-    "appt_declined": "screened_eligible",                      // Appointment declined/ceased
-    "appt_needed_within_week_since_ies": "screened_eligible", // Needed within wk since IES
-    "appt_needed_over_week_since_ies": "screened_eligible",   // Needed over wk since IES
-    "reschedule_no_show": "screened_eligible",
-    "to_schedule": "screened_eligible",
-    "to_attended": "screened_eligible",
+    appt_declined: "screened_eligible", // Appointment declined/ceased
+    appt_needed_within_week_since_ies: "screened_eligible", // Needed within wk since IES
+    appt_needed_over_week_since_ies: "screened_eligible", // Needed over wk since IES
+    reschedule_no_show: "screened_eligible",
+    to_schedule: "screened_eligible",
+    to_attended: "screened_eligible",
 
-    "ineligible_at_to": "to_attended",
-    "declined_icf": "to_attended",
-    "consented": "to_attended",
+    ineligible_at_to: "to_attended",
+    declined_icf: "to_attended",
+    consented: "to_attended",
 
-    "consented_biaffect": "consented",
-    "consented_nda": "consented",
-    "to_declined_to_proceed": "consented",
-    "to_elig_undecided": "consented",
-    "to_elig_pending_md_clearance": "consented",
-    "consesnted_and_eligible": "consented",
+    consented_biaffect: "consented",
+    consented_nda: "consented",
+    to_declined_to_proceed: "consented",
+    to_elig_undecided: "consented",
+    to_elig_pending_md_clearance: "consented",
+    consesnted_and_eligible: "consented",
 
-    "t1_baseline_complete_fully_enrolled": "consesnted_and_eligible",
-    "t1_baseline_incomplete_webneuro_only": "consesnted_and_eligible",
-    "t1_baseline_incomplete_pros_only": "consesnted_and_eligible",
-    "t1_baseline_missing": "consesnted_and_eligible",
+    t1_baseline_complete_fully_enrolled: "consesnted_and_eligible",
+    t1_baseline_incomplete_webneuro_only: "consesnted_and_eligible",
+    t1_baseline_incomplete_pros_only: "consesnted_and_eligible",
+    t1_baseline_missing: "consesnted_and_eligible",
 
-    "t2_baseline_complete_fully_enrolled": "t2_baseline_total_entered",
-    "t2_baseline_incomplete_webneuro_only": "t2_baseline_total_entered",
-    "t2_baseline_incomplete_pros_only": "t2_baseline_total_entered",
-    "t2_baseline_missing": "t2_baseline_total_entered",
+    t2_baseline_complete_fully_enrolled: "t2_baseline_total_entered",
+    t2_baseline_incomplete_webneuro_only: "t2_baseline_total_entered",
+    t2_baseline_incomplete_pros_only: "t2_baseline_total_entered",
+    t2_baseline_missing: "t2_baseline_total_entered",
 
-    "t3_baseline_complete_fully_enrolled": "t3_baseline_total_entered",
-    "t3_baseline_incomplete_webneuro_only": "t3_baseline_total_entered",
-    "t3_baseline_incomplete_pros_only": "t3_baseline_total_entered",
-    "t3_baseline_missing": "t3_baseline_total_entered",
+    t3_baseline_complete_fully_enrolled: "t3_baseline_total_entered",
+    t3_baseline_incomplete_webneuro_only: "t3_baseline_total_entered",
+    t3_baseline_incomplete_pros_only: "t3_baseline_total_entered",
+    t3_baseline_missing: "t3_baseline_total_entered",
 
-    "t4_baseline_complete_fully_enrolled": "t4_baseline_total_entered",
-    "t4_baseline_missing": "t4_baseline_total_entered",
+    t4_baseline_complete_fully_enrolled: "t4_baseline_total_entered",
+    t4_baseline_missing: "t4_baseline_total_entered",
 
-    "t5_baseline_complete_fully_enrolled": "t5_baseline_total_entered",
-    "t5_baseline_missing": "t5_baseline_total_entered",
+    t5_baseline_complete_fully_enrolled: "t5_baseline_total_entered",
+    t5_baseline_missing: "t5_baseline_total_entered",
 
-    "t6_baseline_complete_fully_enrolled": "t6_baseline_total_entered",
-    "t6_baseline_missing": "t6_baseline_total_entered",
+    t6_baseline_complete_fully_enrolled: "t6_baseline_total_entered",
+    t6_baseline_missing: "t6_baseline_total_entered",
 
-    "off_study": "consesnted_and_eligible",
-    "withdrawn": "consesnted_and_eligible"
+    off_study: "consesnted_and_eligible",
+    withdrawn: "consesnted_and_eligible",
   };
 
   function populateAcedPercentages(endData) {
     const siteMap = {
-      "1": "uic-percent",
-      "2": "stanford-percent",
-      "3": "cumulative-percent"
+      1: "uic-percent",
+      2: "stanford-percent",
+      3: "cumulative-percent",
     };
 
     for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
@@ -1765,8 +2209,33 @@
       if (!siteData) continue;
 
       for (const [metric, denominatorKey] of Object.entries(percentOfMapping)) {
-        const numerator = parseFloat(siteData[`${metric}_count`] || 0);
-        const denominator = parseFloat(siteData[`${denominatorKey}_count`] || 0);
+        const rawNumerator = siteData[`${metric}_count`];
+        const rawDenominator = siteData[`${denominatorKey}_count`];
+
+        const el = document.getElementById(`${sitePrefix}--${metric}`);
+        if (!el) continue;
+
+        // Show "-" if either value is missing/null/empty
+        const isMissing =
+          rawNumerator === undefined ||
+          rawNumerator === null ||
+          rawNumerator === "" ||
+          rawDenominator === undefined ||
+          rawDenominator === null ||
+          rawDenominator === "";
+
+        if (isMissing) {
+          el.textContent = "-";
+          continue;
+        }
+
+        const numerator = parseFloat(rawNumerator);
+        const denominator = parseFloat(rawDenominator);
+
+        if (isNaN(numerator) || isNaN(denominator)) {
+          el.textContent = "-";
+          continue;
+        }
 
         let percent = 0;
         if (denominator === 0 && numerator > 0) {
@@ -1777,11 +2246,932 @@
           percent = (numerator / denominator) * 100;
         }
 
-        const el = document.getElementById(`${sitePrefix}--${metric}`);
+        el.textContent = `${Math.floor(percent)}%`;
+      }
+    }
+  }
+
+  function populateAcedTriYearlyTargets(
+    target_value,
+    milestone_date,
+    data = {}
+  ) {
+    // 1. Set milestone date
+    const milestoneDateEl = document.getElementById(
+      "tri-yearly-milestone-date"
+    );
+    if (milestoneDateEl) {
+      milestoneDateEl.textContent = milestone_date || "N/A";
+    }
+
+    // 2. Raw values
+    const rawUIC = data["1"]?.["t1_baseline_complete_fully_enrolled"];
+    const rawStanford = data["2"]?.["t1_baseline_complete_fully_enrolled"];
+    const rawCumulative = data["3"]?.["t1_baseline_complete_fully_enrolled"];
+
+    const isMissingTarget =
+      target_value === undefined ||
+      target_value === null ||
+      target_value === "" ||
+      isNaN(parseFloat(target_value));
+
+    const targetNum = isMissingTarget ? null : parseFloat(target_value);
+    const siteTarget = targetNum ? targetNum / 2 : null;
+
+    // 3. Utility to compute % or return "-"
+    function getPercent(numerator, denominator) {
+      if (
+        numerator === undefined ||
+        numerator === null ||
+        numerator === "" ||
+        denominator === undefined ||
+        denominator === null ||
+        denominator === "" ||
+        isNaN(parseFloat(numerator)) ||
+        isNaN(parseFloat(denominator)) ||
+        denominator === 0
+      )
+        return "-";
+
+      return (
+        ((parseFloat(numerator) / parseFloat(denominator)) * 100).toFixed(1) +
+        "%"
+      );
+    }
+
+    // 4. Fill values or fallback to "-"
+    document.getElementById("uic-site-1--tri_yearly_target").textContent =
+      siteTarget !== null ? siteTarget.toFixed(0) : "-";
+    document.getElementById("uic-percent--tri_yearly_target").textContent =
+      getPercent(rawUIC, siteTarget);
+    document.getElementById("uic-change--tri_yearly_target").textContent = "";
+
+    document.getElementById("stanford-site-2--tri_yearly_target").textContent =
+      siteTarget !== null ? siteTarget.toFixed(0) : "-";
+    document.getElementById("stanford-percent--tri_yearly_target").textContent =
+      getPercent(rawStanford, siteTarget);
+    document.getElementById("stanford-change--tri_yearly_target").textContent =
+      "";
+
+    document.getElementById("cumulative--tri_yearly_target").textContent =
+      targetNum !== null ? targetNum.toFixed(0) : "-";
+    document.getElementById(
+      "cumulative-percent--tri_yearly_target"
+    ).textContent = getPercent(rawCumulative, targetNum);
+    document.getElementById(
+      "cumulative-change--tri_yearly_target"
+    ).textContent = "";
+  }
+
+  async function exportRecruitmentTableToExcel() {
+    const startDate = document.getElementById("startDateSelect").value;
+    const endDate = document.getElementById("endDateSelect").value;
+
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates before exporting.");
+      return;
+    }
+
+    const table = document.getElementById("recruitment-table");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Recruitment Report");
+
+    // ---- TITLE ROW ----
+    const title = `ACE-D Aim 2 Recruitment Report from ${startDate} to ${endDate}`;
+    const titleRow = worksheet.getRow(1);
+    titleRow.getCell(1).value = title;
+    titleRow.getCell(1).font = { size: 16, bold: true };
+    titleRow.getCell(1).alignment = {
+      horizontal: "center",
+      vertical: "middle",
+    };
+    worksheet.mergeCells(1, 1, 1, 10);
+
+    // ---- HEADER ----
+    const headerRows = table.querySelectorAll("thead tr");
+    const mergedMap = new Set();
+
+    headerRows.forEach((tr, rowIndex) => {
+      const row = worksheet.getRow(rowIndex + 2); // shift by +1 to leave space for title
+      let col = 1;
+
+      tr.querySelectorAll("th").forEach((th) => {
+        const text = th.textContent.trim();
+        const colspan = parseInt(th.getAttribute("colspan") || 1);
+        const rowspan = parseInt(th.getAttribute("rowspan") || 1);
+        const startRow = rowIndex + 2;
+        const endRow = startRow + rowspan - 1;
+        const startCol = col;
+        const endCol = col + colspan - 1;
+        const cell = row.getCell(col);
+
+        const mergeKey = `${startRow}:${startCol}`;
+        if (!mergedMap.has(mergeKey)) {
+          cell.value = text;
+        }
+
+        cell.font = { bold: true };
+        cell.alignment = {
+          horizontal: th.classList.contains("align-left") ? "left" : "right",
+          vertical: "middle",
+        };
+
+        if (th.classList.contains("table-dark")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "333333" },
+          };
+          cell.font.color = { argb: "FFFFFF" };
+        } else if (th.classList.contains("bg-secondary")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "D9D9D9" },
+          };
+        } else if (th.classList.contains("bg-danger")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "F8D7DA" },
+          };
+        } else if (th.classList.contains("bg-primary")) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "CCE5FF" },
+          };
+        }
+
+        if (colspan > 1 || rowspan > 1) {
+          worksheet.mergeCells(startRow, startCol, endRow, endCol);
+          for (let r = startRow; r <= endRow; r++) {
+            for (let c = startCol; c <= endCol; c++) {
+              if (!(r === startRow && c === startCol)) {
+                mergedMap.add(`${r}:${c}`);
+              }
+            }
+          }
+        }
+
+        col += colspan;
+      });
+    });
+
+    // ---- BODY ----
+    const bodyRows = table.querySelectorAll("tbody tr");
+    let excelRowIdx = headerRows.length + 2;
+
+    bodyRows.forEach((tr) => {
+      const row = worksheet.getRow(excelRowIdx);
+      const cells = tr.querySelectorAll("td");
+
+      if (cells.length === 1 && cells[0].hasAttribute("colspan")) {
+        const text = cells[0].textContent.trim();
+        const cell = row.getCell(1);
+        cell.value = text;
+        cell.font = { bold: true };
+        cell.alignment = { horizontal: "center" };
+        cell.fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "F2F2F2" },
+        };
+        worksheet.mergeCells(excelRowIdx, 1, excelRowIdx, 10);
+      } else {
+        cells.forEach((td, index) => {
+          const cell = row.getCell(index + 1);
+          const rawHTML = td.innerHTML.trim();
+          let value = td.textContent.trim();
+          if (!isNaN(value) && value !== "") value = Number(value);
+          cell.value = value;
+
+          const align =
+            td.classList.contains("align-left") || !td.id ? "left" : "right";
+          cell.alignment = { horizontal: align, vertical: "middle" };
+
+          const isT1Row =
+            cells[0] &&
+            cells[0].textContent.trim().toLowerCase() ===
+              "t1 complete - fully enrolled";
+
+          if (isT1Row) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "c9e8be" },
+            };
+            cell.font = { ...cell.font, bold: true };
+          }
+
+          if (td.classList.contains("ps-4")) {
+            cell.alignment = { ...cell.alignment, indent: 1 };
+          }
+
+          if (
+            td.classList.contains("fw-bold") ||
+            td.classList.contains("text-bold")
+          ) {
+            cell.font = { ...cell.font, bold: true };
+          }
+          if (rawHTML.includes("<em>")) {
+            cell.font = { ...cell.font, italic: true };
+          }
+
+          if (td.classList.contains("highlight")) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "BADDf1" },
+            };
+            cell.font = { bold: true, size: 18 };
+            cell.alignment = { horizontal: "left", vertical: "middle" };
+          }
+
+          if (td.parentElement.classList.contains("table-secondary")) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "E9ECEF" },
+            };
+            cell.font = { ...cell.font, bold: true };
+          }
+          if (td.parentElement.classList.contains("table-light")) {
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "F8F9FA" },
+            };
+            cell.font = { ...cell.font, bold: true };
+          }
+        });
+      }
+
+      excelRowIdx++;
+    });
+
+    // ---- FIXED THIRD ROW: Total | % | Change blocks ----
+    const thirdRow = worksheet.getRow(3);
+    const labels = [
+      "", // first column is blank (row label)
+      "Total",
+      "%",
+      "Change", // Stanford
+      "Total",
+      "%",
+      "Change", // UIC
+      "Total",
+      "%",
+      "Change", // Cumulative
+    ];
+
+    labels.forEach((val, idx) => {
+      const cell = thirdRow.getCell(idx + 1);
+      cell.value = val;
+      cell.font = { bold: true };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+    });
+
+    // ---- CLEAR specific cell containing "Handled in subtotals below" in col B (Excel col 2) ----
+    for (let i = 1; i <= worksheet.rowCount; i++) {
+      const cell = worksheet.getRow(i).getCell(2); // Column B
+      if (
+        typeof cell.value === "string" &&
+        cell.value.trim().toLowerCase() === "handled in subtotals below"
+      ) {
+        cell.value = "";
+      }
+    }
+
+    // ---- BORDERS & WIDTHS ----
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    worksheet.columns.forEach((col) => {
+      col.width = 22;
+    });
+
+    worksheet.views = [{ state: "frozen", ySplit: 2 }]; // Freeze title + headers
+
+    // ---- SAVE FILE ----
+    const buffer = await workbook.xlsx.writeBuffer();
+    const fileName = `ACE-D Aim-2 report from ${startDate} to ${endDate}.xlsx`;
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, fileName);
+  }
+</script>
+
+<!-- For mini recruitment report -->
+<script>
+  async function fetchAcedRecruitmentReportMiniVersion() {
+    const startDateRaw = document.getElementById("startDateSelectMini").value;
+    const endDateRaw = document.getElementById("endDateSelectMini").value;
+
+    if (!startDateRaw || !endDateRaw) {
+      alert("Please select both Start Date and End Date.");
+      return;
+    }
+
+    if (new Date(startDateRaw) >= new Date(endDateRaw)) {
+      alert("Start Date must be earlier than End Date.");
+      return;
+    }
+
+    function formatToMMDDYYYY(dateStr) {
+      const [yyyy, mm, dd] = dateStr.split("-");
+      return `${mm}-${dd}-${yyyy}`;
+    }
+
+    const startFormatted = formatToMMDDYYYY(startDateRaw);
+    const endFormatted = formatToMMDDYYYY(endDateRaw);
+
+    const btn = document.getElementById("show-results-mini-btn");
+    const btnText = document.getElementById("show-results-mini-text");
+    const spinner = document.getElementById("show-results-mini-spinner");
+
+    const url = `${serverUrl}/aced/recruitment/?startDate=${startFormatted}&endDate=${endFormatted}`;
+
+    try {
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!data || !data.startDateDoc || !data.endDateDoc) {
+        alert("Data for the selected dates is not available.");
+        return;
+      }
+
+      // Merge Stanford summary into both datasets
+      mergeStanfordSummaryIntoData(data.endDateDoc);
+      mergeStanfordSummaryIntoData(data.startDateDoc);
+
+      console.log(data);
+      // Fill mini table
+      populateMiniACEDTable(data.endDateDoc.data);
+      populateMiniAcedPercentChanges(
+        data.startDateDoc.data,
+        data.endDateDoc.data
+      );
+    } catch (error) {
+      alert("Error fetching ACED data. Try again or contact support.");
+      console.error("Error fetching ACED summaries:", error);
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "Load latest minified ACE-D recruitment data";
+    }
+  }
+
+  function populateMiniACEDTable(jsonData) {
+    const siteMap = {
+      1: "uic",
+      2: "stanford",
+      3: "cumulative",
+    };
+
+    const uic = jsonData["1"] || {};
+    const stanford = jsonData["2"] || {};
+    const cumulative = {};
+
+    const allKeys = new Set([...Object.keys(uic), ...Object.keys(stanford)]);
+    allKeys.forEach((key) => {
+      const uVal = parseFloat(uic[key]);
+      const sVal = parseFloat(stanford[key]);
+
+      const isValidU = !isNaN(uVal);
+      const isValidS = !isNaN(sVal);
+
+      if (isValidU && isValidS) {
+        cumulative[key] = uVal + sVal;
+      } else if (isValidU) {
+        cumulative[key] = uVal;
+      } else if (isValidS) {
+        cumulative[key] = sVal;
+      } else {
+        cumulative[key] = "-";
+      }
+    });
+
+    jsonData["3"] = cumulative;
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      const siteData = jsonData[siteKey];
+      if (!siteData) {
+        console.warn(`No data for site ${siteKey} (${sitePrefix})`);
+        continue;
+      }
+
+      for (const [dataKey, value] of Object.entries(siteData)) {
+        if (!dataKey.endsWith("_count")) continue;
+
+        // Do not strip _count here
+        const elementId = `${sitePrefix}--${dataKey}-minified`;
+        const el = document.getElementById(elementId);
+
         if (el) {
-          el.textContent = `${percent.toFixed(1)}%`;
+          const displayValue =
+            value === null || value === undefined || value === "" ? "-" : value;
+          el.textContent = displayValue;
+          // console.log(`✅ Filled: ${elementId} → ${displayValue}`);
+        } else {
+          // console.warn(`❌ Missing element for ID: ${elementId}`);
         }
       }
     }
+  }
+
+  function populateMiniAcedPercentChanges(startData, endData) {
+    const siteMap = {
+      1: "uic-change",
+      2: "stanford-change",
+      3: "cumulative-change",
+    };
+
+    for (const [siteKey, sitePrefix] of Object.entries(siteMap)) {
+      for (const key in endData["1"]) {
+        if (!key.endsWith("_count")) continue;
+
+        let diff;
+        let elementId = `${sitePrefix}--${key}-minified`;
+
+        if (siteKey === "3") {
+          // cumulative = uic + stanford change
+          const uStart = parseFloat(startData["1"]?.[key] ?? 0);
+          const uEnd = parseFloat(endData["1"]?.[key] ?? 0);
+          const sStart = parseFloat(startData["2"]?.[key] ?? 0);
+          const sEnd = parseFloat(endData["2"]?.[key] ?? 0);
+
+          const uDiff = !isNaN(uStart) && !isNaN(uEnd) ? uEnd - uStart : 0;
+          const sDiff = !isNaN(sStart) && !isNaN(sEnd) ? sEnd - sStart : 0;
+          diff = uDiff + sDiff;
+        } else {
+          const startVal = parseFloat(startData[siteKey]?.[key]);
+          const endVal = parseFloat(endData[siteKey]?.[key]);
+
+          if (isNaN(startVal) || isNaN(endVal)) {
+            console.warn(`⚠️ Invalid data for ${elementId}`);
+            const el = document.getElementById(elementId);
+            if (el) el.textContent = "-";
+            continue;
+          }
+
+          diff = endVal - startVal;
+        }
+
+        const el = document.getElementById(elementId);
+        if (el) {
+          el.textContent = `${diff}`;
+          // console.log(`✅ Filled ${elementId} → ${diff}`);
+        } else {
+          // console.warn(`❌ Missing element for ID: ${elementId}`);
+        }
+      }
+    }
+  }
+
+  async function exportMiniRecruitmentTableToExcel() {
+    const startDate = document.getElementById("startDateSelectMini").value;
+    const endDate = document.getElementById("endDateSelectMini").value;
+
+    if (!startDate || !endDate) {
+      alert("Please select both start and end dates before exporting.");
+      return;
+    }
+
+    const table = document.getElementById("mini-recruitment-table");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Mini Recruitment Report");
+
+    // ---- TITLE ROW ----
+    const title = `ACE-D (Aim-2) Minified Recruitment Report from ${startDate} to ${endDate}`;
+    const titleRow = worksheet.getRow(1);
+    titleRow.getCell(1).value = title;
+    titleRow.getCell(1).font = { size: 16, bold: true };
+    titleRow.getCell(1).alignment = {
+      horizontal: "center",
+      vertical: "middle",
+    };
+    worksheet.mergeCells(1, 1, 1, 7);
+
+    // ---- HEADER ROWS ----
+    const headerRows = table.querySelectorAll("thead tr");
+    const mergedMap = new Set();
+
+    headerRows.forEach((tr, rowIndex) => {
+      const row = worksheet.getRow(rowIndex + 2);
+      let col = 1;
+
+      tr.querySelectorAll("th").forEach((th) => {
+        const text = th.textContent.trim();
+        const colspan = parseInt(th.getAttribute("colspan") || 1);
+        const rowspan = parseInt(th.getAttribute("rowspan") || 1);
+        const startRow = rowIndex + 2;
+        const endRow = startRow + rowspan - 1;
+        const startCol = col;
+        const endCol = col + colspan - 1;
+        const cell = row.getCell(col);
+
+        const mergeKey = `${startRow}:${startCol}`;
+        if (!mergedMap.has(mergeKey)) {
+          cell.value = text;
+        }
+
+        cell.font = { bold: true };
+        cell.alignment = {
+          horizontal: th.classList.contains("text-start") ? "left" : "center",
+          vertical: "middle",
+        };
+
+        if (th.style.backgroundColor === "rgb(255, 243, 205)") {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "FFF3CD" },
+          };
+        } else if (th.style.backgroundColor === "rgb(226, 227, 243)") {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "E2E3F3" },
+          };
+        }
+
+        if (colspan > 1 || rowspan > 1) {
+          worksheet.mergeCells(startRow, startCol, endRow, endCol);
+          for (let r = startRow; r <= endRow; r++) {
+            for (let c = startCol; c <= endCol; c++) {
+              if (!(r === startRow && c === startCol)) {
+                mergedMap.add(`${r}:${c}`);
+              }
+            }
+          }
+        }
+
+        col += colspan;
+      });
+    });
+
+    // ---- BODY ----
+    const bodyRows = table.querySelectorAll("tbody tr");
+    let excelRowIdx = headerRows.length + 2;
+
+    bodyRows.forEach((tr) => {
+      const row = worksheet.getRow(excelRowIdx);
+      const cells = tr.querySelectorAll("td");
+
+      cells.forEach((td, index) => {
+        const cell = row.getCell(index + 1);
+        const value = td.textContent.trim();
+        const rawHTML = td.innerHTML.trim();
+
+        if (!isNaN(value) && value !== "") {
+          cell.value = Number(value);
+        } else {
+          cell.value = value;
+        }
+
+        // Alignments
+        if (index === 0) {
+          cell.alignment = { horizontal: "left", vertical: "middle" };
+        } else {
+          cell.alignment = { horizontal: "center", vertical: "middle" };
+        }
+
+        // Styling
+        if (td.classList.contains("fw-bold")) {
+          cell.font = { ...cell.font, bold: true };
+        }
+
+        if (td.classList.contains("ps-4")) {
+          cell.alignment = { ...cell.alignment, indent: 1 };
+        }
+
+        if (rawHTML.includes("<em>")) {
+          cell.font = { ...cell.font, italic: true };
+        }
+
+        const isT1Row =
+          cells[0] &&
+          cells[0].textContent.trim().toLowerCase() ===
+            "t1 complete - fully enrolled";
+
+        if (isT1Row) {
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "c9e8be" },
+          };
+          cell.font = { ...cell.font, bold: true };
+        }
+      });
+
+      excelRowIdx++;
+    });
+
+    // ---- BORDER & WIDTH ----
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    worksheet.columns.forEach((col) => {
+      col.width = 22;
+    });
+
+    worksheet.views = [{ state: "frozen", ySplit: 2 }];
+
+    // ---- SAVE ----
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    const fileName = `ACE-D Aim-2 Minified Report from ${startDate} to ${endDate}.xlsx`;
+    saveAs(blob, fileName);
+  }
+</script>
+
+<!-- For Exclusions-Refusals -->
+<script>
+  function populateExclusionRefusalTable(data) {
+    const phaseMap = {
+      "Prior To Screening": "prior",
+      Screening: "screening",
+      "Tele-Orientation": "tele",
+      Teleorientation: "tele", // fallback for bad casing
+    };
+
+    const normalizeKey = (str) => {
+      return str
+        .toLowerCase()
+        .replace(/<|>|\s+/g, "_")
+        .replace(/[^a-z0-9_]/g, "")
+        .replace(/__/g, "_")
+        .replace(/_+/g, "_")
+        .trim();
+    };
+
+    const setCellText = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent =
+          value !== undefined && value !== null && value !== "" ? value : "-";
+      } else {
+        console.warn("Missing element for ID:", id);
+      }
+    };
+
+    // Process Exclusions
+    if (data.Exclusions) {
+      for (const [phaseLabel, entries] of Object.entries(data.Exclusions)) {
+        const phase = phaseMap[phaseLabel] || normalizeKey(phaseLabel);
+        for (const [metricLabel, value] of Object.entries(entries)) {
+          const isTotal = normalizeKey(metricLabel).includes("total");
+          const key = normalizeKey(metricLabel);
+          const id = `exclusion--${phase}--${isTotal ? "total" : key}`;
+          setCellText(id, value);
+        }
+      }
+    }
+
+    // Process Refusals
+    if (data.Refusals) {
+      for (const [phaseLabel, entries] of Object.entries(data.Refusals)) {
+        const phase = phaseMap[phaseLabel] || normalizeKey(phaseLabel);
+        for (const [metricLabel, value] of Object.entries(entries)) {
+          const isTotal = normalizeKey(metricLabel).includes("total");
+          const key = normalizeKey(metricLabel);
+          const id = `refusal--${phase}--${isTotal ? "total" : key}`;
+          setCellText(id, value);
+        }
+      }
+    }
+
+    // Set all remaining empty <td> in the tables to "-"
+    const exclusionsTable = document.getElementById("exclusions-table");
+    const refusalsTable = document.getElementById("refusals-table");
+
+    [exclusionsTable, refusalsTable].forEach((table) => {
+      if (!table) return;
+      const cells = table.querySelectorAll("td");
+      cells.forEach((td) => {
+        if (td.textContent.trim() === "") {
+          td.textContent = "-";
+        }
+      });
+    });
+  }
+
+  async function fetchExclusionRefusalData() {
+    const btn = document.getElementById("fetch-exclusion-refusal-btn");
+    const btnText = document.getElementById("fetch-exclusion-refusal-text");
+    const spinner = document.getElementById("fetch-exclusion-refusal-spinner");
+
+    const url = `${serverUrl}/aced/exclusions-refusals`;
+
+    try {
+      btn.disabled = true;
+      spinner.style.display = "inline-block";
+      btnText.textContent = "Loading...";
+
+      const response = await fetch(url);
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+      populateExclusionRefusalTable(data);
+    } catch (err) {
+      console.error("Error fetching exclusion/refusal data:", err);
+      alert("Failed to load Exclusion & Refusal data. Please try again later.");
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = "none";
+      btnText.textContent = "Load latest ACE-D exclusions & refusals data";
+    }
+  }
+
+  async function exportExclusionRefusalToExcel() {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Exclusions & Refusals");
+
+    const exclusionsTable = document.getElementById("exclusions-table");
+    const refusalsTable = document.getElementById("refusals-table");
+
+    let currentRow = 1;
+
+    function exportStyledTable(table, startRow) {
+      const headerRows = table.querySelectorAll("thead tr");
+      const bodyRows = table.querySelectorAll("tbody tr");
+
+      const mergedMap = new Set();
+      let rowIdx = startRow;
+
+      // HEADERS
+      headerRows.forEach((tr, rowIndex) => {
+        const row = worksheet.getRow(rowIdx);
+        let col = 1;
+        tr.querySelectorAll("th").forEach((th) => {
+          const text = th.textContent.trim();
+          const colspan = parseInt(th.getAttribute("colspan") || 1);
+          const rowspan = parseInt(th.getAttribute("rowspan") || 1);
+          const startRow = rowIdx;
+          const endRow = startRow + rowspan - 1;
+          const startCol = col;
+          const endCol = col + colspan - 1;
+          const cell = row.getCell(startCol);
+
+          const mergeKey = `${startRow}:${startCol}`;
+          if (!mergedMap.has(mergeKey)) cell.value = text;
+
+          cell.font = { bold: true, color: { argb: "FFFFFF" } };
+          cell.alignment = {
+            horizontal: th.classList.contains("align-left") ? "left" : "center",
+            vertical: "middle",
+          };
+          cell.fill = {
+            type: "pattern",
+            pattern: "solid",
+            fgColor: { argb: "333333" },
+          };
+
+          if (colspan > 1 || rowspan > 1) {
+            worksheet.mergeCells(startRow, startCol, endRow, endCol);
+            for (let r = startRow; r <= endRow; r++) {
+              for (let c = startCol; c <= endCol; c++) {
+                if (!(r === startRow && c === startCol)) {
+                  mergedMap.add(`${r}:${c}`);
+                }
+              }
+            }
+          }
+
+          col += colspan;
+        });
+        row.commit();
+        rowIdx++;
+      });
+
+      // BODY
+      bodyRows.forEach((tr) => {
+        const row = worksheet.getRow(rowIdx);
+        const cells = tr.querySelectorAll("td");
+
+        cells.forEach((td, index) => {
+          const cell = row.getCell(index + 1);
+          let value = td.textContent.trim();
+          if (!isNaN(value) && value !== "") value = Number(value);
+          cell.value = value === "-" ? "" : value;
+
+          cell.alignment = {
+            horizontal: index === 0 ? "left" : "right",
+            vertical: "middle",
+          };
+
+          const isBold =
+            td.classList.contains("fw-bold") ||
+            td.parentElement.classList.contains("fw-bold");
+          const isSecondary =
+            td.classList.contains("table-secondary") ||
+            td.parentElement.classList.contains("table-secondary");
+
+          if (isBold || isSecondary) {
+            cell.font = { bold: true };
+            cell.fill = {
+              type: "pattern",
+              pattern: "solid",
+              fgColor: { argb: "E9ECEF" },
+            };
+          }
+        });
+
+        row.commit();
+        rowIdx++;
+      });
+
+      return rowIdx;
+    }
+
+    // Export both tables with 1 empty row in between
+    currentRow = exportStyledTable(exclusionsTable, currentRow);
+    currentRow += 1;
+    exportStyledTable(refusalsTable, currentRow);
+
+    // Column width and borders
+    worksheet.columns.forEach((col) => {
+      col.width = 28;
+    });
+
+    worksheet.eachRow((row) => {
+      row.eachCell((cell) => {
+        cell.border = {
+          top: { style: "thin" },
+          bottom: { style: "thin" },
+          left: { style: "thin" },
+          right: { style: "thin" },
+        };
+      });
+    });
+
+    // ---- HARDCODE B2, C2, D2 HEADERS ----
+    const row2 = worksheet.getRow(2);
+
+    const b2 = row2.getCell(2); // B2
+    const c2 = row2.getCell(3); // C2
+    const d2 = row2.getCell(4); // D2
+
+    b2.value = "Prior to screening";
+    c2.value = "Screening";
+    d2.value = "Tele-Orientation";
+
+    // Copy formatting from C2 → D2
+    d2.font = { ...c2.font };
+    d2.alignment = { ...c2.alignment };
+    if (c2.fill) d2.fill = { ...c2.fill };
+
+    // Format date for filename
+    const today = new Date();
+    const day = today.getDate();
+    const suffix = (d) => {
+      if (d >= 11 && d <= 13) return "th";
+      switch (d % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+    const month = today.toLocaleString("default", { month: "long" });
+    const year = today.getFullYear();
+    const dateStr = `${day}${suffix(day)} ${month}, ${year}`;
+    const fileName = `ACED AIM-2 Exclusions Refusals Report - ${dateStr}.xlsx`;
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    saveAs(blob, fileName);
   }
 </script>
